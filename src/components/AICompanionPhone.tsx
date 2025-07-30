@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User } from '@phosphor-icons/react'
+import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -8,6 +8,7 @@ import { useKV } from '@github/spark/hooks'
 import { toast } from 'sonner'
 import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
+import DrawingCanvas from '@/components/DrawingCanvas'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 
 interface ConversationEntry {
@@ -19,7 +20,7 @@ interface ConversationEntry {
 }
 
 type CallState = 'idle' | 'connecting' | 'active' | 'ending'
-type AppView = 'phone' | 'history' | 'settings' | 'personality'
+type AppView = 'phone' | 'history' | 'settings' | 'personality' | 'drawing'
 
 export default function AICompanionPhone() {
   const [callState, setCallState] = useState<CallState>('idle')
@@ -32,6 +33,7 @@ export default function AICompanionPhone() {
   const [conversations, setConversations] = useKV<ConversationEntry[]>('conversation-history', [])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [selectedPersonality, setSelectedPersonality] = useKV<AIPersonality>('selected-personality', AI_PERSONALITIES[0])
+  const [isDrawingOpen, setIsDrawingOpen] = useState(false)
   
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
@@ -343,6 +345,104 @@ export default function AICompanionPhone() {
     }, 1500)
   }
 
+  // Handle sharing drawings with AI
+  const handleDrawingShare = useCallback(async (imageData: string) => {
+    try {
+      // Create a prompt for the AI to respond to the drawing
+      const prompt = spark.llmPrompt`A child has just drawn a picture and wants to show it to you. You are ${selectedPersonality.name}, ${selectedPersonality.description}. Please respond enthusiastically and encourage their creativity. Ask them about their drawing in a ${selectedPersonality.conversationStyle.responseStyle} way. Keep it short and age-appropriate for a 4-year-old.`
+      
+      let aiResponse
+      
+      // Try local LLM first, then cloud
+      try {
+        if (localLLMAvailable) {
+          aiResponse = await callLocalLLM(prompt)
+        }
+      } catch (localError) {
+        console.log('Local LLM unavailable for drawing response')
+      }
+      
+      if (!aiResponse && isOnline) {
+        aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
+      }
+      
+      if (!aiResponse) {
+        // Personality-specific fallback responses for drawings
+        const drawingResponses = getDrawingFallbackResponses(selectedPersonality)
+        aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
+      }
+      
+      // Speak the AI response
+      speakResponse(aiResponse)
+      setIsDrawingOpen(false)
+      
+    } catch (error) {
+      console.error('Error processing drawing:', error)
+      speakResponse("What a wonderful drawing! You're such a talented artist!")
+      setIsDrawingOpen(false)
+    }
+  }, [selectedPersonality, localLLMAvailable, isOnline, speakResponse])
+
+  // Get personality-specific drawing responses
+  const getDrawingFallbackResponses = (personality: AIPersonality) => {
+    switch (personality.id) {
+      case 'cheerful-buddy':
+        return [
+          "Wow! What an absolutely amazing drawing! You're such a brilliant artist!",
+          "That's the most wonderful picture I've ever seen! Tell me all about it!",
+          "Oh my goodness, that's fantastic! What's your favorite part of your drawing?",
+          "You're so creative! I love all the beautiful colors you used!",
+          "What a masterpiece! You should be so proud of your amazing art!"
+        ]
+      case 'curious-explorer':
+        return [
+          "How fascinating! What inspired you to draw this? Tell me the story behind it!",
+          "What an intriguing creation! Can you explain what's happening in your picture?",
+          "How interesting! What made you choose those particular colors and shapes?",
+          "That's a wonderful observation in your art! What else can you tell me about it?",
+          "What a creative exploration! How did you decide what to draw?"
+        ]
+      case 'gentle-friend':
+        return [
+          "That's such a beautiful drawing, dear. It makes me feel so happy to see it.",
+          "What a lovely picture. Thank you for sharing your special art with me.",
+          "That's very thoughtful and creative. Tell me what you were thinking about while drawing.",
+          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch.",
+          "That's very sweet of you to show me. Your art tells a wonderful story."
+        ]
+      case 'silly-joker':
+        return [
+          "Haha! That's absolutely bonkers and brilliant! What a giggly good drawing!",
+          "What a wonderfully wacky and fantastic picture! It makes me want to dance!",
+          "That's hilariously awesome! Did you have fun making all those silly details?",
+          "Ha! You're such a funny and creative artist! Tell me about the silliest part!",
+          "What a delightfully daft and amazing drawing! You always make me smile!"
+        ]
+      case 'wise-owl':
+        return [
+          "What a thoughtfully composed artwork! You show great artistic wisdom.",
+          "That's a very perceptive piece of art. What techniques did you use?",
+          "How scholarly and creative! Your drawing shows deep thinking and planning.",
+          "That's quite an accomplished piece of art! What did you learn while creating it?",
+          "What an intellectually engaging drawing! You have a very artistic mind."
+        ]
+      case 'creative-artist':
+        return [
+          "What an absolutely magnificent piece of art! Your creativity shines so brightly!",
+          "That's gorgeously imaginative! What beautiful artistic choices you made!",
+          "How wonderfully expressive and colorful! You have such an artistic soul!",
+          "That's breathtakingly creative! Tell me about your artistic inspiration!",
+          "What a magically beautiful creation! Your art fills my heart with joy!"
+        ]
+      default:
+        return [
+          "What a beautiful drawing! You're such a talented artist!",
+          "That's wonderful! Tell me all about your amazing artwork!",
+          "What a creative masterpiece! I love seeing your art!"
+        ]
+    }
+  }
+
   const endCall = () => {
     setCallState('ending')
     
@@ -594,7 +694,7 @@ export default function AICompanionPhone() {
         )}
       </div>
 
-      <div className="flex space-x-4 mt-8">
+      <div className="flex flex-wrap justify-center gap-3 mt-8">
         <Button
           onClick={() => setCurrentView('personality')}
           variant="outline"
@@ -603,6 +703,15 @@ export default function AICompanionPhone() {
         >
           <User size={20} className="mr-2" />
           Choose Friend
+        </Button>
+        <Button
+          onClick={() => setIsDrawingOpen(true)}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-purple-300 hover:border-purple-400 transition-all text-purple-600 hover:text-purple-700"
+        >
+          <Palette size={20} className="mr-2 magic-sparkle" />
+          Draw & Show
         </Button>
         <Button
           onClick={() => setCurrentView('history')}
@@ -799,6 +908,14 @@ export default function AICompanionPhone() {
       {currentView === 'history' && renderHistoryView()}
       {currentView === 'settings' && renderSettingsView()}
       {currentView === 'personality' && renderPersonalityView()}
+      
+      {/* Drawing Canvas Modal */}
+      <DrawingCanvas
+        isOpen={isDrawingOpen}
+        onClose={() => setIsDrawingOpen(false)}
+        onShareDrawing={handleDrawingShare}
+        personality={selectedPersonality}
+      />
     </div>
   )
 }

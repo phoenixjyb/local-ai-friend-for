@@ -42,6 +42,11 @@
 - **Why it matters**: Children need to feel in control and able to end conversations easily
 - **Success criteria**: Single tap to start/end, visual feedback, works during AI speech
 
+### Drawing & Art Sharing
+- **What it does**: Provides a full-featured drawing canvas where children can create art and instantly share it with their AI friend
+- **Why it matters**: Encourages creativity, gives AI context for richer conversations, provides visual expression beyond voice
+- **Success criteria**: Responsive drawing tools, multiple colors and brush sizes, AI gives enthusiastic art-focused responses
+
 ### Conversation History
 - **What it does**: Saves conversation duration, topics, and which AI personality was used for parent review
 - **Why it matters**: Allows parents to see engagement patterns, favorite personalities, and conversation topics
