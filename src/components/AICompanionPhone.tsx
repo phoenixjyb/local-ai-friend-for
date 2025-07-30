@@ -392,10 +392,6 @@ export default function AICompanionPhone() {
         setCallDuration(prev => prev + 1)
       }, 1000)
       
-      // Start listening
-      await startListening()
-    }, 1500)
-      
       // AI greeting with personality
       speakResponse(selectedPersonality.conversationStyle.greeting)
       
