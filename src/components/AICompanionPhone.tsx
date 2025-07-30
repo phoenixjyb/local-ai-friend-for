@@ -11,6 +11,7 @@ import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
+import { ollamaService } from '@/services/OllamaService'
 import { Capacitor } from '@capacitor/core'
 
 interface ConversationEntry {
@@ -55,30 +56,54 @@ export default function AICompanionPhone() {
     initializeNativeServices()
   }, [])
 
-  // Check for local LLM availability
+  // Check for local LLM availability and auto-connect
   useEffect(() => {
-    const checkLocalLLM = async () => {
-      try {
-        const response = await fetch('http://localhost:11434/api/tags', {
-          method: 'GET',
-          signal: AbortSignal.timeout(3000) // 3 second timeout
-        })
-        if (response.ok) {
-          setLocalLLMAvailable(true)
-          toast.success('Local AI model detected! Fully offline capable.')
-        }
-      } catch (error) {
-        setLocalLLMAvailable(false)
-        console.log('Local LLM not available:', error)
+    const initializeOllama = async () => {
+      console.log('🔄 Checking for local Ollama + Gemma3 setup...')
+      
+      const isInitialized = await ollamaService.initialize()
+      setLocalLLMAvailable(isInitialized)
+      
+      if (isInitialized) {
+        const modelName = ollamaService.getModelDisplayName()
+        toast.success(`🤖 ${modelName} AI connected! Ready for offline chats.`)
+        
+        // Auto-greet the user when first connected (with delay for better UX)
+        setTimeout(() => {
+          const greeting = `Hello there! I'm your ${selectedPersonality.name} and I'm running right here on your Samsung Galaxy S24 Ultra with ${modelName}! ` +
+                          `No internet needed - we can chat anytime you want. What would you like to talk about today?`
+          speakResponse(greeting)
+        }, 3000) // 3 second delay to let the user see the UI first
+      } else {
+        // Provide helpful setup guidance
+        setTimeout(() => {
+          toast.info('💡 To enable offline AI: Run "ollama pull gemma2:2b" in Termux, then restart the app!')
+        }, 2000)
       }
     }
     
-    checkLocalLLM()
+    // Initial check with delay for app startup
+    setTimeout(initializeOllama, 1500)
     
-    // Check periodically
-    const interval = setInterval(checkLocalLLM, 30000) // Check every 30 seconds
+    // Periodic connection check
+    const interval = setInterval(async () => {
+      const isConnected = await ollamaService.checkConnection()
+      if (isConnected !== localLLMAvailable) {
+        if (isConnected) {
+          const isInitialized = await ollamaService.initialize()
+          setLocalLLMAvailable(isInitialized)
+          if (isInitialized) {
+            toast.success('🔄 Local AI reconnected!')
+          }
+        } else {
+          setLocalLLMAvailable(false)
+          toast.warning('⚠️ Local AI disconnected - using cloud backup')
+        }
+      }
+    }, 15000) // Check every 15 seconds
+    
     return () => clearInterval(interval)
-  }, [])
+  }, [selectedPersonality, speakResponse])
 
   // Monitor online/offline status
   useEffect(() => {
@@ -150,23 +175,33 @@ export default function AICompanionPhone() {
       const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
       const personalizedPrompt = promptTemplate.replace('{input}', userInput)
 
-      // Try local LLM first (Ollama)
-      try {
-        const localResponse = await callLocalLLM(personalizedPrompt)
-        if (localResponse) {
-          return localResponse
+      // Try local LLM first (Ollama with enhanced service)
+      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
+        try {
+          console.log('🤖 Using local Ollama for response generation...')
+          const localResponse = await ollamaService.generatePersonalizedResponse(
+            userInput, 
+            selectedPersonality.id
+          )
+          if (localResponse && localResponse.trim().length > 0) {
+            console.log('✅ Local AI response generated successfully')
+            return localResponse
+          }
+        } catch (localError) {
+          console.error('❌ Local Ollama failed:', localError)
+          toast.warning('Local AI temporarily unavailable - using cloud backup')
         }
-      } catch (localError) {
-        console.log('Local LLM unavailable, trying cloud LLM:', localError)
       }
 
       // If local LLM fails and online, use cloud LLM
       if (isOnline) {
+        console.log('☁️ Using cloud LLM for response generation...')
         const prompt = spark.llmPrompt`${personalizedPrompt}`
         const response = await spark.llm(prompt, 'gpt-4o-mini')
         return response
       } else {
         // Personality-specific offline fallback responses
+        console.log('📱 Using offline fallback responses')
         const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
         return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
       }
@@ -174,39 +209,8 @@ export default function AICompanionPhone() {
       console.error('Error generating AI response:', error)
       return "I'm sorry, I didn't quite catch that. Could you say that again?"
     }
-  }, [isOnline, selectedPersonality])
+  }, [isOnline, selectedPersonality, localLLMAvailable])
 
-  // Call local LLM via Ollama
-  const callLocalLLM = async (prompt: string) => {
-    try {
-      const response = await fetch('http://localhost:11434/api/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama3.2:1b', // Lightweight model for mobile
-          prompt: prompt,
-          stream: false,
-          options: {
-            temperature: 0.7,
-            max_tokens: 150,
-            top_p: 0.9
-          }
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error('Local LLM request failed')
-      }
-
-      const data = await response.json()
-      return data.response || "I'm here to chat with you!"
-    } catch (error) {
-      console.error('Local LLM error:', error)
-      throw error
-    }
-  }
 
   // Get personality-specific fallback responses
   const getPersonalityFallbackResponses = (personality: AIPersonality) => {
@@ -406,25 +410,30 @@ export default function AICompanionPhone() {
   const handleDrawingShare = useCallback(async (imageData: string) => {
     try {
       // Create a prompt for the AI to respond to the drawing
-      const prompt = spark.llmPrompt`A child has just drawn a picture and wants to show it to you. You are ${selectedPersonality.name}, ${selectedPersonality.description}. Please respond enthusiastically and encourage their creativity. Ask them about their drawing in a ${selectedPersonality.conversationStyle.responseStyle} way. Keep it short and age-appropriate for a 4-year-old.`
+      const basePrompt = `A child has just drawn a picture and wants to show it to you. You are ${selectedPersonality.name}, ${selectedPersonality.description}. Please respond enthusiastically and encourage their creativity. Ask them about their drawing in a ${selectedPersonality.conversationStyle.responseStyle} way. Keep it short and age-appropriate for a 4-year-old.`
       
       let aiResponse
       
-      // Try local LLM first, then cloud
-      try {
-        if (localLLMAvailable) {
-          aiResponse = await callLocalLLM(prompt)
+      // Try local LLM first with enhanced drawing response
+      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
+        try {
+          aiResponse = await ollamaService.generatePersonalizedResponse(
+            "I just drew a beautiful picture and want to show it to you!", 
+            selectedPersonality.id
+          )
+        } catch (localError) {
+          console.log('Local LLM unavailable for drawing response:', localError)
         }
-      } catch (localError) {
-        console.log('Local LLM unavailable for drawing response')
       }
       
+      // Fallback to cloud LLM if available
       if (!aiResponse && isOnline) {
+        const prompt = spark.llmPrompt`${basePrompt}`
         aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
       }
       
+      // Final fallback to personality-specific responses
       if (!aiResponse) {
-        // Personality-specific fallback responses for drawings
         const drawingResponses = getDrawingFallbackResponses(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
@@ -547,7 +556,12 @@ export default function AICompanionPhone() {
           <Card className="cute-card p-3 border-primary/30">
             <div className="flex items-center gap-2 text-sm text-primary">
               <Brain size={16} className="cute-wiggle" />
-              <span>Local AI Active</span>
+              <div className="flex flex-col">
+                <span className="font-medium">Local AI Active</span>
+                <span className="text-xs text-muted-foreground">
+                  {ollamaService.getModelDisplayName()}
+                </span>
+              </div>
             </div>
           </Card>
         </div>
@@ -587,7 +601,7 @@ export default function AICompanionPhone() {
         </div>
         {localLLMAvailable ? (
           <p className="text-sm text-primary font-medium">
-            ✓ Local AI model active - No internet required!
+            ✓ {ollamaService.getModelDisplayName()} AI running locally - No internet required!
           </p>
         ) : !isOnline ? (
           <p className="text-sm text-muted-foreground">
@@ -921,16 +935,51 @@ export default function AICompanionPhone() {
         </div>
         
         <div className="mt-4 p-4 cute-card border-2 border-primary/20">
-          <h4 className="font-medium text-primary mb-2">Local AI Setup (Ollama)</h4>
+          <h4 className="font-medium text-primary mb-2">Local AI Setup (Ollama + Gemma3)</h4>
           <p className="text-sm text-muted-foreground mb-2">
-            For true offline functionality, install Ollama with a lightweight model:
+            For true offline functionality, install Ollama with Gemma3 model in Termux on your Samsung S24 Ultra:
           </p>
-          <code className="text-xs bg-muted p-2 rounded block">
-            ollama pull llama3.2:1b
-          </code>
-          <p className="text-xs text-muted-foreground mt-2">
-            Status: {localLLMAvailable ? '✓ Connected' : '✗ Not available'}
-          </p>
+          <div className="space-y-1">
+            <code className="text-xs bg-muted p-2 rounded block">
+              # In Termux - Install Ollama if not done yet:
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
+              curl -fsSL https://ollama.ai/install.sh | sh
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
+              # Download Gemma3 model (optimized for S24 Ultra):
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
+              ollama pull gemma2:2b
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
+              # Start Ollama server:
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
+              ollama serve
+            </code>
+          </div>
+          <div className="mt-3 p-3 bg-muted/50 rounded-md">
+            <p className="text-xs font-medium mb-1">Current Status:</p>
+            <p className="text-xs text-muted-foreground">
+              Connection: {localLLMAvailable ? '✅ Connected' : '❌ Not detected'}
+            </p>
+            {localLLMAvailable && (
+              <>
+                <p className="text-xs text-muted-foreground">
+                  Model: {ollamaService.getModelDisplayName()} ({ollamaService.getCurrentModel()})
+                </p>
+                <p className="text-xs text-green-600 font-medium mt-1">
+                  🚀 Running locally on your Samsung S24 Ultra - No internet required!
+                </p>
+              </>
+            )}
+            {!localLLMAvailable && (
+              <p className="text-xs text-orange-600 mt-1">
+                💡 Start Ollama in Termux to enable offline AI conversations
+              </p>
+            )}
+          </div>
         </div>
       </Card>
 
