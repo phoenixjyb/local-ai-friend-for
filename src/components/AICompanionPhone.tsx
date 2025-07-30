@@ -10,6 +10,8 @@ import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
+import { voiceChatService } from '@/services/VoiceChatService'
+import { Capacitor } from '@capacitor/core'
 
 interface ConversationEntry {
   id: string
@@ -34,10 +36,24 @@ export default function AICompanionPhone() {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   const [selectedPersonality, setSelectedPersonality] = useKV<AIPersonality>('selected-personality', AI_PERSONALITIES[0])
   const [isDrawingOpen, setIsDrawingOpen] = useState(false)
+  const [isNativeApp, setIsNativeApp] = useState(false)
   
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+
+  // Initialize native services if running in Capacitor
+  useEffect(() => {
+    const initializeNativeServices = async () => {
+      if (Capacitor.isNativePlatform()) {
+        setIsNativeApp(true)
+        await voiceChatService.initializeVoiceServices()
+        toast.success('Native voice services initialized!')
+      }
+    }
+    
+    initializeNativeServices()
+  }, [])
 
   // Check for local LLM availability
   useEffect(() => {
@@ -252,33 +268,80 @@ export default function AICompanionPhone() {
     }
   }
 
-  // Speak AI response
-  const speakResponse = useCallback((text: string) => {
-    if (!synthRef.current) return
-    
-    const utterance = new SpeechSynthesisUtterance(text)
-    // Use personality-specific voice settings
-    utterance.rate = selectedPersonality.voiceSettings.rate
-    utterance.pitch = selectedPersonality.voiceSettings.pitch
-    utterance.volume = selectedPersonality.voiceSettings.volume
-    
-    // Try to use British English voice
-    const voices = synthRef.current.getVoices()
-    const britishVoice = voices.find(voice => 
-      voice.lang.includes('en-GB') || voice.name.includes('British')
-    )
-    if (britishVoice) {
-      utterance.voice = britishVoice
+  // Speak AI response (unified for web and native)
+  const speakResponse = useCallback(async (text: string) => {
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      // Use native TTS
+      await voiceChatService.speak(text, selectedPersonality.id)
+    } else {
+      // Use web TTS
+      if (!synthRef.current) return
+      
+      const utterance = new SpeechSynthesisUtterance(text)
+      // Use personality-specific voice settings
+      utterance.rate = selectedPersonality.voiceSettings.rate
+      utterance.pitch = selectedPersonality.voiceSettings.pitch
+      utterance.volume = selectedPersonality.voiceSettings.volume
+      
+      // Try to use British English voice
+      const voices = synthRef.current.getVoices()
+      const britishVoice = voices.find(voice => 
+        voice.lang.includes('en-GB') || voice.name.includes('British')
+      )
+      if (britishVoice) {
+        utterance.voice = britishVoice
+      }
+      
+      utterance.onstart = () => setAiSpeaking(true)
+      utterance.onend = () => setAiSpeaking(false)
+      
+      synthRef.current.speak(utterance)
     }
-    
-    utterance.onstart = () => setAiSpeaking(true)
-    utterance.onend = () => setAiSpeaking(false)
-    
-    synthRef.current.speak(utterance)
-  }, [selectedPersonality])
+  }, [selectedPersonality, isNativeApp])
+
+  // Handle speech recognition (unified for web and native)
+  const startListening = useCallback(async () => {
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      // Use native speech recognition
+      setIsListening(true)
+      try {
+        const transcript = await voiceChatService.startListening()
+        if (transcript.trim()) {
+          setIsListening(false)
+          const aiResponse = await generateAIResponse(transcript)
+          await speakResponse(aiResponse)
+          
+          // Save to conversation
+          if (currentConversationId) {
+            const timestamp = Date.now()
+            // Add conversation logic here
+          }
+        }
+        setIsListening(false)
+      } catch (error) {
+        console.error('Native speech recognition error:', error)
+        setIsListening(false)
+        toast.error('Voice recognition failed. Please try again.')
+      }
+    } else {
+      // Use web speech recognition
+      if (!recognitionRef.current) return
+      
+      try {
+        setIsListening(true)
+        recognitionRef.current.start()
+      } catch (error) {
+        console.error('Web speech recognition error:', error)
+        setIsListening(false)
+        toast.error('Voice recognition failed. Please try again.')
+      }
+    }
+  }, [isNativeApp, currentConversationId, generateAIResponse, speakResponse])
 
   // Handle speech recognition
   useEffect(() => {
+    if (isNativeApp) return // Skip web speech setup for native app
+    
     if (!recognitionRef.current) return
 
     recognitionRef.current.onresult = async (event) => {
@@ -309,18 +372,7 @@ export default function AICompanionPhone() {
         }, 1000)
       }
     }
-  }, [callState, aiSpeaking, generateAIResponse, speakResponse])
-
-  const startListening = useCallback(() => {
-    if (recognitionRef.current && callState === 'active' && !aiSpeaking) {
-      try {
-        recognitionRef.current.start()
-        setIsListening(true)
-      } catch (error) {
-        console.error('Error starting speech recognition:', error)
-      }
-    }
-  }, [callState, aiSpeaking])
+  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp])
 
   const startCall = async () => {
     setCallState('connecting')
@@ -331,9 +383,18 @@ export default function AICompanionPhone() {
     setCurrentConversationId(conversationId)
     
     // Simulate connection delay
-    setTimeout(() => {
+    setTimeout(async () => {
       setCallState('active')
       toast.success('Connected to your AI friend!')
+      
+      // Start the timer
+      callTimerRef.current = setInterval(() => {
+        setCallDuration(prev => prev + 1)
+      }, 1000)
+      
+      // Start listening
+      await startListening()
+    }, 1500)
       
       // AI greeting with personality
       speakResponse(selectedPersonality.conversationStyle.greeting)
@@ -443,15 +504,20 @@ export default function AICompanionPhone() {
     }
   }
 
-  const endCall = () => {
+  const endCall = async () => {
     setCallState('ending')
     
-    // Stop speech recognition and synthesis
-    if (recognitionRef.current) {
-      recognitionRef.current.stop()
-    }
-    if (synthRef.current) {
-      synthRef.current.cancel()
+    // Stop speech recognition and synthesis (unified for web and native)
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      await voiceChatService.stopListening()
+      await voiceChatService.stopSpeaking()
+    } else {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+      if (synthRef.current) {
+        synthRef.current.cancel()
+      }
     }
     
     setIsListening(false)

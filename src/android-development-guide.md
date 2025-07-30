@@ -2,6 +2,285 @@
 
 This guide explains how to convert your AI Companion Phone web app into a native Android application with local LLM inference using Ollama in Termux.
 
+## Quick Start: Building Your First APK
+
+### Prerequisites
+- Node.js 18+ installed
+- Android Studio installed with SDK
+- Java Development Kit 17
+- Git
+
+### Method 1: Capacitor (Easiest for Web Developers)
+
+#### Step 1: Install Capacitor CLI
+```bash
+npm install -g @capacitor/cli @ionic/cli
+```
+
+#### Step 2: Add Capacitor to Your Current Project
+```bash
+# In your current project directory
+npm install @capacitor/core @capacitor/android
+npx cap init
+```
+
+#### Step 3: Configure capacitor.config.ts
+```typescript
+import { CapacitorConfig } from '@capacitor/core';
+
+const config: CapacitorConfig = {
+  appId: 'com.aicompanion.phone',
+  appName: 'AI Companion Phone',
+  webDir: 'dist',
+  server: {
+    androidScheme: 'https'
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: '#f7f0e8',
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: false
+    }
+  }
+};
+
+export default config;
+```
+
+#### Step 4: Build and Add Android Platform
+```bash
+# Build your web app
+npm run build
+
+# Add Android platform
+npx cap add android
+
+# Sync files
+npx cap sync
+```
+
+#### Step 5: Generate APK
+```bash
+# Open in Android Studio
+npx cap open android
+
+# Or build directly using Gradle
+cd android
+./gradlew assembleDebug
+
+# Your APK will be at:
+# android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Method 2: Using Cordova (Alternative)
+
+#### Step 1: Install Cordova
+```bash
+npm install -g cordova
+```
+
+#### Step 2: Create Cordova Project
+```bash
+cordova create AICompanionPhone com.aicompanion.phone "AI Companion Phone"
+cd AICompanionPhone
+
+# Copy your built web assets to www/
+# Then add Android platform
+cordova platform add android
+```
+
+#### Step 3: Build APK
+```bash
+# Debug APK
+cordova build android
+
+# Release APK (requires signing)
+cordova build android --release
+```
+
+### Adding Voice Chat Functionality
+
+#### Install Required Capacitor Plugins
+```bash
+npm install @capacitor/speech-recognition
+npm install @capacitor-community/text-to-speech
+npm install @capacitor/device
+npm install @capacitor/network
+```
+
+#### Configure Android Permissions
+Add to `android/app/src/main/AndroidManifest.xml`:
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+```
+
+#### Voice Chat Service for Capacitor
+Create `src/services/VoiceChatService.ts`:
+```typescript
+import { SpeechRecognition } from '@capacitor/speech-recognition';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
+
+export class VoiceChatService {
+  private isListening = false;
+  private isSpeaking = false;
+
+  async initializeVoiceServices() {
+    // Request permissions
+    await SpeechRecognition.requestPermissions();
+    
+    // Configure TTS for British English child-friendly voice
+    await TextToSpeech.speak({
+      text: " ", // Test speak
+      lang: 'en-GB',
+      rate: 0.8,
+      pitch: 1.2,
+      volume: 1.0,
+      category: 'ambient'
+    });
+  }
+
+  async startListening(): Promise<string> {
+    if (this.isListening) return '';
+    
+    this.isListening = true;
+    
+    try {
+      const result = await SpeechRecognition.start({
+        language: 'en-GB',
+        maxResults: 1,
+        prompt: 'Say something to your AI friend!',
+        partialResults: false,
+        popup: false
+      });
+
+      this.isListening = false;
+      
+      if (result.matches && result.matches.length > 0) {
+        return result.matches[0];
+      }
+    } catch (error) {
+      this.isListening = false;
+      console.error('Speech recognition error:', error);
+    }
+    
+    return '';
+  }
+
+  async speak(text: string, personality: string = 'friendly'): Promise<void> {
+    if (this.isSpeaking) {
+      await this.stopSpeaking();
+    }
+
+    this.isSpeaking = true;
+
+    // Adjust voice based on personality
+    const voiceSettings = this.getVoiceSettings(personality);
+
+    try {
+      await TextToSpeech.speak({
+        text: text,
+        lang: 'en-GB',
+        rate: voiceSettings.rate,
+        pitch: voiceSettings.pitch,
+        volume: 1.0,
+        category: 'ambient'
+      });
+    } catch (error) {
+      console.error('TTS error:', error);
+    } finally {
+      this.isSpeaking = false;
+    }
+  }
+
+  async stopSpeaking(): Promise<void> {
+    try {
+      await TextToSpeech.stop();
+      this.isSpeaking = false;
+    } catch (error) {
+      console.error('Error stopping TTS:', error);
+    }
+  }
+
+  async stopListening(): Promise<void> {
+    if (this.isListening) {
+      try {
+        await SpeechRecognition.stop();
+        this.isListening = false;
+      } catch (error) {
+        console.error('Error stopping speech recognition:', error);
+      }
+    }
+  }
+
+  private getVoiceSettings(personality: string) {
+    const settings = {
+      friendly: { rate: 0.8, pitch: 1.2 },
+      educational: { rate: 0.7, pitch: 1.0 },
+      playful: { rate: 0.9, pitch: 1.4 },
+      calming: { rate: 0.6, pitch: 0.9 }
+    };
+    return settings[personality] || settings.friendly;
+  }
+
+  getListeningState(): boolean {
+    return this.isListening;
+  }
+
+  getSpeakingState(): boolean {
+    return this.isSpeaking;
+  }
+}
+
+export const voiceChatService = new VoiceChatService();
+```
+
+### Integrating with Current Web App
+
+#### Update Your AICompanionPhone Component
+```typescript
+// Add to your existing component
+import { voiceChatService } from '@/services/VoiceChatService';
+import { useEffect, useState } from 'react';
+
+// Inside your component:
+const [isNativeApp, setIsNativeApp] = useState(false);
+
+useEffect(() => {
+  // Check if running in Capacitor
+  if (window.Capacitor) {
+    setIsNativeApp(true);
+    voiceChatService.initializeVoiceServices();
+  }
+}, []);
+
+// Modify your voice handlers:
+const handleCall = async () => {
+  if (isNativeApp) {
+    // Use native voice services
+    const transcript = await voiceChatService.startListening();
+    if (transcript) {
+      await handleUserMessage(transcript);
+    }
+  } else {
+    // Use web APIs (existing implementation)
+    // ... your existing web speech code
+  }
+};
+
+const handleAIResponse = async (response: string) => {
+  if (isNativeApp) {
+    await voiceChatService.speak(response, currentPersonality);
+  } else {
+    // Use web speech synthesis
+    // ... your existing web TTS code
+  }
+};
+```
+
 ## Architecture Overview
 
 ```
