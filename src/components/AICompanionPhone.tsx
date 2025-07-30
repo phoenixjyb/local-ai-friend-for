@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart } from '@phosphor-icons/react'
+import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -23,12 +23,34 @@ export default function AICompanionPhone() {
   const [isListening, setIsListening] = useState(false)
   const [aiSpeaking, setAiSpeaking] = useState(false)
   const [callDuration, setCallDuration] = useState(0)
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [conversations, setConversations] = useKV<ConversationEntry[]>('conversation-history', [])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+
+  // Monitor online/offline status
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true)
+      toast.success('Back online! AI features available.')
+    }
+    
+    const handleOffline = () => {
+      setIsOnline(false)
+      toast.info('Offline mode - Limited functionality available.')
+    }
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
 
   // Initialize speech APIs
   useEffect(() => {
@@ -72,17 +94,35 @@ export default function AICompanionPhone() {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  // Generate AI response using Spark LLM
+  // Generate AI response using Spark LLM or fallback
   const generateAIResponse = useCallback(async (userInput: string) => {
     try {
-      const prompt = spark.llmPrompt`You are a friendly AI companion for children. Respond in a warm, encouraging way using British English. Keep responses short (1-2 sentences) and age-appropriate. The child said: "${userInput}". Respond as if you're having a pleasant phone conversation.`
-      const response = await spark.llm(prompt, 'gpt-4o-mini')
-      return response
+      // If online, use the LLM
+      if (isOnline) {
+        const prompt = spark.llmPrompt`You are a friendly AI companion for children. Respond in a warm, encouraging way using British English. Keep responses short (1-2 sentences) and age-appropriate. The child said: "${userInput}". Respond as if you're having a pleasant phone conversation.`
+        const response = await spark.llm(prompt, 'gpt-4o-mini')
+        return response
+      } else {
+        // Offline fallback responses
+        const fallbackResponses = [
+          "That's lovely! Tell me more about that.",
+          "How exciting! What happened next?",
+          "That sounds brilliant! I'd love to hear more.",
+          "What a wonderful thing to share with me!",
+          "That's really interesting! Can you tell me more?",
+          "I'm so glad you told me that! What do you think about it?",
+          "That sounds fantastic! How did that make you feel?",
+          "What a great story! I love hearing about your day.",
+          "That's amazing! You're so clever!",
+          "I'm really enjoying our chat! What else would you like to talk about?"
+        ]
+        return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
+      }
     } catch (error) {
       console.error('Error generating AI response:', error)
       return "I'm sorry, I didn't quite catch that. Could you say that again?"
     }
-  }, [])
+  }, [isOnline])
 
   // Speak AI response
   const speakResponse = useCallback((text: string) => {
@@ -211,9 +251,26 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
+      {/* Offline Indicator */}
+      {!isOnline && (
+        <div className="fixed top-4 left-4 right-4 z-50">
+          <Card className="p-3 bg-muted border-muted-foreground/20">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <WifiX size={16} />
+              <span>Offline Mode - Limited AI features</span>
+            </div>
+          </Card>
+        </div>
+      )}
+
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground">AI Friend</h1>
         <p className="text-lg text-muted-foreground">Your friendly companion is ready to chat!</p>
+        {!isOnline && (
+          <p className="text-sm text-muted-foreground">
+            Basic conversation available offline
+          </p>
+        )}
       </div>
 
       <div className="relative">

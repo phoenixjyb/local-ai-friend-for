@@ -8,6 +8,15 @@
   
   body {
     font-family: 'Nunito', sans-serif;
+    /* Prevent zoom on input focus in iOS */
+    -webkit-text-size-adjust: 100%;
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent pull-to-refresh on mobile */
+  html, body {
+    overscroll-behavior: none;
   }
   
   h1 {
@@ -28,6 +37,30 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 1.25rem;
+  }
+  
+  /* PWA specific styles */
+  @media (display-mode: standalone) {
+    body {
+      /* Add some padding for the status bar area on mobile */
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+  
+  /* Touch improvements */
+  button, .touch-target {
+    /* Ensure minimum touch target size */
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text selection on touch */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 
