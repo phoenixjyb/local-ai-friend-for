@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft } from '@phosphor-icons/react'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
+import ParticleEffects from '@/components/ParticleEffects'
 
 interface PersonalitySelectionProps {
   onSelectPersonality: (personality: AIPersonality) => void
@@ -61,8 +62,24 @@ export default function PersonalitySelection({ onSelectPersonality, onBack, curr
               <div className="text-center space-y-4">
                 {/* Avatar */}
                 <div className="relative">
+                  {/* Particle effects on hover */}
+                  <ParticleEffects 
+                    isActive={false}
+                    color={personality.color}
+                    intensity="low"
+                    type={
+                      personality.id === 'cheerful-buddy' ? 'sparkles' :
+                      personality.id === 'gentle-friend' ? 'hearts' :
+                      personality.id === 'silly-joker' ? 'mixed' :
+                      personality.id === 'wise-owl' ? 'stars' :
+                      personality.id === 'creative-artist' ? 'mixed' :
+                      'sparkles'
+                    }
+                    hoverEffect={true}
+                  />
+                  
                   <div 
-                    className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl cute-bounce shadow-lg"
+                    className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl cute-bounce shadow-lg relative z-10"
                     style={{ 
                       backgroundColor: `${personality.color}20`,
                       background: `radial-gradient(circle, ${personality.color}25 0%, ${personality.color}15 100%)`
@@ -71,7 +88,7 @@ export default function PersonalitySelection({ onSelectPersonality, onBack, curr
                     {personality.emoji}
                   </div>
                   {selectedPersonality?.id === personality.id && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-bounce"></div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-bounce z-20"></div>
                   )}
                 </div>
 

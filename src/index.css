@@ -74,6 +74,72 @@
     50% { transform: scale(1.05); opacity: 0.9; }
   }
   
+  /* Magic sparkle animation */
+  .magic-sparkle {
+    animation: magicSparkle 2s ease-in-out infinite;
+  }
+  
+  @keyframes magicSparkle {
+    0%, 100% { 
+      transform: rotate(0deg) scale(1); 
+      opacity: 0.8;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+    }
+    25% { 
+      transform: rotate(90deg) scale(1.2); 
+      opacity: 1;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    }
+    50% { 
+      transform: rotate(180deg) scale(0.9); 
+      opacity: 0.7;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+    }
+    75% { 
+      transform: rotate(270deg) scale(1.1); 
+      opacity: 0.9;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+    }
+  }
+  
+  /* Floating heart animation */
+  .floating-heart {
+    animation: floatingHeart 3s ease-in-out infinite;
+  }
+  
+  @keyframes floatingHeart {
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg) scale(1);
+      opacity: 0.8;
+    }
+    33% { 
+      transform: translateY(-5px) rotate(-5deg) scale(1.1);
+      opacity: 1;
+    }
+    66% { 
+      transform: translateY(-2px) rotate(5deg) scale(0.95);
+      opacity: 0.9;
+    }
+  }
+  
+  /* Twinkling star animation */
+  .twinkling-star {
+    animation: twinklingStar 2.5s ease-in-out infinite;
+  }
+  
+  @keyframes twinklingStar {
+    0%, 100% { 
+      transform: scale(1) rotate(0deg);
+      opacity: 0.7;
+      filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.5));
+    }
+    50% { 
+      transform: scale(1.3) rotate(180deg);
+      opacity: 1;
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+    }
+  }
+  
   /* Gradient card backgrounds */
   .cute-card {
     background: linear-gradient(145deg, 

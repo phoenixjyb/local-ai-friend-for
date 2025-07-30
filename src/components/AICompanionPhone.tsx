@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { useKV } from '@github/spark/hooks'
 import { toast } from 'sonner'
 import PersonalitySelection from '@/components/PersonalitySelection'
+import ParticleEffects from '@/components/ParticleEffects'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 
 interface ConversationEntry {
@@ -437,11 +438,43 @@ export default function AICompanionPhone() {
         )}
       </div>
 
-      {/* Adorable AI Avatar with cute styling */}
+      {/* Adorable AI Avatar with cute styling and particle effects */}
       <div className="relative">
+        {/* Active Particle Effects */}
+        <ParticleEffects 
+          isActive={callState === 'active' || aiSpeaking || callState === 'connecting'}
+          color={selectedPersonality.color}
+          intensity={
+            callState === 'connecting' ? 'high' :
+            aiSpeaking ? 'high' : 
+            callState === 'active' ? 'medium' : 
+            'low'
+          }
+          type={
+            callState === 'connecting' ? 'mixed' :
+            selectedPersonality.id === 'cheerful-buddy' ? 'sparkles' :
+            selectedPersonality.id === 'gentle-friend' ? 'hearts' :
+            selectedPersonality.id === 'silly-joker' ? 'mixed' :
+            selectedPersonality.id === 'wise-owl' ? 'stars' :
+            selectedPersonality.id === 'creative-artist' ? 'mixed' :
+            'sparkles'
+          }
+        />
+        
+        {/* Hover Particle Effects for Idle State */}
+        {callState === 'idle' && (
+          <ParticleEffects 
+            isActive={false}
+            color={selectedPersonality.color}
+            intensity="low"
+            type="sparkles"
+            hoverEffect={true}
+          />
+        )}
+        
         <div className="relative cute-bounce">
           <Avatar 
-            className="w-40 h-40 border-4 border-white shadow-xl"
+            className="w-40 h-40 border-4 border-white shadow-xl relative z-10 transition-all duration-300 hover:scale-105 cursor-pointer"
             style={{ 
               borderColor: selectedPersonality.color,
               background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
@@ -460,12 +493,25 @@ export default function AICompanionPhone() {
           </Avatar>
           
           {/* Cute decorative elements around avatar */}
-          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75"></div>
-          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse"></div>
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75 z-20"></div>
+          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse z-20"></div>
+          
+          {/* Magical glow effect when active */}
+          {(callState === 'active' || aiSpeaking) && (
+            <div 
+              className="absolute inset-0 rounded-full animate-pulse"
+              style={{
+                background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
+                filter: 'blur(8px)',
+                transform: 'scale(1.3)',
+                zIndex: 0
+              }}
+            />
+          )}
         </div>
         
         {aiSpeaking && (
-          <div className="absolute -bottom-4 -right-4">
+          <div className="absolute -bottom-4 -right-4 z-30">
             <Badge variant="secondary" className="cute-card animate-pulse border-accent text-accent">
               <Volume2 size={16} className="mr-1" />
               Speaking
@@ -474,7 +520,7 @@ export default function AICompanionPhone() {
         )}
         
         {isListening && (
-          <div className="absolute -bottom-4 -left-4">
+          <div className="absolute -bottom-4 -left-4 z-30">
             <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
               🎤 Listening
             </Badge>
