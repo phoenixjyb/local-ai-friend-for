@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX } from '@phosphor-icons/react'
+import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -24,12 +24,38 @@ export default function AICompanionPhone() {
   const [aiSpeaking, setAiSpeaking] = useState(false)
   const [callDuration, setCallDuration] = useState(0)
   const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [localLLMAvailable, setLocalLLMAvailable] = useState(false)
   const [conversations, setConversations] = useKV<ConversationEntry[]>('conversation-history', [])
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null)
   
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+
+  // Check for local LLM availability
+  useEffect(() => {
+    const checkLocalLLM = async () => {
+      try {
+        const response = await fetch('http://localhost:11434/api/tags', {
+          method: 'GET',
+          signal: AbortSignal.timeout(3000) // 3 second timeout
+        })
+        if (response.ok) {
+          setLocalLLMAvailable(true)
+          toast.success('Local AI model detected! Fully offline capable.')
+        }
+      } catch (error) {
+        setLocalLLMAvailable(false)
+        console.log('Local LLM not available:', error)
+      }
+    }
+    
+    checkLocalLLM()
+    
+    // Check periodically
+    const interval = setInterval(checkLocalLLM, 30000) // Check every 30 seconds
+    return () => clearInterval(interval)
+  }, [])
 
   // Monitor online/offline status
   useEffect(() => {
@@ -94,10 +120,20 @@ export default function AICompanionPhone() {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  // Generate AI response using Spark LLM or fallback
+  // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
   const generateAIResponse = useCallback(async (userInput: string) => {
     try {
-      // If online, use the LLM
+      // Try local LLM first (Ollama)
+      try {
+        const localResponse = await callLocalLLM(userInput)
+        if (localResponse) {
+          return localResponse
+        }
+      } catch (localError) {
+        console.log('Local LLM unavailable, trying cloud LLM:', localError)
+      }
+
+      // If local LLM fails and online, use cloud LLM
       if (isOnline) {
         const prompt = spark.llmPrompt`You are a friendly AI companion for children. Respond in a warm, encouraging way using British English. Keep responses short (1-2 sentences) and age-appropriate. The child said: "${userInput}". Respond as if you're having a pleasant phone conversation.`
         const response = await spark.llm(prompt, 'gpt-4o-mini')
@@ -123,6 +159,38 @@ export default function AICompanionPhone() {
       return "I'm sorry, I didn't quite catch that. Could you say that again?"
     }
   }, [isOnline])
+
+  // Call local LLM via Ollama
+  const callLocalLLM = async (userInput: string) => {
+    try {
+      const response = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama3.2:1b', // Lightweight model for mobile
+          prompt: `You are a friendly AI companion for children. Respond in a warm, encouraging way using British English. Keep responses short (1-2 sentences) and age-appropriate. The child said: "${userInput}". Respond as if you're having a pleasant phone conversation.`,
+          stream: false,
+          options: {
+            temperature: 0.7,
+            max_tokens: 150,
+            top_p: 0.9
+          }
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Local LLM request failed')
+      }
+
+      const data = await response.json()
+      return data.response || "I'm here to chat with you!"
+    } catch (error) {
+      console.error('Local LLM error:', error)
+      throw error
+    }
+  }
 
   // Speak AI response
   const speakResponse = useCallback((text: string) => {
@@ -251,8 +319,21 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
+      {/* Local LLM Status Indicator */}
+      {localLLMAvailable && (
+        <div className="fixed top-4 left-4 z-50">
+          <Card className="p-3 bg-primary/10 border-primary/20">
+            <div className="flex items-center gap-2 text-sm text-primary">
+              <Brain size={16} />
+              <span>Local AI Active</span>
+            </div>
+          </Card>
+        </div>
+      )}
+
       {/* Offline Indicator */}
-      {!isOnline && (
+      {!isOnline && !localLLMAvailable && (
+        <div className="fixed top-4 left-4 right-4 z-50">
         <div className="fixed top-4 left-4 right-4 z-50">
           <Card className="p-3 bg-muted border-muted-foreground/20">
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -266,9 +347,17 @@ export default function AICompanionPhone() {
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground">AI Friend</h1>
         <p className="text-lg text-muted-foreground">Your friendly companion is ready to chat!</p>
-        {!isOnline && (
+        {localLLMAvailable ? (
+          <p className="text-sm text-primary font-medium">
+            ✓ Local AI model active - No internet required!
+          </p>
+        ) : !isOnline ? (
           <p className="text-sm text-muted-foreground">
             Basic conversation available offline
+          </p>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Cloud AI available
           </p>
         )}
       </div>
@@ -425,23 +514,42 @@ export default function AICompanionPhone() {
         </p>
         
         <div className="space-y-2">
-          <p className="font-medium">Features:</p>
+          <p className="font-medium">AI Features:</p>
           <ul className="text-sm text-muted-foreground space-y-1 ml-4">
+            <li>• Local AI model support (via Ollama)</li>
             <li>• British English voice responses</li>
             <li>• Child-friendly conversation topics</li>
             <li>• Easy interrupt and hang-up controls</li>
             <li>• Local conversation history</li>
             <li>• No personal data collection</li>
+            <li>• Works completely offline with local AI</li>
           </ul>
+        </div>
+        
+        <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/10">
+          <h4 className="font-medium text-primary mb-2">Local AI Setup (Ollama)</h4>
+          <p className="text-sm text-muted-foreground mb-2">
+            For true offline functionality, install Ollama with a lightweight model:
+          </p>
+          <code className="text-xs bg-muted p-2 rounded block">
+            ollama pull llama3.2:1b
+          </code>
+          <p className="text-xs text-muted-foreground mt-2">
+            Status: {localLLMAvailable ? '✓ Connected' : '✗ Not available'}
+          </p>
         </div>
       </Card>
 
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">About AI Friend</h3>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground mb-4">
           Your AI companion is designed to be a friendly, encouraging chat partner. 
           The AI uses natural language processing to have conversations and is 
           programmed to be supportive and educational.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          <strong>Privacy:</strong> When using the local AI model, all conversations 
+          stay completely on your device. No data is sent to external servers.
         </p>
       </Card>
     </div>
