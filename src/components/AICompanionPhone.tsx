@@ -12,6 +12,17 @@ import DrawingCanvas from '@/components/DrawingCanvas'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
+import { soundEffectsService } from '@/services/SoundEffectsService'
+import { 
+  FloatingHearts, 
+  TwinklingStars, 
+  MagicSparkles, 
+  EmojiReaction, 
+  PulsingGlow, 
+  BreathingAvatar, 
+  WigglyIcon,
+  ConfettiBurst 
+} from '@/components/CuteAnimations'
 import { Capacitor } from '@capacitor/core'
 
 interface ConversationEntry {
@@ -39,9 +50,76 @@ export default function AICompanionPhone() {
   const [isDrawingOpen, setIsDrawingOpen] = useState(false)
   const [isNativeApp, setIsNativeApp] = useState(false)
   
+  // Animation and sound effect states
+  const [showHearts, setShowHearts] = useState(false)
+  const [showStars, setShowStars] = useState(false)
+  const [showSparkles, setShowSparkles] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [currentEmoji, setCurrentEmoji] = useState('')
+  const [showEmojiReaction, setShowEmojiReaction] = useState(false)
+  const [lastButtonPressed, setLastButtonPressed] = useState('')
+  const [soundEnabled, setSoundEnabled] = useKV('sound-enabled', true)
+  
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+
+  // Helper functions for cute animations and sounds
+  const playSound = useCallback((soundType: any, volume = 0.7) => {
+    if (soundEnabled) {
+      soundEffectsService.play(soundType, volume)
+    }
+  }, [soundEnabled])
+
+  const triggerCelebration = useCallback((type: 'hearts' | 'stars' | 'sparkles' | 'confetti' | 'emoji', emoji?: string) => {
+    switch (type) {
+      case 'hearts':
+        setShowHearts(true)
+        setTimeout(() => setShowHearts(false), 100)
+        playSound('heart-beat')
+        break
+      case 'stars':
+        setShowStars(true)
+        setTimeout(() => setShowStars(false), 100)
+        playSound('magic-sparkle')
+        break
+      case 'sparkles':
+        setShowSparkles(true)
+        setTimeout(() => setShowSparkles(false), 100)
+        playSound('magic-sparkle', 0.5)
+        break
+      case 'confetti':
+        setShowConfetti(true)
+        setTimeout(() => setShowConfetti(false), 100)
+        playSound('success-chime')
+        break
+      case 'emoji':
+        if (emoji) {
+          setCurrentEmoji(emoji)
+          setShowEmojiReaction(true)
+          setTimeout(() => setShowEmojiReaction(false), 100)
+          playSound('pop')
+        }
+        break
+    }
+  }, [playSound])
+
+  const handleButtonPress = useCallback((buttonId: string, soundType: any = 'button-tap') => {
+    setLastButtonPressed(buttonId)
+    playSound(soundType)
+    
+    // Add visual feedback
+    const button = document.getElementById(buttonId)
+    if (button) {
+      button.classList.add('button-press')
+      setTimeout(() => button.classList.remove('button-press'), 150)
+    }
+  }, [playSound])
+
+  // Configure sound effects service
+  useEffect(() => {
+    soundEffectsService.setEnabled(soundEnabled)
+  }, [soundEnabled])
 
   // Initialize native services if running in Capacitor
   useEffect(() => {
@@ -58,6 +136,10 @@ export default function AICompanionPhone() {
 
   // Speak AI response (unified for web and native)
   const speakResponse = useCallback(async (text: string) => {
+    // Trigger speaking animation and sounds
+    playSound('ai-thinking', 0.4)
+    triggerCelebration('sparkles')
+    
     if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
       // Use native TTS with Samsung S24 Ultra optimizations
       await voiceChatService.speak(text, selectedPersonality.id)
@@ -80,12 +162,29 @@ export default function AICompanionPhone() {
         utterance.voice = britishVoice
       }
       
-      utterance.onstart = () => setAiSpeaking(true)
-      utterance.onend = () => setAiSpeaking(false)
+      utterance.onstart = () => {
+        setAiSpeaking(true)
+        // Different animations based on personality
+        if (selectedPersonality.id === 'cheerful-buddy') {
+          triggerCelebration('hearts')
+        } else if (selectedPersonality.id === 'gentle-friend') {
+          triggerCelebration('sparkles')
+        } else if (selectedPersonality.id === 'silly-joker') {
+          triggerCelebration('emoji', '😄')
+        } else if (selectedPersonality.id === 'wise-owl') {
+          triggerCelebration('stars')
+        } else if (selectedPersonality.id === 'creative-artist') {
+          triggerCelebration('confetti')
+        }
+      }
+      utterance.onend = () => {
+        setAiSpeaking(false)
+        playSound('pop', 0.3)
+      }
       
       synthRef.current.speak(utterance)
     }
-  }, [selectedPersonality, isNativeApp])
+  }, [selectedPersonality, isNativeApp, playSound, triggerCelebration])
 
   // Check for local LLM availability and auto-connect
   useEffect(() => {
@@ -354,6 +453,9 @@ export default function AICompanionPhone() {
         const transcript = result[0].transcript.trim()
         if (transcript) {
           setIsListening(false)
+          playSound('success-chime', 0.6)
+          triggerCelebration('emoji', '👂')
+          
           const aiResponse = await generateAIResponse(transcript)
           speakResponse(aiResponse)
         }
@@ -363,7 +465,14 @@ export default function AICompanionPhone() {
     recognitionRef.current.onerror = (event) => {
       console.error('Speech recognition error:', event.error)
       setIsListening(false)
+      playSound('error-boop')
+      triggerCelebration('emoji', '🤔')
       toast.error('Having trouble hearing you. Please try again!')
+    }
+
+    recognitionRef.current.onstart = () => {
+      playSound('pop', 0.4)
+      triggerCelebration('sparkles')
     }
 
     recognitionRef.current.onend = () => {
@@ -379,16 +488,23 @@ export default function AICompanionPhone() {
   }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp])
 
   const startCall = async () => {
+    handleButtonPress('call-button', 'call-start')
     setCallState('connecting')
     setCallDuration(0)
+    
+    // Trigger celebration effects
+    triggerCelebration('hearts')
+    setTimeout(() => triggerCelebration('sparkles'), 500)
     
     // Generate conversation ID
     const conversationId = Date.now().toString()
     setCurrentConversationId(conversationId)
     
-    // Simulate connection delay
+    // Simulate connection delay with cute sound
     setTimeout(async () => {
       setCallState('active')
+      triggerCelebration('emoji', '🎉')
+      playSound('success-chime')
       toast.success('Connected to your AI friend!')
       
       // Start the timer
@@ -438,12 +554,17 @@ export default function AICompanionPhone() {
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
       
-      // Speak the AI response
+      // Speak the AI response with celebration
+      triggerCelebration('confetti')
+      setTimeout(() => triggerCelebration('hearts'), 500)
+      playSound('drawing-brush', 0.5)
       speakResponse(aiResponse)
       setIsDrawingOpen(false)
       
     } catch (error) {
       console.error('Error processing drawing:', error)
+      playSound('error-boop')
+      triggerCelebration('emoji', '😅')
       speakResponse("What a wonderful drawing! You're such a talented artist!")
       setIsDrawingOpen(false)
     }
@@ -510,7 +631,12 @@ export default function AICompanionPhone() {
   }
 
   const endCall = async () => {
+    handleButtonPress('end-call-button', 'call-end')
     setCallState('ending')
+    
+    // Gentle goodbye animation
+    triggerCelebration('emoji', '👋')
+    setTimeout(() => triggerCelebration('hearts'), 300)
     
     // Stop speech recognition and synthesis (unified for web and native)
     if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
@@ -539,6 +665,7 @@ export default function AICompanionPhone() {
       }
       
       setConversations(prev => [newConversation, ...prev.slice(0, 9)]) // Keep last 10
+      playSound('success-chime', 0.5)
     }
     
     setTimeout(() => {
@@ -648,43 +775,64 @@ export default function AICompanionPhone() {
           />
         )}
         
-        <div className="relative cute-bounce">
-          <Avatar 
-            className="w-40 h-40 border-4 border-white shadow-xl relative z-10 transition-all duration-300 hover:scale-105 cursor-pointer"
-            style={{ 
-              borderColor: selectedPersonality.color,
-              background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
-            }}
-          >
-            <AvatarFallback 
-              className="text-6xl cute-pulse"
+        <BreathingAvatar isActive={callState === 'active' || aiSpeaking}>
+          <div className="relative">
+            <MagicSparkles 
+              active={aiSpeaking || callState === 'connecting'} 
+              intensity={aiSpeaking ? 'high' : 'medium'} 
+            />
+            <Avatar 
+              className="w-40 h-40 border-4 border-white shadow-xl relative z-10 transition-all duration-300 hover:scale-105 cursor-pointer"
               style={{ 
-                backgroundColor: `${selectedPersonality.color}15`,
-                color: selectedPersonality.color,
-                background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
+                borderColor: selectedPersonality.color,
+                background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
+              }}
+              onClick={() => {
+                handleButtonPress('avatar-click', 'magic-sparkle')
+                triggerCelebration('sparkles')
               }}
             >
-              {selectedPersonality.emoji}
-            </AvatarFallback>
-          </Avatar>
-          
-          {/* Cute decorative elements around avatar */}
-          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75 z-20"></div>
-          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse z-20"></div>
-          
-          {/* Magical glow effect when active */}
-          {(callState === 'active' || aiSpeaking) && (
-            <div 
-              className="absolute inset-0 rounded-full animate-pulse"
-              style={{
-                background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
-                filter: 'blur(8px)',
-                transform: 'scale(1.3)',
-                zIndex: 0
-              }}
-            />
-          )}
-        </div>
+              <PulsingGlow active={callState === 'active'} color="primary">
+                <AvatarFallback 
+                  className="text-6xl"
+                  style={{ 
+                    backgroundColor: `${selectedPersonality.color}15`,
+                    color: selectedPersonality.color,
+                    background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
+                  }}
+                >
+                  <WigglyIcon active={isListening}>
+                    {selectedPersonality.emoji}
+                  </WigglyIcon>
+                </AvatarFallback>
+              </PulsingGlow>
+            </Avatar>
+            
+            {/* Enhanced decorative elements around avatar */}
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75 z-20">
+              <span className="text-xs">✨</span>
+            </div>
+            <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse z-20 flex items-center justify-center">
+              <span className="text-xs">💫</span>
+            </div>
+            <div className="absolute -top-3 -left-3 w-4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+              <span className="text-xs">⭐</span>
+            </div>
+            
+            {/* Magical glow effect when active */}
+            {(callState === 'active' || aiSpeaking) && (
+              <div 
+                className="absolute inset-0 rounded-full animate-pulse"
+                style={{
+                  background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
+                  filter: 'blur(8px)',
+                  transform: 'scale(1.3)',
+                  zIndex: 0
+                }}
+              />
+            )}
+          </div>
+        </BreathingAvatar>
         
         {aiSpeaking && (
           <div className="absolute -bottom-4 -right-4 z-30">
@@ -717,29 +865,32 @@ export default function AICompanionPhone() {
 
       <div className="space-y-4">
         {callState === 'idle' && (
-          <Button
-            onClick={startCall}
-            size="lg"
-            className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
-            style={{ 
-              background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
-              border: '3px solid white'
-            }}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <Phone size={24} />
+          <PulsingGlow active={true} color="primary">
+            <Button
+              id="call-button"
+              onClick={startCall}
+              size="lg"
+              className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
+              style={{ 
+                background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
+                border: '3px solid white'
+              }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <Phone size={24} />
+                </div>
+                <span>Call {selectedPersonality.name}</span>
               </div>
-              <span>Call {selectedPersonality.name}</span>
-            </div>
-          </Button>
+            </Button>
+          </PulsingGlow>
         )}
 
         {callState === 'connecting' && (
           <Button 
             size="lg" 
             disabled 
-            className="button-text h-20 w-56 rounded-full shadow-lg"
+            className="button-text h-20 w-56 rounded-full shadow-lg cute-breathe"
             style={{ 
               background: `linear-gradient(135deg, ${selectedPersonality.color}80 0%, ${selectedPersonality.color}60 100%)`,
               border: '3px solid white'
@@ -751,51 +902,73 @@ export default function AICompanionPhone() {
         )}
 
         {(callState === 'active' || callState === 'ending') && (
-          <Button
-            onClick={endCall}
-            size="lg"
-            className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
-            style={{ 
-              background: 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
-              border: '3px solid white'
-            }}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <PhoneOff size={24} />
+          <PulsingGlow active={true} color="warning">
+            <Button
+              id="end-call-button"
+              onClick={endCall}
+              size="lg"
+              className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
+              style={{ 
+                background: 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
+                border: '3px solid white'
+              }}
+            >
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <PhoneOff size={24} />
+                </div>
+                <span>Hang Up</span>
               </div>
-              <span>Hang Up</span>
-            </div>
-          </Button>
+            </Button>
+          </PulsingGlow>
         )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mt-8">
         <Button
-          onClick={() => setCurrentView('personality')}
+          id="personality-button"
+          onClick={() => {
+            handleButtonPress('personality-button', 'whoosh')
+            setCurrentView('personality')
+          }}
           variant="outline"
           size="lg"
           className="button-text h-16 cute-card border-2 border-primary/30 hover:border-primary/50 transition-all"
         >
-          <User size={20} className="mr-2" />
+          <WigglyIcon active={lastButtonPressed === 'personality-button'}>
+            <User size={20} className="mr-2" />
+          </WigglyIcon>
           Choose Friend
         </Button>
         <Button
-          onClick={() => setIsDrawingOpen(true)}
+          id="drawing-button"
+          onClick={() => {
+            handleButtonPress('drawing-button', 'drawing-brush')
+            triggerCelebration('stars')
+            setIsDrawingOpen(true)
+          }}
           variant="outline"
           size="lg"
           className="button-text h-16 cute-card border-2 border-purple-300 hover:border-purple-400 transition-all text-purple-600 hover:text-purple-700"
         >
-          <Palette size={20} className="mr-2 magic-sparkle" />
+          <WigglyIcon active={lastButtonPressed === 'drawing-button'}>
+            <Palette size={20} className="mr-2 magic-sparkle" />
+          </WigglyIcon>
           Draw & Show
         </Button>
         <Button
-          onClick={() => setCurrentView('history')}
+          id="history-button"
+          onClick={() => {
+            handleButtonPress('history-button', 'button-tap')
+            setCurrentView('history')
+          }}
           variant="outline"
           size="lg"
           className="button-text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
         >
-          <History size={20} className="mr-2" />
+          <WigglyIcon active={lastButtonPressed === 'history-button'}>
+            <History size={20} className="mr-2" />
+          </WigglyIcon>
           History
         </Button>
         <Button
@@ -1004,9 +1177,15 @@ export default function AICompanionPhone() {
       onSelectPersonality={(personality) => {
         setSelectedPersonality(personality)
         setCurrentView('phone')
+        playSound('personality-switch')
+        triggerCelebration('stars')
+        setTimeout(() => triggerCelebration('emoji', personality.emoji), 300)
         toast.success(`${personality.name} is now your AI friend!`)
       }}
-      onBack={() => setCurrentView('phone')}
+      onBack={() => {
+        handleButtonPress('back-button', 'whoosh')
+        setCurrentView('phone')
+      }}
       currentPersonality={selectedPersonality}
     />
   )
@@ -1015,6 +1194,12 @@ export default function AICompanionPhone() {
     <div className="min-h-screen" style={{
       background: 'linear-gradient(135deg, oklch(0.97 0.04 35) 0%, oklch(0.95 0.06 45) 25%, oklch(0.96 0.05 55) 50%, oklch(0.94 0.07 35) 75%, oklch(0.96 0.04 40) 100%)'
     }}>
+      {/* Cute Animation Overlays */}
+      <FloatingHearts active={showHearts} count={8} />
+      <TwinklingStars active={showStars} count={12} />
+      <ConfettiBurst active={showConfetti} />
+      <EmojiReaction emoji={currentEmoji} active={showEmojiReaction} />
+      
       {currentView === 'phone' && renderPhoneView()}
       {currentView === 'history' && renderHistoryView()}
       {currentView === 'settings' && renderSettingsView()}
@@ -1027,6 +1212,23 @@ export default function AICompanionPhone() {
         onShareDrawing={handleDrawingShare}
         personality={selectedPersonality}
       />
+      
+      {/* Sound Toggle Button */}
+      <div className="fixed bottom-4 left-4 z-50">
+        <Button
+          id="sound-toggle"
+          onClick={() => {
+            setSoundEnabled(!soundEnabled)
+            playSound(soundEnabled ? 'error-boop' : 'success-chime')
+            triggerCelebration('emoji', soundEnabled ? '🔇' : '🔊')
+          }}
+          variant="outline"
+          size="sm"
+          className="cute-card border-2 w-12 h-12 rounded-full"
+        >
+          <Volume2 size={16} className={`${soundEnabled ? 'text-primary' : 'text-muted-foreground'} cute-wiggle`} />
+        </Button>
+      </div>
     </div>
   )
 }
