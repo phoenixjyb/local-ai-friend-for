@@ -271,7 +271,7 @@ export default function AICompanionPhone() {
   // Speak AI response (unified for web and native)
   const speakResponse = useCallback(async (text: string) => {
     if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
-      // Use native TTS
+      // Use native TTS with Samsung S24 Ultra optimizations
       await voiceChatService.speak(text, selectedPersonality.id)
     } else {
       // Use web TTS
@@ -286,7 +286,7 @@ export default function AICompanionPhone() {
       // Try to use British English voice
       const voices = synthRef.current.getVoices()
       const britishVoice = voices.find(voice => 
-        voice.lang.includes('en-GB') || voice.name.includes('British')
+        voice.lang.includes('en-GB') || voice.name.includes('British') || voice.name.includes('Daniel') || voice.name.includes('Kate')
       )
       if (britishVoice) {
         utterance.voice = britishVoice

@@ -8,7 +8,9 @@
         "kill": "fuser -k 5000/tcp",
         "build": "tsc -b --noCheck && vite build",
         "build:android": "npm run build && npx cap sync android && npx cap build android",
+        "build:s24": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease --build-cache --parallel --configure-on-demand -Dorg.gradle.jvmargs=-Xmx6G",
         "android:dev": "npm run build && npx cap sync android && npx cap open android",
+        "android:s24": "npm run build && npx cap sync android && npx cap open android",
         "lint": "eslint .",
         "optimize": "vite optimize",
         "preview": "vite preview"
@@ -20,6 +22,7 @@
         "@capacitor/cli": "^7.4.2",
         "@capacitor/core": "^7.4.2",
         "@capacitor/device": "^7.0.1",
+        "@capacitor/haptics": "^7.0.1",
         "@capacitor/network": "^7.0.1",
         "@capacitor/splash-screen": "^7.0.1",
         "@capacitor/status-bar": "^7.0.1",
