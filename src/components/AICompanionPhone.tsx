@@ -381,9 +381,9 @@ export default function AICompanionPhone() {
       {/* Local LLM Status Indicator */}
       {localLLMAvailable && (
         <div className="fixed top-4 left-4 z-50">
-          <Card className="p-3 bg-primary/10 border-primary/20">
+          <Card className="cute-card p-3 border-primary/30">
             <div className="flex items-center gap-2 text-sm text-primary">
-              <Brain size={16} />
+              <Brain size={16} className="cute-wiggle" />
               <span>Local AI Active</span>
             </div>
           </Card>
@@ -393,7 +393,7 @@ export default function AICompanionPhone() {
       {/* Offline Indicator */}
       {!isOnline && !localLLMAvailable && (
         <div className="fixed top-4 left-4 right-4 z-50">
-          <Card className="p-3 bg-muted border-muted-foreground/20">
+          <Card className="cute-card p-3 border-muted-foreground/20">
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <WifiX size={16} />
               <span>Offline Mode - Limited AI features</span>
@@ -403,19 +403,20 @@ export default function AICompanionPhone() {
       )}
 
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">AI Friend</h1>
+        <h1 className="text-4xl font-bold text-foreground cute-bounce">AI Friend</h1>
         <p className="text-lg text-muted-foreground">
           Your {selectedPersonality.name} is ready to chat!
         </p>
         <div className="flex items-center justify-center gap-2">
           <div 
-            className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-lg cute-pulse"
             style={{ backgroundColor: `${selectedPersonality.color}20` }}
           >
             {selectedPersonality.emoji}
           </div>
           <Badge 
             variant="secondary"
+            className="cute-card border-0"
             style={{ backgroundColor: `${selectedPersonality.color}15` }}
           >
             {selectedPersonality.conversationStyle.responseStyle}
@@ -436,25 +437,36 @@ export default function AICompanionPhone() {
         )}
       </div>
 
+      {/* Adorable AI Avatar with cute styling */}
       <div className="relative">
-        <Avatar 
-          className="w-32 h-32 border-4"
-          style={{ borderColor: selectedPersonality.color }}
-        >
-          <AvatarFallback 
-            className="text-4xl"
+        <div className="relative cute-bounce">
+          <Avatar 
+            className="w-40 h-40 border-4 border-white shadow-xl"
             style={{ 
-              backgroundColor: `${selectedPersonality.color}20`,
-              color: selectedPersonality.color
+              borderColor: selectedPersonality.color,
+              background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
             }}
           >
-            {selectedPersonality.emoji}
-          </AvatarFallback>
-        </Avatar>
+            <AvatarFallback 
+              className="text-6xl cute-pulse"
+              style={{ 
+                backgroundColor: `${selectedPersonality.color}15`,
+                color: selectedPersonality.color,
+                background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
+              }}
+            >
+              {selectedPersonality.emoji}
+            </AvatarFallback>
+          </Avatar>
+          
+          {/* Cute decorative elements around avatar */}
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75"></div>
+          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse"></div>
+        </div>
         
         {aiSpeaking && (
-          <div className="absolute -bottom-2 -right-2">
-            <Badge variant="secondary" className="animate-pulse">
+          <div className="absolute -bottom-4 -right-4">
+            <Badge variant="secondary" className="cute-card animate-pulse border-accent text-accent">
               <Volume2 size={16} className="mr-1" />
               Speaking
             </Badge>
@@ -462,8 +474,8 @@ export default function AICompanionPhone() {
         )}
         
         {isListening && (
-          <div className="absolute -bottom-2 -left-2">
-            <Badge variant="outline" className="animate-pulse border-accent">
+          <div className="absolute -bottom-4 -left-4">
+            <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
               🎤 Listening
             </Badge>
           </div>
@@ -472,7 +484,7 @@ export default function AICompanionPhone() {
 
       {callState === 'active' && (
         <div className="text-center space-y-2">
-          <p className="text-xl font-semibold text-primary">
+          <p className="text-xl font-semibold text-primary cute-pulse">
             Call Duration: {formatDuration(callDuration)}
           </p>
           <p className="text-muted-foreground">
@@ -486,17 +498,32 @@ export default function AICompanionPhone() {
           <Button
             onClick={startCall}
             size="lg"
-            className="button-text h-16 w-48 text-white"
-            style={{ backgroundColor: selectedPersonality.color }}
+            className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
+            style={{ 
+              background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
+              border: '3px solid white'
+            }}
           >
-            <Phone size={24} className="mr-3" />
-            Call {selectedPersonality.name}
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <Phone size={24} />
+              </div>
+              <span>Call {selectedPersonality.name}</span>
+            </div>
           </Button>
         )}
 
         {callState === 'connecting' && (
-          <Button size="lg" disabled className="button-text h-16 w-48">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-current mr-3"></div>
+          <Button 
+            size="lg" 
+            disabled 
+            className="button-text h-20 w-56 rounded-full shadow-lg"
+            style={{ 
+              background: `linear-gradient(135deg, ${selectedPersonality.color}80 0%, ${selectedPersonality.color}60 100%)`,
+              border: '3px solid white'
+            }}
+          >
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
             Connecting...
           </Button>
         )}
@@ -505,11 +532,18 @@ export default function AICompanionPhone() {
           <Button
             onClick={endCall}
             size="lg"
-            variant="destructive"
-            className="button-text h-16 w-48"
+            className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
+            style={{ 
+              background: 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
+              border: '3px solid white'
+            }}
           >
-            <PhoneOff size={24} className="mr-3" />
-            Hang Up
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <PhoneOff size={24} />
+              </div>
+              <span>Hang Up</span>
+            </div>
           </Button>
         )}
       </div>
@@ -519,7 +553,7 @@ export default function AICompanionPhone() {
           onClick={() => setCurrentView('personality')}
           variant="outline"
           size="lg"
-          className="button-text"
+          className="button-text h-16 cute-card border-2 border-primary/30 hover:border-primary/50 transition-all"
         >
           <User size={20} className="mr-2" />
           Choose Friend
@@ -528,7 +562,7 @@ export default function AICompanionPhone() {
           onClick={() => setCurrentView('history')}
           variant="outline"
           size="lg"
-          className="button-text"
+          className="button-text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
         >
           <History size={20} className="mr-2" />
           History
@@ -537,7 +571,7 @@ export default function AICompanionPhone() {
           onClick={() => setCurrentView('settings')}
           variant="outline"
           size="lg"
-          className="button-text"
+          className="button-text h-16 cute-card border-2 border-secondary/30 hover:border-secondary/50 transition-all"
         >
           <Settings size={20} className="mr-2" />
           Settings
@@ -549,14 +583,18 @@ export default function AICompanionPhone() {
   const renderHistoryView = () => (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Conversation History</h2>
-        <Button onClick={() => setCurrentView('phone')} variant="outline">
+        <h2 className="text-2xl font-bold cute-bounce">Conversation History</h2>
+        <Button 
+          onClick={() => setCurrentView('phone')} 
+          variant="outline"
+          className="cute-card border-2 border-primary/30"
+        >
           Back
         </Button>
       </div>
 
       {conversations.length === 0 ? (
-        <Card className="p-8 text-center">
+        <Card className="cute-card p-8 text-center">
           <p className="text-muted-foreground">No conversations yet. Start your first call!</p>
         </Card>
       ) : (
@@ -564,12 +602,12 @@ export default function AICompanionPhone() {
           {conversations.map((conv) => {
             const personality = AI_PERSONALITIES.find(p => p.id === conv.personalityId) || selectedPersonality
             return (
-              <Card key={conv.id} className="p-4">
+              <Card key={conv.id} className="cute-card p-4 hover:shadow-lg transition-all">
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <div 
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-sm"
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-sm cute-pulse"
                         style={{ backgroundColor: `${personality.color}20` }}
                       >
                         {personality.emoji}
@@ -587,13 +625,13 @@ export default function AICompanionPhone() {
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {conv.topics.map((topic, index) => (
-                        <Badge key={index} variant="secondary">
+                        <Badge key={index} variant="secondary" className="cute-card border-0">
                           {topic}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <Heart size={20} className="text-muted-foreground" />
+                  <Heart size={20} className="text-pink-400 cute-pulse" />
                 </div>
               </Card>
             )
@@ -606,13 +644,17 @@ export default function AICompanionPhone() {
   const renderSettingsView = () => (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Settings</h2>
-        <Button onClick={() => setCurrentView('phone')} variant="outline">
+        <h2 className="text-2xl font-bold cute-bounce">Settings</h2>
+        <Button 
+          onClick={() => setCurrentView('phone')} 
+          variant="outline"
+          className="cute-card border-2 border-primary/30"
+        >
           Back
         </Button>
       </div>
 
-      <Card className="p-6 space-y-4">
+      <Card className="cute-card p-6 space-y-4">
         <h3 className="text-lg font-semibold">Safety & Parental Controls</h3>
         <p className="text-muted-foreground">
           This AI companion is designed to be safe and appropriate for children. 
@@ -635,7 +677,7 @@ export default function AICompanionPhone() {
           <p className="font-medium">Current Friend:</p>
           <div className="flex items-center gap-2">
             <div 
-              className="w-8 h-8 rounded-full flex items-center justify-center text-lg"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-lg cute-pulse"
               style={{ backgroundColor: `${selectedPersonality.color}20` }}
             >
               {selectedPersonality.emoji}
@@ -661,7 +703,7 @@ export default function AICompanionPhone() {
           </ul>
         </div>
         
-        <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/10">
+        <div className="mt-4 p-4 cute-card border-2 border-primary/20">
           <h4 className="font-medium text-primary mb-2">Local AI Setup (Ollama)</h4>
           <p className="text-sm text-muted-foreground mb-2">
             For true offline functionality, install Ollama with a lightweight model:
@@ -675,7 +717,7 @@ export default function AICompanionPhone() {
         </div>
       </Card>
 
-      <Card className="p-6">
+      <Card className="cute-card p-6">
         <h3 className="text-lg font-semibold mb-4">About Your AI Friends</h3>
         <p className="text-muted-foreground mb-4">
           Each AI friend has their own unique personality and conversation style. 
@@ -704,7 +746,9 @@ export default function AICompanionPhone() {
   )
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, oklch(0.97 0.04 35) 0%, oklch(0.95 0.06 45) 25%, oklch(0.96 0.05 55) 50%, oklch(0.94 0.07 35) 75%, oklch(0.96 0.04 40) 100%)'
+    }}>
       {currentView === 'phone' && renderPhoneView()}
       {currentView === 'history' && renderHistoryView()}
       {currentView === 'settings' && renderSettingsView()}

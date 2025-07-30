@@ -12,6 +12,12 @@
     -webkit-text-size-adjust: 100%;
     /* Improve touch scrolling */
     -webkit-overflow-scrolling: touch;
+    /* Warm gradient background for kids */
+    background: linear-gradient(135deg, 
+      oklch(0.97 0.04 35) 0%, 
+      oklch(0.95 0.06 45) 50%, 
+      oklch(0.96 0.05 55) 100%);
+    min-height: 100vh;
   }
   
   /* Prevent pull-to-refresh on mobile */
@@ -37,6 +43,45 @@
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 1.25rem;
+  }
+  
+  /* Cute, bouncy animations for kids */
+  .cute-bounce {
+    animation: cuteFloat 2s ease-in-out infinite;
+  }
+  
+  @keyframes cuteFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .cute-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+  }
+  
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+  }
+  
+  .cute-pulse {
+    animation: cutePulse 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes cutePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+  }
+  
+  /* Gradient card backgrounds */
+  .cute-card {
+    background: linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(255, 248, 240, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   }
   
   /* PWA specific styles */
@@ -65,30 +110,31 @@
 }
 
 :root {
-  --background: oklch(0.98 0.01 197);
-  --foreground: oklch(0.2 0.02 197);
+  /* Warm, kid-friendly color palette */
+  --background: oklch(0.97 0.04 35);  /* Warm cream background */
+  --foreground: oklch(0.3 0.02 25);   /* Warm dark brown text */
 
-  --card: oklch(0.96 0.02 197);
-  --card-foreground: oklch(0.25 0.02 197);
-  --popover: oklch(0.98 0.01 197);
-  --popover-foreground: oklch(0.2 0.02 197);
+  --card: oklch(0.95 0.03 30);        /* Soft warm white cards */
+  --card-foreground: oklch(0.25 0.02 25);
+  --popover: oklch(0.97 0.04 35);
+  --popover-foreground: oklch(0.3 0.02 25);
 
-  --primary: oklch(0.6 0.15 270);
-  --primary-foreground: oklch(0.98 0.01 270);
-  --secondary: oklch(0.85 0.05 197);
-  --secondary-foreground: oklch(0.35 0.02 197);
-  --accent: oklch(0.7 0.12 300);
-  --accent-foreground: oklch(0.98 0.01 300);
-  --destructive: oklch(0.65 0.18 25);
-  --destructive-foreground: oklch(0.98 0.01 25);
+  --primary: oklch(0.65 0.18 45);     /* Sunny orange-yellow */
+  --primary-foreground: oklch(0.98 0.01 45);
+  --secondary: oklch(0.88 0.08 35);   /* Soft peach */
+  --secondary-foreground: oklch(0.35 0.03 25);
+  --accent: oklch(0.72 0.15 320);     /* Gentle pink */
+  --accent-foreground: oklch(0.98 0.01 320);
+  --destructive: oklch(0.7 0.15 15);  /* Soft coral red */
+  --destructive-foreground: oklch(0.98 0.01 15);
 
-  --muted: oklch(0.92 0.02 197);
-  --muted-foreground: oklch(0.5 0.02 197);
-  --border: oklch(0.88 0.03 197);
-  --input: oklch(0.88 0.03 197);
-  --ring: oklch(0.6 0.15 270);
+  --muted: oklch(0.92 0.04 30);       /* Warm muted background */
+  --muted-foreground: oklch(0.5 0.02 25);
+  --border: oklch(0.85 0.05 35);      /* Warm borders */
+  --input: oklch(0.85 0.05 35);
+  --ring: oklch(0.65 0.18 45);        /* Sunny focus ring */
 
-  --radius: 0.75rem;
+  --radius: 1rem;                     /* More rounded for cuteness */
 }
 
 @theme {
