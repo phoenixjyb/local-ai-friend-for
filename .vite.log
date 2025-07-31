@@ -1,0 +1,1789 @@
+[2025-07-29T14:37:23.517Z] [WARN] [33mmanually calling optimizeDeps is deprecated. This is done automatically and does not need to be called manually.[39m
+[2025-07-29T14:37:23.567Z] [INFO] [32mOptimizing dependencies:
+  [33m@radix-ui/react-slot, class-variance-authority, clsx, lucide-react, react-dom/client, react-error-boundary, react/jsx-runtime, tailwind-merge, react/jsx-dev-runtime, @phosphor-icons/react, @github/spark/hooks, sonner, react, recharts, react-day-picker[32m[39m
+[2025-07-30T12:12:31.202Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-30T12:12:31.204Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T12:12:31.272Z] [INFO] 
+  VITE v6.3.5  ready in 5007 ms
+
+[2025-07-30T12:12:31.273Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-30T12:12:31.273Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T12:12:39.270Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-30T12:12:42.566Z] [INFO] [32m✓[39m 1612 modules transformed.
+[2025-07-30T12:12:42.774Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  0.51 kB[22m[1m[22m[2m │ gzip:  0.31 kB[22m
+[2025-07-30T12:12:42.775Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-u8EWCF3n.css  [39m[1m[2m312.01 kB[22m[1m[22m[2m │ gzip: 52.00 kB[22m
+[2025-07-30T12:12:42.775Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-CVdbNyAz.js   [39m[1m[2m221.34 kB[22m[1m[22m[2m │ gzip: 70.60 kB[22m
+[2025-07-30T12:12:42.775Z] [INFO] [32m✓ built in 3.47s[39m
+[2025-07-30T12:13:17.089Z] [INFO] page reload index.html
+[2025-07-30T12:13:34.860Z] [INFO] hmr update /src/main.css, /src/main.css?direct
+[2025-07-30T12:13:42.008Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:13:42.273Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:13:43.230Z] [ERROR] Pre-transform error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+[2025-07-30T12:13:43.912Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:14:41.852Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:14:42.857Z] [ERROR] Pre-transform error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+[2025-07-30T12:14:43.436Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:14:49.857Z] [INFO] ✨ optimized dependencies changed. reloading
+[2025-07-30T12:14:50.203Z] [ERROR] Pre-transform error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+[2025-07-30T12:14:50.909Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:14:56.233Z] [INFO] page reload src/vite-end.d.ts
+[2025-07-30T12:14:56.512Z] [ERROR] Pre-transform error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+[2025-07-30T12:14:57.040Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:15:11.060Z] [ERROR] Internal server error: Cannot apply unknown utility class: border-border
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /workspaces/spark-template/src/index.css
+      at onInvalidCandidate (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:346)
+      at Q (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:1:111175)
+      at me (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:6:310)
+      at Ht (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:780)
+      at async Xr (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1071)
+      at async Lo (file:///workspaces/spark-template/node_modules/tailwindcss/dist/lib.mjs:22:1748)
+      at async st (file:///workspaces/spark-template/node_modules/@tailwindcss/node/dist/index.mjs:10:3322)
+      at async C.generate (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:3932)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/@tailwindcss/vite/dist/index.mjs:1:1959)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+[2025-07-30T12:15:36.458Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:15:36.507Z] [INFO] transforming...
+[2025-07-30T12:15:36.773Z] [INFO] ✓ 9 modules transformed.
+[2025-07-30T12:15:36.777Z] [ERROR] ✗ Build failed in 301ms
+[2025-07-30T12:15:55.529Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:17:50.129Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:17:50.180Z] [INFO] transforming...
+[2025-07-30T12:17:55.330Z] [INFO] ✓ 6167 modules transformed.
+[2025-07-30T12:17:55.514Z] [INFO] rendering chunks...
+[2025-07-30T12:17:55.521Z] [INFO] computing gzip size...
+[2025-07-30T12:17:55.532Z] [INFO] ../preview-build/index.html                   0.65 kB │ gzip:  0.38 kB
+[2025-07-30T12:17:55.532Z] [INFO] ../preview-build/assets/index-wamwft1l.css  391.48 kB │ gzip: 64.00 kB
+[2025-07-30T12:17:55.532Z] [INFO] ../preview-build/assets/index-CxWEVdI0.js   281.84 kB │ gzip: 88.75 kB
+[2025-07-30T12:17:55.533Z] [INFO] ✓ built in 5.39s
+[2025-07-30T12:19:06.070Z] [INFO] page reload index.html
+[2025-07-30T12:19:15.551Z] [INFO] page reload index.html
+[2025-07-30T12:19:39.910Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-30T12:20:12.178Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:20:32.102Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:20:44.814Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:20:54.604Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:24:26.171Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:24:26.225Z] [INFO] transforming...
+[2025-07-30T12:24:31.408Z] [INFO] ✓ 6168 modules transformed.
+[2025-07-30T12:24:31.588Z] [INFO] rendering chunks...
+[2025-07-30T12:24:31.596Z] [INFO] computing gzip size...
+[2025-07-30T12:24:31.608Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:  1.23 kB
+[2025-07-30T12:24:31.608Z] [INFO] ../preview-build/assets/index-CSu0hGjQ.css  393.37 kB │ gzip: 64.41 kB
+[2025-07-30T12:24:31.609Z] [INFO] ../preview-build/assets/index-p6D5CBHl.js   295.13 kB │ gzip: 92.38 kB
+[2025-07-30T12:24:31.609Z] [INFO] ✓ built in 5.42s
+[2025-07-30T12:25:11.049Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:16.280Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:21.482Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:28.993Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:35.288Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:43.225Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:43.505Z] [ERROR] Internal server error: Unexpected token, expected "}" (448:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:448:2
+  446|    )
+  447|  
+  448|    const renderHistoryView = () => (
+     |    ^
+  449|      <div className="p-6 space-y-6">
+  450|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:25:50.220Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:25:50.519Z] [ERROR] Internal server error: Unexpected token, expected "}" (456:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:456:2
+  454|    )
+  455|  
+  456|    const renderHistoryView = () => (
+     |    ^
+  457|      <div className="p-6 space-y-6">
+  458|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:26:01.073Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:26:01.323Z] [ERROR] Internal server error: Unexpected token, expected "}" (456:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:456:2
+  454|    )
+  455|  
+  456|    const renderHistoryView = () => (
+     |    ^
+  457|      <div className="p-6 space-y-6">
+  458|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:26:08.939Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:26:09.194Z] [ERROR] Internal server error: Unexpected token, expected "}" (456:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:456:2
+  454|    )
+  455|  
+  456|    const renderHistoryView = () => (
+     |    ^
+  457|      <div className="p-6 space-y-6">
+  458|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:30:49.310Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:30:50.925Z] [ERROR] Internal server error: Unexpected token, expected "}" (458:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:458:2
+  456|    )
+  457|  
+  458|    const renderHistoryView = () => (
+     |    ^
+  459|      <div className="p-6 space-y-6">
+  460|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:30:54.577Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:30:55.135Z] [ERROR] Internal server error: Unexpected token, expected "}" (459:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:459:2
+  457|    )
+  458|  
+  459|    const renderHistoryView = () => (
+     |    ^
+  460|      <div className="p-6 space-y-6">
+  461|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:31:01.218Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:31:01.485Z] [ERROR] Internal server error: Unexpected token, expected "}" (460:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:460:2
+  458|    )
+  459|  
+  460|    const renderHistoryView = () => (
+     |    ^
+  461|      <div className="p-6 space-y-6">
+  462|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:31:18.250Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:31:18.506Z] [ERROR] Internal server error: Unexpected token, expected "}" (453:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:453:2
+  451|    )
+  452|  
+  453|    const renderHistoryView = () => (
+     |    ^
+  454|      <div className="p-6 space-y-6">
+  455|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:31:38.906Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:31:39.160Z] [ERROR] Internal server error: Unexpected token, expected "}" (513:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:513:2
+  511|    )
+  512|  
+  513|    const renderHistoryView = () => (
+     |    ^
+  514|      <div className="p-6 space-y-6">
+  515|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:31:49.061Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:31:49.314Z] [ERROR] Internal server error: Unexpected token, expected "}" (514:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:514:2
+  512|    )
+  513|  
+  514|    const renderHistoryView = () => (
+     |    ^
+  515|      <div className="p-6 space-y-6">
+  516|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:31:53.947Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:31:54.208Z] [ERROR] Internal server error: Unexpected token, expected "}" (514:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:514:2
+  512|    )
+  513|  
+  514|    const renderHistoryView = () => (
+     |    ^
+  515|      <div className="p-6 space-y-6">
+  516|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:02.005Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:02.238Z] [ERROR] Internal server error: Unexpected token, expected "}" (515:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:515:2
+  513|    )
+  514|  
+  515|    const renderHistoryView = () => (
+     |    ^
+  516|      <div className="p-6 space-y-6">
+  517|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:16.250Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:16.561Z] [ERROR] Internal server error: Unexpected token, expected "}" (540:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:540:2
+  538|    )
+  539|  
+  540|    const renderHistoryView = () => (
+     |    ^
+  541|      <div className="p-6 space-y-6">
+  542|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:22.229Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:22.485Z] [ERROR] Internal server error: Unexpected token, expected "}" (541:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:541:2
+  539|    )
+  540|  
+  541|    const renderHistoryView = () => (
+     |    ^
+  542|      <div className="p-6 space-y-6">
+  543|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:30.617Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:30.869Z] [ERROR] Internal server error: Unexpected token, expected "}" (550:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:550:2
+  548|    )
+  549|  
+  550|    const renderHistoryView = () => (
+     |    ^
+  551|      <div className="p-6 space-y-6">
+  552|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:42.446Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:42.698Z] [ERROR] Internal server error: Unexpected token, expected "}" (550:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:550:2
+  548|    )
+  549|  
+  550|    const renderHistoryView = () => (
+     |    ^
+  551|      <div className="p-6 space-y-6">
+  552|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:32:54.690Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:32:54.973Z] [ERROR] Internal server error: Unexpected token, expected "}" (550:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:550:2
+  548|    )
+  549|  
+  550|    const renderHistoryView = () => (
+     |    ^
+  551|      <div className="p-6 space-y-6">
+  552|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:33:06.039Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:33:06.298Z] [ERROR] Internal server error: Unexpected token, expected "}" (550:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:550:2
+  548|    )
+  549|  
+  550|    const renderHistoryView = () => (
+     |    ^
+  551|      <div className="p-6 space-y-6">
+  552|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:33:12.388Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:33:12.700Z] [ERROR] Internal server error: Unexpected token, expected "}" (550:2)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:550:2
+  548|    )
+  549|  
+  550|    const renderHistoryView = () => (
+     |    ^
+  551|      <div className="p-6 space-y-6">
+  552|        <div className="flex items-center justify-between">
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.expect (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24477:13)
+      at V8IntrinsicMixin.jsxParseExpressionContainer (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27632:11)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27706:37)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+[2025-07-30T12:33:21.061Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:38:09.915Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:38:09.968Z] [INFO] transforming...
+[2025-07-30T12:38:15.234Z] [INFO] ✓ 6170 modules transformed.
+[2025-07-30T12:38:15.424Z] [INFO] rendering chunks...
+[2025-07-30T12:38:15.432Z] [INFO] computing gzip size...
+[2025-07-30T12:38:15.443Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:  1.23 kB
+[2025-07-30T12:38:15.444Z] [INFO] ../preview-build/assets/index-D48Qv2K-.css  397.91 kB │ gzip: 65.12 kB
+[2025-07-30T12:38:15.444Z] [INFO] ../preview-build/assets/index-DVLuwveZ.js   318.85 kB │ gzip: 98.88 kB
+[2025-07-30T12:38:15.444Z] [INFO] ✓ built in 5.51s
+[2025-07-30T12:38:46.170Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:39:07.548Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:39:56.519Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:40:04.412Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:40:23.057Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:40:52.887Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:41:41.428Z] [INFO] hmr update /src/components/PersonalitySelection.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:42:11.341Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:42:11.395Z] [INFO] transforming...
+[2025-07-30T12:42:16.537Z] [INFO] ✓ 6170 modules transformed.
+[2025-07-30T12:42:16.729Z] [INFO] rendering chunks...
+[2025-07-30T12:42:16.738Z] [INFO] computing gzip size...
+[2025-07-30T12:42:16.749Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:  1.22 kB
+[2025-07-30T12:42:16.749Z] [INFO] ../preview-build/assets/index-CXnORui-.css  404.77 kB │ gzip: 66.58 kB
+[2025-07-30T12:42:16.749Z] [INFO] ../preview-build/assets/index-CTJMrr9v.js   321.93 kB │ gzip: 99.42 kB
+[2025-07-30T12:42:16.749Z] [INFO] ✓ built in 5.39s
+[2025-07-30T12:43:12.656Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:43:34.209Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:43:44.425Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:43:50.678Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:43:58.625Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:44:11.818Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:44:22.286Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:44:50.770Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/main.css?direct, /src/styles/theme.css, /src/main.css, /src/index.css
+[2025-07-30T12:45:03.538Z] [INFO] hmr update /src/components/PersonalitySelection.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:45:15.905Z] [INFO] hmr update /src/components/PersonalitySelection.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:45:30.744Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T12:45:47.891Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/main.css?direct, /src/index.css, /src/main.css, /src/styles/theme.css
+[2025-07-30T12:46:48.973Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T12:46:49.028Z] [INFO] transforming...
+[2025-07-30T12:46:54.254Z] [INFO] ✓ 6171 modules transformed.
+[2025-07-30T12:46:54.451Z] [INFO] rendering chunks...
+[2025-07-30T12:46:54.458Z] [INFO] computing gzip size...
+[2025-07-30T12:46:54.470Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T12:46:54.470Z] [INFO] ../preview-build/assets/index-BRCooImz.css  407.80 kB │ gzip:  67.31 kB
+[2025-07-30T12:46:54.470Z] [INFO] ../preview-build/assets/index-DVNblNMg.js   325.64 kB │ gzip: 100.63 kB
+[2025-07-30T12:46:54.471Z] [INFO] ✓ built in 5.48s
+[2025-07-30T12:48:08.597Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-30T12:48:27.425Z] [INFO] page reload public/sw.js
+[2025-07-30T12:48:38.446Z] [INFO] page reload public/sw.js
+[2025-07-30T12:53:49.287Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-30T13:34:54.399Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T13:34:54.400Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-30T13:34:54.453Z] [INFO] transforming...
+[2025-07-30T13:34:59.588Z] [INFO] ✓ 6171 modules transformed.
+[2025-07-30T13:34:59.782Z] [INFO] rendering chunks...
+[2025-07-30T13:34:59.789Z] [INFO] computing gzip size...
+[2025-07-30T13:34:59.801Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T13:34:59.802Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DcYTx7OW.css  408.26 kB │ gzip:  67.39 kB
+[2025-07-30T13:34:59.802Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DChomHqg.js   325.82 kB │ gzip: 100.71 kB
+[2025-07-30T13:34:59.802Z] [INFO] ✓ built in 5.38s
+[2025-07-30T13:50:11.273Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-30T13:50:11.278Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T13:50:11.359Z] [INFO] 
+  VITE v6.3.5  ready in 5610 ms
+
+[2025-07-30T13:50:11.360Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-30T13:50:11.360Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T13:50:25.047Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-30T13:50:33.914Z] [INFO] [32m✓[39m 6171 modules transformed.
+[2025-07-30T13:50:34.182Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2025-07-30T13:50:34.183Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-DcYTx7OW.css  [39m[1m[2m408.26 kB[22m[1m[22m[2m │ gzip:  67.39 kB[22m
+[2025-07-30T13:50:34.183Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DChomHqg.js   [39m[1m[2m325.82 kB[22m[1m[22m[2m │ gzip: 100.71 kB[22m
+[2025-07-30T13:50:34.183Z] [INFO] [32m✓ built in 9.09s[39m
+[2025-07-30T13:51:52.763Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T13:51:52.818Z] [INFO] transforming...
+[2025-07-30T13:51:58.054Z] [INFO] ✓ 6171 modules transformed.
+[2025-07-30T13:51:58.251Z] [INFO] rendering chunks...
+[2025-07-30T13:51:58.259Z] [INFO] computing gzip size...
+[2025-07-30T13:51:58.271Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T13:51:58.271Z] [INFO] ../preview-build/assets/index-DcYTx7OW.css  408.26 kB │ gzip:  67.39 kB
+[2025-07-30T13:51:58.271Z] [INFO] ../preview-build/assets/index-DChomHqg.js   325.82 kB │ gzip: 100.71 kB
+[2025-07-30T13:51:58.272Z] [INFO] ✓ built in 5.49s
+[2025-07-30T13:53:08.450Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:53:13.507Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:53:25.255Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:53:51.981Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:53:52.242Z] [ERROR] Internal server error: Unexpected token (902:0)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:902:0
+  900|      </div>
+  901|    )
+  902|  }
+     |  ^
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31962:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27759:21)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-30T13:54:18.304Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:54:38.258Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T13:54:55.217Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:12:29.709Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:12:29.763Z] [INFO] transforming...
+[2025-07-30T14:12:34.976Z] [INFO] ✓ 6172 modules transformed.
+[2025-07-30T14:12:35.184Z] [INFO] rendering chunks...
+[2025-07-30T14:12:35.193Z] [INFO] computing gzip size...
+[2025-07-30T14:12:35.205Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T14:12:35.205Z] [INFO] ../preview-build/assets/index-Dy4LbPcq.css  413.76 kB │ gzip:  68.47 kB
+[2025-07-30T14:12:35.205Z] [INFO] ../preview-build/assets/index-C4M9SYMx.js   345.85 kB │ gzip: 105.87 kB
+[2025-07-30T14:12:35.205Z] [INFO] ✓ built in 5.48s
+[2025-07-30T14:19:42.673Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:19:42.726Z] [INFO] transforming...
+[2025-07-30T14:19:48.010Z] [INFO] ✓ 6172 modules transformed.
+[2025-07-30T14:19:48.233Z] [INFO] rendering chunks...
+[2025-07-30T14:19:48.241Z] [INFO] computing gzip size...
+[2025-07-30T14:19:48.253Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T14:19:48.254Z] [INFO] ../preview-build/assets/index-C_fLSCtZ.css  413.83 kB │ gzip:  68.50 kB
+[2025-07-30T14:19:48.254Z] [INFO] ../preview-build/assets/index-BDkD_Ak4.js   345.85 kB │ gzip: 105.87 kB
+[2025-07-30T14:19:48.254Z] [INFO] ✓ built in 5.56s
+[2025-07-30T14:21:53.604Z] [INFO] page reload package.json
+[2025-07-30T14:21:59.295Z] [INFO] page reload package.json
+[2025-07-30T14:22:05.172Z] [INFO] page reload package.json
+[2025-07-30T14:22:11.187Z] [INFO] page reload src/services/VoiceChatService.ts
+[2025-07-30T14:22:24.521Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:22:50.730Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:22:56.415Z] [INFO] ✨ optimized dependencies changed. reloading
+[2025-07-30T14:23:19.003Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:23:19.832Z] [ERROR] Pre-transform error: Identifier 'startListening' has already been declared. (377:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:377:8
+  375|    }, [callState, aiSpeaking, generateAIResponse, speakResponse])
+  376|  
+  377|    const startListening = useCallback(() => {
+     |          ^
+  378|      if (recognitionRef.current && callState === 'active' && !aiSpeaking) {
+  379|        try {
+[2025-07-30T14:23:24.365Z] [ERROR] Internal server error: Identifier 'startListening' has already been declared. (377:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:377:8
+  375|    }, [callState, aiSpeaking, generateAIResponse, speakResponse])
+  376|  
+  377|    const startListening = useCallback(() => {
+     |          ^
+  378|      if (recognitionRef.current && callState === 'active' && !aiSpeaking) {
+  379|        try {
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-30T14:23:32.950Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:23:35.292Z] [ERROR] Pre-transform error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+[2025-07-30T14:23:36.657Z] [ERROR] Internal server error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseIdentifierName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32717:13)
+      at V8IntrinsicMixin.parseIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32700:24)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28111:18)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30604:19)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33875:22)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+      at V8IntrinsicMixin.parseVar (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33856:13)
+[2025-07-30T14:23:54.613Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:23:55.954Z] [ERROR] Pre-transform error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+[2025-07-30T14:23:57.145Z] [ERROR] Internal server error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseIdentifierName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32717:13)
+      at V8IntrinsicMixin.parseIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32700:24)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28111:18)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30604:19)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33875:22)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+      at V8IntrinsicMixin.parseVar (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33856:13)
+[2025-07-30T14:24:02.440Z] [INFO] page reload package.json
+[2025-07-30T14:24:05.310Z] [ERROR] Internal server error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseIdentifierName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32717:13)
+      at V8IntrinsicMixin.parseIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32700:24)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28111:18)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30604:19)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33875:22)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+      at V8IntrinsicMixin.parseVar (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33856:13)
+[2025-07-30T14:24:47.164Z] [INFO] page reload APK_BUILD_GUIDE.md
+[2025-07-30T14:24:48.876Z] [ERROR] Internal server error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseIdentifierName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32717:13)
+      at V8IntrinsicMixin.parseIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32700:24)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28111:18)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30604:19)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33875:22)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+      at V8IntrinsicMixin.parseVar (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33856:13)
+[2025-07-30T14:25:02.796Z] [ERROR] Internal server error: Unexpected token (406:7)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:406:7
+  404|          startListening()
+  405|        }, 3000)
+  406|      }, 1500)
+     |         ^
+  407|    }
+  408|  
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseIdentifierName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32717:13)
+      at V8IntrinsicMixin.parseIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:32700:24)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28111:18)
+      at V8IntrinsicMixin.parseBindingAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30604:19)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33875:22)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+      at V8IntrinsicMixin.parseVar (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33856:13)
+[2025-07-30T14:25:50.955Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:27:07.094Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:27:07.150Z] [INFO] transforming...
+[2025-07-30T14:27:12.818Z] [INFO] ✓ 6181 modules transformed.
+[2025-07-30T14:27:12.926Z] [INFO] rendering chunks...
+[2025-07-30T14:27:13.059Z] [INFO] computing gzip size...
+[2025-07-30T14:27:13.072Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T14:27:13.073Z] [INFO] ../preview-build/assets/index-C_fLSCtZ.css  413.83 kB │ gzip:  68.50 kB
+[2025-07-30T14:27:13.073Z] [INFO] ../preview-build/assets/web-CFgvDwOa.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T14:27:13.073Z] [INFO] ../preview-build/assets/web-DemOSdIs.js       1.65 kB │ gzip:   0.69 kB
+[2025-07-30T14:27:13.074Z] [INFO] ../preview-build/assets/index-D52_YMN5.js   358.15 kB │ gzip: 110.70 kB
+[2025-07-30T14:27:13.074Z] [INFO] ✓ built in 5.96s
+[2025-07-30T14:27:46.832Z] [INFO] page reload capacitor.config.ts
+[2025-07-30T14:28:00.045Z] [INFO] page reload capacitor.config.ts
+[2025-07-30T14:28:53.534Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css, /src/components/AICompanionPhone.tsx
+[2025-07-30T14:29:07.709Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css, /src/components/AICompanionPhone.tsx
+[2025-07-30T14:29:07.969Z] [ERROR] Pre-transform error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+[2025-07-30T14:29:08.292Z] [ERROR] Internal server error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+      at TransformPluginContext._formatLog (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at async file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 3)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+[2025-07-30T14:29:12.585Z] [INFO] ✨ optimized dependencies changed. reloading
+[2025-07-30T14:29:13.620Z] [ERROR] Pre-transform error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+[2025-07-30T14:29:15.183Z] [ERROR] Internal server error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+      at TransformPluginContext._formatLog (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at async file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 3)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+[2025-07-30T14:29:20.661Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css, /src/components/AICompanionPhone.tsx
+[2025-07-30T14:29:21.471Z] [ERROR] Pre-transform error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+[2025-07-30T14:29:23.123Z] [ERROR] Internal server error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+      at TransformPluginContext._formatLog (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at async file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 3)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+[2025-07-30T14:29:32.229Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css, /src/components/AICompanionPhone.tsx
+[2025-07-30T14:29:36.315Z] [ERROR] Pre-transform error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+[2025-07-30T14:29:38.898Z] [ERROR] Internal server error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+      at TransformPluginContext._formatLog (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at async file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 3)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+[2025-07-30T14:29:42.334Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css, /src/components/AICompanionPhone.tsx
+[2025-07-30T14:29:43.263Z] [ERROR] Pre-transform error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+[2025-07-30T14:29:44.373Z] [ERROR] Internal server error: Failed to resolve import "@capacitor/haptics" from "src/services/VoiceChatService.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /workspaces/spark-template/src/services/VoiceChatService.ts:4:37
+  15 |  import { TextToSpeech } from '@capacitor-community/text-to-speech';
+  16 |  import { Capacitor } from '@capacitor/core';
+  17 |  import { Haptics, ImpactStyle } from '@capacitor/haptics';
+     |                                        ^
+  18 |  import { Device } from '@capacitor/device';
+  19 |  export class VoiceChatService {
+      at TransformPluginContext._formatLog (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at async file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 3)
+      at async TransformPluginContext.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///workspaces/spark-template/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+[2025-07-30T14:29:53.508Z] [INFO] page reload package.json
+[2025-07-30T14:30:00.888Z] [INFO] ✨ optimized dependencies changed. reloading
+[2025-07-30T14:31:30.089Z] [INFO] page reload ANDROID_SETUP.md
+[2025-07-30T14:31:39.181Z] [INFO] page reload package.json
+[2025-07-30T14:31:54.232Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:33:52.334Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:33:52.389Z] [INFO] transforming...
+[2025-07-30T14:33:58.125Z] [INFO] ✓ 6187 modules transformed.
+[2025-07-30T14:33:58.237Z] [INFO] rendering chunks...
+[2025-07-30T14:33:58.373Z] [INFO] computing gzip size...
+[2025-07-30T14:33:58.387Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-30T14:33:58.387Z] [INFO] ../preview-build/assets/index-CIJorFB1.css  413.89 kB │ gzip:  68.53 kB
+[2025-07-30T14:33:58.388Z] [INFO] ../preview-build/assets/web-BN0oqLAS.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T14:33:58.388Z] [INFO] ../preview-build/assets/web-DF2mwdYW.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-30T14:33:58.388Z] [INFO] ../preview-build/assets/web-CbQvHhfq.js       1.65 kB │ gzip:   0.69 kB
+[2025-07-30T14:33:58.388Z] [INFO] ../preview-build/assets/web-x8w9wmNm.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T14:33:58.389Z] [INFO] ../preview-build/assets/index-Dz5vJD8d.js   359.86 kB │ gzip: 111.33 kB
+[2025-07-30T14:33:58.389Z] [INFO] ✓ built in 6.04s
+[2025-07-30T14:34:41.579Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:34:57.067Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:35:10.262Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:35:52.099Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:36:13.928Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:36:32.295Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:36:42.023Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:36:59.598Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:37:17.307Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:37:25.652Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:37:35.535Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:38:04.150Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:38:04.208Z] [INFO] transforming...
+[2025-07-30T14:38:09.756Z] [INFO] ✓ 6188 modules transformed.
+[2025-07-30T14:38:09.862Z] [INFO] rendering chunks...
+[2025-07-30T14:38:10.001Z] [INFO] computing gzip size...
+[2025-07-30T14:38:10.015Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T14:38:10.015Z] [INFO] ../preview-build/assets/index-B78jrap0.css  414.53 kB │ gzip:  68.70 kB
+[2025-07-30T14:38:10.016Z] [INFO] ../preview-build/assets/web-J8DFA3iC.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T14:38:10.016Z] [INFO] ../preview-build/assets/web-CaPycIrh.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-30T14:38:10.016Z] [INFO] ../preview-build/assets/web-BMr_uyI-.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T14:38:10.016Z] [INFO] ../preview-build/assets/web-CXBRVl3e.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T14:38:10.017Z] [INFO] ../preview-build/assets/index-u6FP13-L.js   366.40 kB │ gzip: 113.37 kB
+[2025-07-30T14:38:10.017Z] [INFO] ✓ built in 5.85s
+[2025-07-30T14:38:55.895Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:38:55.956Z] [INFO] transforming...
+[2025-07-30T14:39:01.612Z] [INFO] ✓ 6188 modules transformed.
+[2025-07-30T14:39:01.722Z] [INFO] rendering chunks...
+[2025-07-30T14:39:01.856Z] [INFO] computing gzip size...
+[2025-07-30T14:39:01.870Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T14:39:01.870Z] [INFO] ../preview-build/assets/index-B78jrap0.css  414.53 kB │ gzip:  68.70 kB
+[2025-07-30T14:39:01.870Z] [INFO] ../preview-build/assets/web-J8DFA3iC.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T14:39:01.871Z] [INFO] ../preview-build/assets/web-CaPycIrh.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-30T14:39:01.871Z] [INFO] ../preview-build/assets/web-BMr_uyI-.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T14:39:01.871Z] [INFO] ../preview-build/assets/web-CXBRVl3e.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T14:39:01.871Z] [INFO] ../preview-build/assets/index-u6FP13-L.js   366.40 kB │ gzip: 113.37 kB
+[2025-07-30T14:39:01.871Z] [INFO] ✓ built in 5.96s
+[2025-07-30T14:39:52.804Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:39:54.449Z] [ERROR] Internal server error: Identifier 'speakResponse' has already been declared. (307:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:307:8
+  305|  
+  306|    // Speak AI response (unified for web and native)
+  307|    const speakResponse = useCallback(async (text: string) => {
+     |          ^
+  308|      if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+  309|        // Use native TTS with Samsung S24 Ultra optimizations
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-30T14:39:56.146Z] [ERROR] Pre-transform error: Identifier 'speakResponse' has already been declared. (307:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:307:8
+  305|  
+  306|    // Speak AI response (unified for web and native)
+  307|    const speakResponse = useCallback(async (text: string) => {
+     |          ^
+  308|      if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+  309|        // Use native TTS with Samsung S24 Ultra optimizations
+[2025-07-30T14:39:57.370Z] [ERROR] Internal server error: Identifier 'speakResponse' has already been declared. (307:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:307:8
+  305|  
+  306|    // Speak AI response (unified for web and native)
+  307|    const speakResponse = useCallback(async (text: string) => {
+     |          ^
+  308|      if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+  309|        // Use native TTS with Samsung S24 Ultra optimizations
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-30T14:40:44.570Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:48:40.426Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T14:48:40.481Z] [INFO] transforming...
+[2025-07-30T14:48:46.057Z] [INFO] ✓ 6188 modules transformed.
+[2025-07-30T14:48:46.164Z] [INFO] rendering chunks...
+[2025-07-30T14:48:46.300Z] [INFO] computing gzip size...
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/index-B78jrap0.css  414.53 kB │ gzip:  68.70 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/web-CFe7jZLc.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/web-Bk15ttCA.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/web-C07oCf7c.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/web-DckIg2g9.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T14:48:46.314Z] [INFO] ../preview-build/assets/index-Bs3pVvCh.js   366.41 kB │ gzip: 113.38 kB
+[2025-07-30T14:48:46.315Z] [INFO] ✓ built in 5.87s
+[2025-07-30T14:51:06.339Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T14:51:22.067Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:51:38.551Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:51:56.805Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:52:17.908Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:52:39.410Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:53:08.890Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:53:44.049Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:54:19.827Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:54:51.805Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:54:58.843Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-30T14:55:18.134Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:55:32.412Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:55:38.210Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T14:55:56.713Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-30T15:25:36.799Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T15:25:36.800Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-30T15:25:36.858Z] [INFO] transforming...
+[2025-07-30T15:25:42.307Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T15:25:42.421Z] [INFO] rendering chunks...
+[2025-07-30T15:25:42.559Z] [INFO] computing gzip size...
+[2025-07-30T15:25:42.574Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T15:25:42.575Z] [INFO] ../../tmp/spark-preview-dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T15:25:42.575Z] [INFO] ../../tmp/spark-preview-dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T15:25:42.575Z] [INFO] ../../tmp/spark-preview-dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T15:25:42.575Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T15:25:42.576Z] [INFO] ../../tmp/spark-preview-dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T15:25:42.576Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T15:25:42.576Z] [INFO] ✓ built in 5.76s
+[2025-07-30T15:35:06.570Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-30T15:35:06.571Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T15:35:06.618Z] [INFO] 
+  VITE v6.3.5  ready in 890 ms
+
+[2025-07-30T15:35:06.618Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-30T15:35:06.618Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T15:35:07.143Z] [INFO] page reload .azDownload-428f7460-7102-e042-5de3-18d73d7e5c0d-index.html
+[2025-07-30T15:35:07.464Z] [INFO] page reload .azDownload-428f7460-7102-e042-5de3-18d73d7e5c0d-index.html
+[2025-07-30T15:35:07.563Z] [INFO] page reload index.html
+[2025-07-30T15:35:19.467Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-30T15:35:27.985Z] [INFO] [32m✓[39m 6190 modules transformed.
+[2025-07-30T15:35:28.363Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2025-07-30T15:35:28.363Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-trH3xQPE.css  [39m[1m[2m422.72 kB[22m[1m[22m[2m │ gzip:  70.35 kB[22m
+[2025-07-30T15:35:28.363Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-C4uJ-9V9.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-30T15:35:28.363Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-5YUd54LE.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2025-07-30T15:35:28.363Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CQZeiis6.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-30T15:35:28.364Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-6RCGeP67.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-30T15:35:28.364Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DvuyEeUl.js   [39m[1m[2m388.96 kB[22m[1m[22m[2m │ gzip: 119.13 kB[22m
+[2025-07-30T15:35:28.364Z] [INFO] [32m✓ built in 8.86s[39m
+[2025-07-30T15:36:37.324Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T15:36:37.326Z] [WARN] 
+(!) outDir /tmp/dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-30T15:36:37.381Z] [INFO] transforming...
+[2025-07-30T15:36:43.026Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T15:36:43.139Z] [INFO] rendering chunks...
+[2025-07-30T15:36:43.288Z] [INFO] computing gzip size...
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T15:36:43.303Z] [INFO] ../../tmp/dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T15:36:43.304Z] [INFO] ../../tmp/dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T15:36:43.304Z] [INFO] ✓ built in 5.96s
+[2025-07-30T15:37:27.741Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T15:37:27.743Z] [WARN] 
+(!) outDir /tmp/dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-30T15:37:27.800Z] [INFO] transforming...
+[2025-07-30T15:37:33.468Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T15:37:33.585Z] [INFO] rendering chunks...
+[2025-07-30T15:37:33.727Z] [INFO] computing gzip size...
+[2025-07-30T15:37:33.741Z] [INFO] ../../tmp/dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T15:37:33.742Z] [INFO] ../../tmp/dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T15:37:33.743Z] [INFO] ✓ built in 5.98s
+[2025-07-30T15:55:54.174Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T15:55:54.231Z] [INFO] transforming...
+[2025-07-30T15:55:59.869Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T15:55:59.991Z] [INFO] rendering chunks...
+[2025-07-30T15:56:00.133Z] [INFO] computing gzip size...
+[2025-07-30T15:56:00.147Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T15:56:00.147Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T15:56:00.147Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T15:56:00.147Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T15:56:00.148Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T15:56:00.148Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T15:56:00.148Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T15:56:00.148Z] [INFO] ✓ built in 5.96s
+[2025-07-30T15:56:23.245Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T15:56:23.304Z] [INFO] transforming...
+[2025-07-30T15:56:28.916Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T15:56:29.027Z] [INFO] rendering chunks...
+[2025-07-30T15:56:29.169Z] [INFO] computing gzip size...
+[2025-07-30T15:56:29.184Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T15:56:29.184Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T15:56:29.184Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T15:56:29.184Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T15:56:29.184Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T15:56:29.185Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T15:56:29.185Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T15:56:29.185Z] [INFO] ✓ built in 5.92s
+[2025-07-30T15:58:22.088Z] [INFO] page reload capacitor.config.ts
+[2025-07-30T15:58:27.901Z] [INFO] page reload capacitor.config.ts
+[2025-07-30T16:01:56.351Z] [INFO] page reload capacitor.config.ts
+[2025-07-30T16:01:56.357Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:26:13.617Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T16:26:13.718Z] [INFO] transforming...
+[2025-07-30T16:26:21.604Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T16:26:21.720Z] [INFO] rendering chunks...
+[2025-07-30T16:26:21.890Z] [INFO] computing gzip size...
+[2025-07-30T16:26:21.907Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T16:26:21.908Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T16:26:21.909Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T16:26:21.911Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T16:26:21.911Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T16:26:21.911Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T16:26:21.912Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T16:26:21.912Z] [INFO] ✓ built in 8.27s
+[2025-07-30T16:28:18.682Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:30:06.131Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:30:14.853Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:31:53.728Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T16:31:53.785Z] [INFO] transforming...
+[2025-07-30T16:31:59.530Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T16:31:59.648Z] [INFO] rendering chunks...
+[2025-07-30T16:31:59.794Z] [INFO] computing gzip size...
+[2025-07-30T16:31:59.809Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T16:31:59.809Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T16:31:59.810Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T16:31:59.810Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T16:31:59.810Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T16:31:59.810Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T16:31:59.810Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T16:31:59.811Z] [INFO] ✓ built in 6.07s
+[2025-07-30T16:32:31.810Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T16:32:31.871Z] [INFO] transforming...
+[2025-07-30T16:32:37.595Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T16:32:37.709Z] [INFO] rendering chunks...
+[2025-07-30T16:32:37.857Z] [INFO] computing gzip size...
+[2025-07-30T16:32:37.873Z] [INFO] dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T16:32:37.873Z] [INFO] dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T16:32:37.874Z] [INFO] dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T16:32:37.874Z] [INFO] dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T16:32:37.874Z] [INFO] dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T16:32:37.875Z] [INFO] dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T16:32:37.875Z] [INFO] dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T16:32:37.876Z] [INFO] ✓ built in 6.04s
+[2025-07-30T16:32:39.040Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-07-30T16:32:40.176Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-07-30T16:33:06.324Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:33:14.193Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-30T16:44:11.174Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-30T16:44:17.232Z] [INFO] [32m✓[39m 6190 modules transformed.
+[2025-07-30T16:44:17.544Z] [INFO] [2mdist/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2025-07-30T16:44:17.544Z] [INFO] [2mdist/[22m[2massets/[22m[35mindex-trH3xQPE.css  [39m[1m[2m422.72 kB[22m[1m[22m[2m │ gzip:  70.35 kB[22m
+[2025-07-30T16:44:17.544Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-C4uJ-9V9.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-30T16:44:17.545Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-5YUd54LE.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2025-07-30T16:44:17.545Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-CQZeiis6.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-30T16:44:17.545Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-6RCGeP67.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-30T16:44:17.546Z] [INFO] [2mdist/[22m[2massets/[22m[36mindex-DvuyEeUl.js   [39m[1m[2m388.96 kB[22m[1m[22m[2m │ gzip: 119.13 kB[22m
+[2025-07-30T16:44:17.546Z] [INFO] [32m✓ built in 6.35s[39m
+[2025-07-30T16:44:18.621Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-07-30T17:15:53.913Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T17:15:53.915Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-30T17:15:53.973Z] [INFO] transforming...
+[2025-07-30T17:15:59.711Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T17:15:59.838Z] [INFO] rendering chunks...
+[2025-07-30T17:15:59.981Z] [INFO] computing gzip size...
+[2025-07-30T17:15:59.996Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T17:15:59.996Z] [INFO] ../../tmp/spark-preview-dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T17:15:59.996Z] [INFO] ../../tmp/spark-preview-dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T17:15:59.997Z] [INFO] ../../tmp/spark-preview-dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T17:15:59.997Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T17:15:59.997Z] [INFO] ../../tmp/spark-preview-dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T17:15:59.998Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T17:15:59.998Z] [INFO] ✓ built in 6.07s
+[2025-07-30T23:37:45.359Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-30T23:37:45.360Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T23:37:45.484Z] [INFO] 
+  VITE v6.3.5  ready in 1536 ms
+
+[2025-07-30T23:37:45.485Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-30T23:37:45.485Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-30T23:37:49.830Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-30T23:38:00.120Z] [INFO] [32m✓[39m 6190 modules transformed.
+[2025-07-30T23:38:00.667Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2025-07-30T23:38:00.667Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-trH3xQPE.css  [39m[1m[2m422.72 kB[22m[1m[22m[2m │ gzip:  70.35 kB[22m
+[2025-07-30T23:38:00.668Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-C4uJ-9V9.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-30T23:38:00.668Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-5YUd54LE.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2025-07-30T23:38:00.668Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CQZeiis6.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-30T23:38:00.669Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-6RCGeP67.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-30T23:38:00.669Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DvuyEeUl.js   [39m[1m[2m388.96 kB[22m[1m[22m[2m │ gzip: 119.13 kB[22m
+[2025-07-30T23:38:00.670Z] [INFO] [32m✓ built in 10.79s[39m
+[2025-07-30T23:39:15.913Z] [INFO] vite v6.3.5 building for production...
+[2025-07-30T23:39:15.970Z] [INFO] transforming...
+[2025-07-30T23:39:23.027Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-30T23:39:23.150Z] [INFO] rendering chunks...
+[2025-07-30T23:39:23.302Z] [INFO] computing gzip size...
+[2025-07-30T23:39:23.318Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-30T23:39:23.318Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-30T23:39:23.318Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-30T23:39:23.318Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-30T23:39:23.319Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-30T23:39:23.319Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-30T23:39:23.319Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-30T23:39:23.319Z] [INFO] ✓ built in 7.39s
+[2025-07-31T00:15:42.785Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T00:15:42.786Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-31T00:15:42.848Z] [INFO] transforming...
+[2025-07-31T00:15:48.774Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T00:15:48.886Z] [INFO] rendering chunks...
+[2025-07-31T00:15:49.037Z] [INFO] computing gzip size...
+[2025-07-31T00:15:49.051Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T00:15:49.051Z] [INFO] ../../tmp/spark-preview-dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-31T00:15:49.052Z] [INFO] ../../tmp/spark-preview-dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T00:15:49.052Z] [INFO] ../../tmp/spark-preview-dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-31T00:15:49.052Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T00:15:49.052Z] [INFO] ../../tmp/spark-preview-dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T00:15:49.052Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-31T00:15:49.053Z] [INFO] ✓ built in 6.25s
+[2025-07-31T00:16:45.534Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-31T00:16:45.556Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T00:16:45.633Z] [INFO] 
+  VITE v6.3.5  ready in 1587 ms
+
+[2025-07-31T00:16:45.634Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-31T00:16:45.634Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T00:16:45.872Z] [INFO] page reload android/app/src/main/assets/public/.azDownload-159ecb82-86fb-754e-5a78-5cf92240f3a2-index.html
+[2025-07-31T00:16:45.970Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-07-31T00:16:46.105Z] [INFO] page reload .azDownload-159ecb82-86fb-754e-5a78-5cf92240f3a2-index.html
+[2025-07-31T00:16:46.193Z] [INFO] page reload index.html
+[2025-07-31T00:16:56.113Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-31T00:17:04.679Z] [INFO] [32m✓[39m 6190 modules transformed.
+[2025-07-31T00:17:05.009Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-trH3xQPE.css  [39m[1m[2m422.72 kB[22m[1m[22m[2m │ gzip:  70.35 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-C4uJ-9V9.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-5YUd54LE.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CQZeiis6.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-6RCGeP67.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-31T00:17:05.010Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DvuyEeUl.js   [39m[1m[2m388.96 kB[22m[1m[22m[2m │ gzip: 119.13 kB[22m
+[2025-07-31T00:17:05.011Z] [INFO] [32m✓ built in 8.86s[39m
+[2025-07-31T00:17:29.763Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T00:17:29.765Z] [WARN] 
+(!) outDir /tmp/dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-31T00:17:29.827Z] [INFO] transforming...
+[2025-07-31T00:17:35.368Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T00:17:35.481Z] [INFO] rendering chunks...
+[2025-07-31T00:17:35.617Z] [INFO] computing gzip size...
+[2025-07-31T00:17:35.632Z] [INFO] ../../tmp/dist/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T00:17:35.632Z] [INFO] ../../tmp/dist/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-31T00:17:35.632Z] [INFO] ../../tmp/dist/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T00:17:35.632Z] [INFO] ../../tmp/dist/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-31T00:17:35.633Z] [INFO] ../../tmp/dist/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T00:17:35.633Z] [INFO] ../../tmp/dist/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T00:17:35.633Z] [INFO] ../../tmp/dist/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-31T00:17:35.633Z] [INFO] ✓ built in 5.85s
+[2025-07-31T00:18:42.783Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T00:18:42.843Z] [INFO] transforming...
+[2025-07-31T00:18:48.651Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T00:18:48.762Z] [INFO] rendering chunks...
+[2025-07-31T00:18:48.905Z] [INFO] computing gzip size...
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/assets/index-trH3xQPE.css  422.72 kB │ gzip:  70.35 kB
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/assets/web-C4uJ-9V9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/assets/web-5YUd54LE.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/assets/web-CQZeiis6.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T00:18:48.921Z] [INFO] ../preview-build/assets/web-6RCGeP67.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T00:18:48.922Z] [INFO] ../preview-build/assets/index-DvuyEeUl.js   388.96 kB │ gzip: 119.13 kB
+[2025-07-31T00:18:48.922Z] [INFO] ✓ built in 6.12s
+[2025-07-31T00:20:08.568Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:20:21.854Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:20:39.177Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:20:50.524Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:21:03.533Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:21:19.674Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:21:46.058Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:22:08.137Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:22:14.367Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:25:44.259Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T00:25:44.314Z] [INFO] transforming...
+[2025-07-31T00:25:49.974Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T00:25:50.092Z] [INFO] rendering chunks...
+[2025-07-31T00:25:50.231Z] [INFO] computing gzip size...
+[2025-07-31T00:25:50.247Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T00:25:50.247Z] [INFO] ../preview-build/assets/index-bjD3myyZ.css  426.27 kB │ gzip:  71.10 kB
+[2025-07-31T00:25:50.248Z] [INFO] ../preview-build/assets/web-ltGbL7BH.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T00:25:50.248Z] [INFO] ../preview-build/assets/web-Bo10jBcT.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T00:25:50.248Z] [INFO] ../preview-build/assets/web-DVPYBql3.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T00:25:50.248Z] [INFO] ../preview-build/assets/web-DjYhyN7_.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T00:25:50.248Z] [INFO] ../preview-build/assets/index-tkkWUQMc.js   394.68 kB │ gzip: 120.42 kB
+[2025-07-31T00:25:50.249Z] [INFO] ✓ built in 5.97s
+[2025-07-31T00:27:22.185Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:27:23.875Z] [ERROR] Internal server error: Identifier 'startListening' has already been declared. (567:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:567:8
+  565|  
+  566|    // Handle speech recognition (unified for web and native)
+  567|    const startListening = useCallback(async () => {
+     |          ^
+  568|      console.log('🎤 Starting to listen...')
+  569|      
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-31T00:27:26.596Z] [ERROR] Pre-transform error: Identifier 'startListening' has already been declared. (567:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:567:8
+  565|  
+  566|    // Handle speech recognition (unified for web and native)
+  567|    const startListening = useCallback(async () => {
+     |          ^
+  568|      console.log('🎤 Starting to listen...')
+  569|      
+[2025-07-31T00:27:30.910Z] [ERROR] Internal server error: Identifier 'startListening' has already been declared. (567:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:567:8
+  565|  
+  566|    // Handle speech recognition (unified for web and native)
+  567|    const startListening = useCallback(async () => {
+     |          ^
+  568|      console.log('🎤 Starting to listen...')
+  569|      
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-31T00:27:35.021Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:28:33.082Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:28:46.858Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:28:47.125Z] [ERROR] Internal server error: Identifier 'generateAIResponse' has already been declared. (506:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:506:8
+  504|  
+  505|    // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
+  506|    const generateAIResponse = useCallback(async (userInput: string) => {
+     |          ^
+  507|      try {
+  508|        // Use personality-specific prompt template
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-31T00:28:48.506Z] [ERROR] Pre-transform error: Identifier 'generateAIResponse' has already been declared. (506:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:506:8
+  504|  
+  505|    // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
+  506|    const generateAIResponse = useCallback(async (userInput: string) => {
+     |          ^
+  507|      try {
+  508|        // Use personality-specific prompt template
+[2025-07-31T00:28:52.683Z] [ERROR] Internal server error: Identifier 'generateAIResponse' has already been declared. (506:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:506:8
+  504|  
+  505|    // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
+  506|    const generateAIResponse = useCallback(async (userInput: string) => {
+     |          ^
+  507|      try {
+  508|        // Use personality-specific prompt template
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at TypeScriptScopeHandler.checkRedeclarationInScope (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22375:20)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:22341:13)
+      at TypeScriptScopeHandler.declareName (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27875:12)
+      at V8IntrinsicMixin.declareNameFromIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28303:17)
+      at V8IntrinsicMixin.checkIdentifier (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28299:13)
+      at V8IntrinsicMixin.checkLVal (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:28240:13)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33881:11)
+      at V8IntrinsicMixin.parseVarId (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30414:12)
+[2025-07-31T00:28:55.525Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:29:01.179Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T00:29:14.583Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:10:24.003Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T01:10:24.061Z] [INFO] transforming...
+[2025-07-31T01:10:29.811Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T01:10:29.929Z] [INFO] rendering chunks...
+[2025-07-31T01:10:30.069Z] [INFO] computing gzip size...
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/assets/index-bjD3myyZ.css  426.27 kB │ gzip:  71.10 kB
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/assets/web-DWP7OKV5.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/assets/web-BiEYtC7s.js       0.94 kB │ gzip:   0.46 kB
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/assets/web-p0XRMOLk.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T01:10:30.086Z] [INFO] ../preview-build/assets/web-DNWoEvff.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T01:10:30.087Z] [INFO] ../preview-build/assets/index-DahSlsE3.js   394.67 kB │ gzip: 120.44 kB
+[2025-07-31T01:10:30.087Z] [INFO] ✓ built in 6.07s
+[2025-07-31T01:11:42.697Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:11:58.634Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:12:28.217Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:12:34.977Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:12:42.375Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:12:48.560Z] [INFO] hmr update /src/App.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:13:16.630Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:13:55.412Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:14:11.239Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:14:25.484Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:14:35.487Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:37:29.244Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:37:30.858Z] [ERROR] Internal server error: Missing semicolon. (399:23)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:399:23
+  397|                resolve()
+  398|                console.log('✅ Speech Synthesis voices loaded:', voices.length)
+  399|                resolve()addEventListener('voiceschanged', () => {
+     |                         ^
+  400|              } else {ces = synthRef.current?.getVoices() || []
+  401|                  console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.semicolon (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24473:11)
+      at V8IntrinsicMixin.parseExpressionStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33758:11)
+      at V8IntrinsicMixin.parseExpressionStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30258:27)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33372:20)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+[2025-07-31T01:43:31.709Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:45:46.216Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T01:45:46.276Z] [INFO] transforming...
+[2025-07-31T01:45:51.916Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T01:45:52.030Z] [INFO] rendering chunks...
+[2025-07-31T01:45:52.159Z] [INFO] computing gzip size...
+[2025-07-31T01:45:52.173Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T01:45:52.174Z] [INFO] ../preview-build/assets/index-C0oYkTiQ.css  427.16 kB │ gzip:  71.25 kB
+[2025-07-31T01:45:52.174Z] [INFO] ../preview-build/assets/web-CXgXRXKq.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T01:45:52.174Z] [INFO] ../preview-build/assets/web-CvE2nDEl.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T01:45:52.174Z] [INFO] ../preview-build/assets/web-oy1bWZq0.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T01:45:52.175Z] [INFO] ../preview-build/assets/web-CHUh7_JP.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T01:45:52.175Z] [INFO] ../preview-build/assets/index-CixQcphK.js   379.88 kB │ gzip: 116.77 kB
+[2025-07-31T01:45:52.175Z] [INFO] ✓ built in 5.94s
+[2025-07-31T01:47:04.713Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T01:47:04.778Z] [INFO] transforming...
+[2025-07-31T01:47:10.600Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T01:47:10.710Z] [INFO] rendering chunks...
+[2025-07-31T01:47:10.854Z] [INFO] computing gzip size...
+[2025-07-31T01:47:10.868Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T01:47:10.868Z] [INFO] ../preview-build/assets/index-C0oYkTiQ.css  427.16 kB │ gzip:  71.25 kB
+[2025-07-31T01:47:10.868Z] [INFO] ../preview-build/assets/web-CXgXRXKq.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T01:47:10.868Z] [INFO] ../preview-build/assets/web-CvE2nDEl.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T01:47:10.869Z] [INFO] ../preview-build/assets/web-oy1bWZq0.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T01:47:10.869Z] [INFO] ../preview-build/assets/web-CHUh7_JP.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T01:47:10.869Z] [INFO] ../preview-build/assets/index-CixQcphK.js   379.88 kB │ gzip: 116.77 kB
+[2025-07-31T01:47:10.869Z] [INFO] ✓ built in 6.13s
+[2025-07-31T01:49:40.394Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T01:49:40.453Z] [INFO] transforming...
+[2025-07-31T01:49:46.093Z] [INFO] ✓ 6190 modules transformed.
+[2025-07-31T01:49:46.207Z] [INFO] rendering chunks...
+[2025-07-31T01:49:46.352Z] [INFO] computing gzip size...
+[2025-07-31T01:49:46.365Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T01:49:46.365Z] [INFO] ../preview-build/assets/index-C0oYkTiQ.css  427.16 kB │ gzip:  71.25 kB
+[2025-07-31T01:49:46.366Z] [INFO] ../preview-build/assets/web-CXgXRXKq.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T01:49:46.366Z] [INFO] ../preview-build/assets/web-CvE2nDEl.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T01:49:46.366Z] [INFO] ../preview-build/assets/web-oy1bWZq0.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T01:49:46.366Z] [INFO] ../preview-build/assets/web-CHUh7_JP.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T01:49:46.366Z] [INFO] ../preview-build/assets/index-CixQcphK.js   379.88 kB │ gzip: 116.77 kB
+[2025-07-31T01:49:46.367Z] [INFO] ✓ built in 5.96s
+[2025-07-31T01:51:47.158Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:51:59.476Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:52:08.782Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:52:16.102Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-31T01:52:27.528Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:52:38.954Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:52:51.100Z] [INFO] page reload src/vite-end.d.ts
+[2025-07-31T01:53:14.175Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:53:22.848Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:53:31.995Z] [INFO] hmr update /src/index.css, /src/main.css, /src/main.css?direct
+[2025-07-31T01:53:41.727Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T01:53:53.748Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T02:05:40.961Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:05:41.021Z] [INFO] transforming...
+[2025-07-31T02:05:46.678Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:05:46.794Z] [INFO] rendering chunks...
+[2025-07-31T02:05:46.935Z] [INFO] computing gzip size...
+[2025-07-31T02:05:46.951Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:05:46.951Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:05:46.951Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:05:46.951Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:05:46.952Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:05:46.952Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:05:46.952Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:05:46.953Z] [INFO] ✓ built in 5.97s
+[2025-07-31T02:06:43.026Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:06:43.086Z] [INFO] transforming...
+[2025-07-31T02:06:48.860Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:06:48.976Z] [INFO] rendering chunks...
+[2025-07-31T02:06:49.114Z] [INFO] computing gzip size...
+[2025-07-31T02:06:49.128Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:06:49.128Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:06:49.129Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:06:49.129Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:06:49.129Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:06:49.129Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:06:49.129Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:06:49.130Z] [INFO] ✓ built in 6.08s
+[2025-07-31T02:10:14.548Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:10:14.610Z] [INFO] transforming...
+[2025-07-31T02:10:20.433Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:10:20.552Z] [INFO] rendering chunks...
+[2025-07-31T02:10:20.733Z] [INFO] computing gzip size...
+[2025-07-31T02:10:20.749Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:10:20.750Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:10:20.750Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:10:20.750Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:10:20.751Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:10:20.751Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:10:20.751Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:10:20.752Z] [INFO] ✓ built in 6.18s
+[2025-07-31T02:10:59.218Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:10:59.280Z] [INFO] transforming...
+[2025-07-31T02:11:05.134Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:11:05.246Z] [INFO] rendering chunks...
+[2025-07-31T02:11:05.387Z] [INFO] computing gzip size...
+[2025-07-31T02:11:05.401Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:11:05.401Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:11:05.401Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:11:05.402Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:11:05.402Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:11:05.402Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:11:05.402Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:11:05.403Z] [INFO] ✓ built in 6.17s
+[2025-07-31T02:12:32.353Z] [INFO] page reload android/app/src/main/AndroidManifest.xml
+[2025-07-31T02:12:45.645Z] [INFO] page reload android/app/src/main/res/values/strings.xml
+[2025-07-31T02:13:11.706Z] [INFO] page reload capacitor.config.ts
+[2025-07-31T02:13:35.231Z] [INFO] page reload android/app/build.gradle
+[2025-07-31T02:14:28.284Z] [INFO] page reload android/app/src/main/res/values/styles.xml
+[2025-07-31T02:14:54.052Z] [INFO] page reload public/manifest.json
+[2025-07-31T02:34:37.976Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:34:38.034Z] [INFO] transforming...
+[2025-07-31T02:34:43.732Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:34:43.852Z] [INFO] rendering chunks...
+[2025-07-31T02:34:44.010Z] [INFO] computing gzip size...
+[2025-07-31T02:34:44.025Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:34:44.025Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:34:44.025Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:34:44.025Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:34:44.026Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:34:44.026Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:34:44.026Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:34:44.026Z] [INFO] ✓ built in 6.03s
+[2025-07-31T02:34:56.534Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:34:56.589Z] [INFO] transforming...
+[2025-07-31T02:35:02.332Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:35:02.444Z] [INFO] rendering chunks...
+[2025-07-31T02:35:02.583Z] [INFO] computing gzip size...
+[2025-07-31T02:35:02.598Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:35:02.598Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:35:02.598Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:35:02.598Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:35:02.599Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:35:02.599Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:35:02.599Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:35:02.600Z] [INFO] ✓ built in 6.05s
+[2025-07-31T02:36:55.062Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T02:36:55.121Z] [INFO] transforming...
+[2025-07-31T02:37:01.399Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T02:37:01.517Z] [INFO] rendering chunks...
+[2025-07-31T02:37:01.655Z] [INFO] computing gzip size...
+[2025-07-31T02:37:01.670Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T02:37:01.670Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T02:37:01.670Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T02:37:01.670Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T02:37:01.671Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T02:37:01.671Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T02:37:01.671Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T02:37:01.671Z] [INFO] ✓ built in 6.59s
+[2025-07-31T03:18:09.722Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:18:09.780Z] [INFO] transforming...
+[2025-07-31T03:18:15.548Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:18:15.658Z] [INFO] rendering chunks...
+[2025-07-31T03:18:15.825Z] [INFO] computing gzip size...
+[2025-07-31T03:18:15.841Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:18:15.841Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:18:15.841Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:18:15.842Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:18:15.842Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:18:15.843Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:18:15.843Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:18:15.843Z] [INFO] ✓ built in 6.10s
+[2025-07-31T03:24:39.670Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:24:39.727Z] [INFO] transforming...
+[2025-07-31T03:24:45.472Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:24:45.587Z] [INFO] rendering chunks...
+[2025-07-31T03:24:45.728Z] [INFO] computing gzip size...
+[2025-07-31T03:24:45.743Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:24:45.743Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:24:45.743Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:24:45.744Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:24:45.744Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:24:45.744Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:24:45.744Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:24:45.745Z] [INFO] ✓ built in 6.06s
+[2025-07-31T03:27:52.573Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:27:52.630Z] [INFO] transforming...
+[2025-07-31T03:27:58.380Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:27:58.494Z] [INFO] rendering chunks...
+[2025-07-31T03:27:58.638Z] [INFO] computing gzip size...
+[2025-07-31T03:27:58.653Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:27:58.653Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:27:58.654Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:27:58.654Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:27:58.654Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:27:58.655Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:27:58.655Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:27:58.655Z] [INFO] ✓ built in 6.06s
+[2025-07-31T03:28:46.183Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:28:46.243Z] [INFO] transforming...
+[2025-07-31T03:28:52.149Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:28:52.260Z] [INFO] rendering chunks...
+[2025-07-31T03:28:52.401Z] [INFO] computing gzip size...
+[2025-07-31T03:28:52.416Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:28:52.416Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:28:52.416Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:28:52.417Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:28:52.417Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:28:52.417Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:28:52.417Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:28:52.418Z] [INFO] ✓ built in 6.21s
+[2025-07-31T03:30:11.458Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:30:11.513Z] [INFO] transforming...
+[2025-07-31T03:30:17.314Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:30:17.427Z] [INFO] rendering chunks...
+[2025-07-31T03:30:17.564Z] [INFO] computing gzip size...
+[2025-07-31T03:30:17.578Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:30:17.579Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:30:17.580Z] [INFO] ✓ built in 6.10s
+[2025-07-31T03:31:42.787Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:31:42.847Z] [INFO] transforming...
+[2025-07-31T03:31:48.584Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:31:48.697Z] [INFO] rendering chunks...
+[2025-07-31T03:31:48.840Z] [INFO] computing gzip size...
+[2025-07-31T03:31:48.854Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:31:48.855Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:31:48.855Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:31:48.855Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:31:48.855Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:31:48.856Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:31:48.856Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:31:48.856Z] [INFO] ✓ built in 6.05s
+[2025-07-31T03:32:11.707Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:32:11.783Z] [INFO] transforming...
+[2025-07-31T03:32:17.678Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:32:17.790Z] [INFO] rendering chunks...
+[2025-07-31T03:32:17.939Z] [INFO] computing gzip size...
+[2025-07-31T03:32:17.953Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:32:17.953Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:32:17.954Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:32:17.954Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:32:17.954Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:32:17.954Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:32:17.955Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:32:17.955Z] [INFO] ✓ built in 6.22s
+[2025-07-31T03:39:28.500Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T03:39:28.557Z] [INFO] transforming...
+[2025-07-31T03:39:34.282Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T03:39:34.400Z] [INFO] rendering chunks...
+[2025-07-31T03:39:34.536Z] [INFO] computing gzip size...
+[2025-07-31T03:39:34.551Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T03:39:34.551Z] [INFO] ../preview-build/assets/index--HnPagdA.css  431.60 kB │ gzip:  72.23 kB
+[2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/web-CPis9t8X.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/web-55RYIEkc.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/web-BZPdqqcV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/web-CvNer-NU.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T03:39:34.553Z] [INFO] ✓ built in 6.04s
+[2025-07-31T03:41:06.357Z] [INFO] page reload README.md
