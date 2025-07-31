@@ -73,7 +73,11 @@ export default function AICompanionPhone() {
   // Helper functions for cute animations and sounds
   const playSound = useCallback((soundType: any, volume = 0.7) => {
     if (soundEnabled) {
-      soundEffectsService.play(soundType, volume)
+      try {
+        soundEffectsService.play(soundType, volume)
+      } catch (error) {
+        console.warn('Failed to play sound:', soundType, error)
+      }
     }
   }, [soundEnabled])
 
@@ -124,16 +128,25 @@ export default function AICompanionPhone() {
 
   // Configure sound effects service
   useEffect(() => {
-    soundEffectsService.setEnabled(soundEnabled)
+    try {
+      soundEffectsService.setEnabled(soundEnabled)
+    } catch (error) {
+      console.warn('Failed to configure sound effects service:', error)
+    }
   }, [soundEnabled])
 
   // Initialize native services if running in Capacitor
   useEffect(() => {
     const initializeNativeServices = async () => {
-      if (Capacitor.isNativePlatform()) {
-        setIsNativeApp(true)
-        await voiceChatService.initializeVoiceServices()
-        toast.success('Native voice services initialized!')
+      try {
+        if (Capacitor.isNativePlatform()) {
+          setIsNativeApp(true)
+          await voiceChatService.initializeVoiceServices()
+          toast.success('Native voice services initialized!')
+        }
+      } catch (error) {
+        console.error('Failed to initialize native services:', error)
+        toast.error('Failed to initialize native services')
       }
     }
     
@@ -142,18 +155,33 @@ export default function AICompanionPhone() {
 
   // Initialize LLM service with saved mode
   useEffect(() => {
-    llmService.setMode(llmMode)
-    const updateStatus = async () => {
-      await llmService.checkAvailability()
-      setLlmStatus(llmService.getStatus())
+    const initializeLLM = async () => {
+      try {
+        llmService.setMode(llmMode)
+        await llmService.checkAvailability()
+        setLlmStatus(llmService.getStatus())
+      } catch (error) {
+        console.error('Failed to initialize LLM service:', error)
+        // Continue anyway with fallback status
+        setLlmStatus({
+          currentLLM: 'fallback',
+          cloudAvailable: false,
+          localAvailable: false,
+          modelInfo: 'Service unavailable'
+        })
+      }
     }
-    updateStatus()
+    initializeLLM()
   }, [llmMode])
 
   // Update LLM status when network changes
   useEffect(() => {
-    llmService.updateAvailability(isOnline)
-    setLlmStatus(llmService.getStatus())
+    try {
+      llmService.updateAvailability(isOnline)
+      setLlmStatus(llmService.getStatus())
+    } catch (error) {
+      console.warn('Failed to update LLM availability:', error)
+    }
   }, [isOnline])
 
   // Handle LLM mode change

@@ -23,23 +23,38 @@ class SoundEffectsService {
   private isEnabled = true
 
   constructor() {
-    this.initializeAudioContext()
-    this.generateSounds()
+    // Don't initialize anything in constructor to avoid autoplay policy violations
+    // Initialize lazily when first sound is played
   }
 
   private initializeAudioContext() {
-    try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-    } catch (error) {
-      console.warn('Audio context not supported:', error)
+    // Don't create AudioContext until first user interaction
+    // This prevents browser console errors about autoplay policy
+    return
+  }
+
+  private ensureAudioContext(): AudioContext | null {
+    if (!this.audioContext) {
+      try {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+        // Resume context if it's suspended (required by autoplay policy)
+        if (this.audioContext.state === 'suspended') {
+          this.audioContext.resume()
+        }
+      } catch (error) {
+        console.warn('Audio context not supported:', error)
+        return null
+      }
     }
+    return this.audioContext
   }
 
   /**
    * Generate cute sound effects using Web Audio API
    */
   private async generateSounds() {
-    if (!this.audioContext) return
+    const audioContext = this.ensureAudioContext()
+    if (!audioContext) return
 
     // Button tap - cute pop sound
     this.sounds.set('button-tap', this.createPopSound())
@@ -79,13 +94,14 @@ class SoundEffectsService {
   }
 
   private createPopSound(): AudioBuffer {
-    if (!this.audioContext) throw new Error('No audio context')
+    const audioContext = this.ensureAudioContext()
+    if (!audioContext) throw new Error('No audio context')
     
-    const buffer = this.audioContext.createBuffer(1, this.audioContext.sampleRate * 0.1, this.audioContext.sampleRate)
+    const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.1, audioContext.sampleRate)
     const data = buffer.getChannelData(0)
     
     for (let i = 0; i < data.length; i++) {
-      const t = i / this.audioContext.sampleRate
+      const t = i / audioContext.sampleRate
       // Quick pop with envelope
       data[i] = Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 20) * 0.3
     }
@@ -253,23 +269,38 @@ class SoundEffectsService {
    * Play a sound effect
    */
   public async play(soundType: SoundType, volume: number = 0.5): Promise<void> {
-    if (!this.isEnabled || !this.audioContext || !this.sounds.has(soundType)) {
+    if (!this.isEnabled) {
+      return
+    }
+
+    // Ensure audio context is created (needed for user interaction requirement)
+    const audioContext = this.ensureAudioContext()
+    if (!audioContext) {
+      return
+    }
+
+    // Generate sounds if not already created
+    if (this.sounds.size === 0) {
+      await this.generateSounds()
+    }
+
+    if (!this.sounds.has(soundType)) {
       return
     }
 
     try {
       // Resume audio context if suspended (mobile requirement)
-      if (this.audioContext.state === 'suspended') {
-        await this.audioContext.resume()
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume()
       }
 
       const buffer = this.sounds.get(soundType)!
-      const source = this.audioContext.createBufferSource()
-      const gainNode = this.audioContext.createGain()
+      const source = audioContext.createBufferSource()
+      const gainNode = audioContext.createGain()
       
       source.buffer = buffer
       source.connect(gainNode)
-      gainNode.connect(this.audioContext.destination)
+      gainNode.connect(audioContext.destination)
       gainNode.gain.value = Math.max(0, Math.min(1, volume))
       
       source.start(0)

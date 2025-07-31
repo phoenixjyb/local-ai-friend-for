@@ -50,8 +50,18 @@ export default function AudioVisualization({
         })
         streamRef.current = stream
 
-        // Create audio context
-        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        // Create audio context with proper error handling
+        try {
+          audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+          
+          // Resume context if suspended (required by autoplay policy)
+          if (audioContextRef.current.state === 'suspended') {
+            await audioContextRef.current.resume()
+          }
+        } catch (audioError) {
+          console.warn('Failed to create AudioContext for visualization:', audioError)
+          return // Exit early if AudioContext creation fails
+        }
         
         // Create analyser node
         analyserRef.current = audioContextRef.current.createAnalyser()
