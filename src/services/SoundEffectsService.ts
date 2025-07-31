@@ -226,6 +226,7 @@ class SoundEffectsService {
     } catch (error) {
       console.warn('Failed to create success sound:', error)
       return null
+    }
   }
 
   private createErrorSound(): AudioBuffer | null {

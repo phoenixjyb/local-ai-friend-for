@@ -2539,3 +2539,57 @@ Caused by:
   Plugin: vite:react-swc
   File: /workspaces/spark-template/src/services/SoundEffectsService.ts
   
+[2025-07-31T07:24:42.511Z] [ERROR] Internal server error:   x Expression expected
+     ,-[/workspaces/spark-template/src/services/SoundEffectsService.ts:231:1]
+ 228 |       return null
+ 229 |   }
+ 230 | 
+ 231 |   private createErrorSound(): AudioBuffer | null {
+     :   ^^^^^^^
+ 232 |     const audioContext = this.ensureAudioContext()
+ 233 |     if (!audioContext) {
+ 234 |       console.warn('Cannot create error sound: no audio context')
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: vite:react-swc
+  File: /workspaces/spark-template/src/services/SoundEffectsService.ts
+  
+[2025-07-31T07:24:52.889Z] [ERROR] Internal server error:   x Expression expected
+     ,-[/workspaces/spark-template/src/services/SoundEffectsService.ts:231:1]
+ 228 |       return null
+ 229 |   }
+ 230 | 
+ 231 |   private createErrorSound(): AudioBuffer | null {
+     :   ^^^^^^^
+ 232 |     const audioContext = this.ensureAudioContext()
+ 233 |     if (!audioContext) {
+ 234 |       console.warn('Cannot create error sound: no audio context')
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: vite:react-swc
+  File: /workspaces/spark-template/src/services/SoundEffectsService.ts
+  
+[2025-07-31T07:26:05.069Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:26:06.379Z] [ERROR] Pre-transform error:   x Unexpected token `.`. Expected * for generator, private key, identifier or async
+     ,-[/workspaces/spark-template/src/services/SoundEffectsService.ts:424:1]
+ 421 |     }
+ 422 |   }
+ 423 |       
+ 424 |       source.buffer = buffer
+     :             ^
+ 425 |       source.connect(gainNode)
+ 426 |       gainNode.connect(audioContext.destination)
+ 427 |       gainNode.gain.value = Math.max(0, Math.min(1, volume))
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: vite:react-swc
+  File: /workspaces/spark-template/src/services/SoundEffectsService.ts
