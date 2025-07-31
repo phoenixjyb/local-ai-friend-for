@@ -3742,3 +3742,22 @@ Use --emptyOutDir to override.
 [2025-07-31T12:33:59.983Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T12:34:20.792Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T12:34:42.573Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:40:05.267Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T12:40:05.325Z] [INFO] transforming...
+[2025-07-31T12:40:10.307Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T12:40:10.432Z] [INFO] rendering chunks...
+[2025-07-31T12:40:10.587Z] [INFO] computing gzip size...
+[2025-07-31T12:40:10.603Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T12:40:10.604Z] [INFO] ../preview-build/assets/index-DfoXsczC.css  443.17 kB │ gzip:  74.34 kB
+[2025-07-31T12:40:10.604Z] [INFO] ../preview-build/assets/web-QGOgQcse.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T12:40:10.604Z] [INFO] ../preview-build/assets/web-DQy0Rm0l.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T12:40:10.605Z] [INFO] ../preview-build/assets/web-g-Rm2xER.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T12:40:10.605Z] [INFO] ../preview-build/assets/spark-C6bDYMZ8.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T12:40:10.605Z] [INFO] ../preview-build/assets/web-CZrNgMT-.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T12:40:10.605Z] [INFO] ../preview-build/assets/index-B7kaCYWY.js   437.16 kB │ gzip: 130.42 kB
+[2025-07-31T12:40:10.605Z] [INFO] ✓ built in 5.32s
+[2025-07-31T12:41:42.230Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:41:59.529Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:42:51.167Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:45:33.256Z] [INFO] page reload test-speech.html
+[2025-07-31T12:45:45.950Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css

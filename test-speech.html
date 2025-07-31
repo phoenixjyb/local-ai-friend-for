@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech Recognition Test</title>
+</head>
+<body>
+    <h1>Speech Recognition Language Test</h1>
+    <button id="testBtn">Test Speech Recognition</button>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                resultDiv.innerHTML = 'Speech recognition not supported';
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            
+            console.log('Navigator language:', navigator.language);
+            console.log('Navigator languages:', navigator.languages);
+            
+            // Test without setting language first
+            try {
+                resultDiv.innerHTML = 'Testing without language setting...<br>';
+                recognition.start();
+                
+                recognition.onstart = () => {
+                    resultDiv.innerHTML += 'Started successfully without language setting!<br>';
+                    recognition.stop();
+                };
+                
+                recognition.onerror = (event) => {
+                    resultDiv.innerHTML += `Error without language: ${event.error}<br>`;
+                    
+                    // Now try with browser language
+                    try {
+                        const browserLang = navigator.language || 'en-US';
+                        recognition.lang = browserLang;
+                        resultDiv.innerHTML += `Trying with browser language: ${browserLang}<br>`;
+                        recognition.start();
+                        
+                        recognition.onstart = () => {
+                            resultDiv.innerHTML += `Started successfully with ${browserLang}!<br>`;
+                            recognition.stop();
+                        };
+                        
+                        recognition.onerror = (event2) => {
+                            resultDiv.innerHTML += `Error with ${browserLang}: ${event2.error}<br>`;
+                        };
+                    } catch (langError) {
+                        resultDiv.innerHTML += `Failed to set language: ${langError}<br>`;
+                    }
+                };
+            } catch (error) {
+                resultDiv.innerHTML += `Initial error: ${error}<br>`;
+            }
+        });
+    </script>
+</body>
+</html>
