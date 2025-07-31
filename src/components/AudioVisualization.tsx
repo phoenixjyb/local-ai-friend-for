@@ -277,9 +277,9 @@ export default function AudioVisualization({
     }
 
     const gradient = ctx.createLinearGradient(0, 0, width, 0)
-    gradient.addColorStop(0, getColorWithAlpha(canvasColor, 0.5))
-    gradient.addColorStop(0.5, canvasColor)
-    gradient.addColorStop(1, getColorWithAlpha(canvasColor, 0.5))
+    gradient.addColorStop(0, getColorWithAlpha(color, 0.5))
+    gradient.addColorStop(0.5, color)
+    gradient.addColorStop(1, getColorWithAlpha(color, 0.5))
     
     ctx.strokeStyle = gradient
     ctx.lineWidth = lineWidth
@@ -310,14 +310,14 @@ export default function AudioVisualization({
 
     // Add glow effect for high volume
     if (volume > 30) {
-      ctx.shadowColor = canvasColor
+      ctx.shadowColor = color
       ctx.shadowBlur = 10 + (volume / 10)
       ctx.stroke()
       ctx.shadowBlur = 0
     }
 
     // Add volume indicator
-    drawVolumeIndicator(ctx, width, height, volume, canvasColor)
+    drawVolumeIndicator(ctx, width, height, volume, color)
   }
 
   const drawBars = (
@@ -349,23 +349,23 @@ export default function AudioVisualization({
       
       // Create gradient for each bar
       const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight)
-      gradient.addColorStop(0, getColorWithAlpha(canvasColor, 0.25))
-      gradient.addColorStop(0.5, getColorWithAlpha(canvasColor, 0.5))
-      gradient.addColorStop(1, canvasColor)
+      gradient.addColorStop(0, getColorWithAlpha(color, 0.25))
+      gradient.addColorStop(0.5, getColorWithAlpha(color, 0.5))
+      gradient.addColorStop(1, color)
       
       ctx.fillStyle = gradient
       ctx.fillRect(x + spacing/2, height - barHeight, barWidth - spacing, barHeight)
       
       // Add glow for active bars
       if (barHeight > height * 0.1) {
-        ctx.shadowColor = canvasColor
+        ctx.shadowColor = color
         ctx.shadowBlur = 5
         ctx.fillRect(x + spacing/2, height - barHeight, barWidth - spacing, barHeight)
         ctx.shadowBlur = 0
       }
     }
 
-    drawVolumeIndicator(ctx, width, height, volume, canvasColor)
+    drawVolumeIndicator(ctx, width, height, volume, color)
   }
 
   const drawCircle = (
@@ -381,7 +381,7 @@ export default function AudioVisualization({
     const centerY = height / 2
     const baseRadius = Math.min(width, height) / 4
     
-    ctx.strokeStyle = canvasColor
+    ctx.strokeStyle = color
     ctx.lineWidth = lineWidth
     ctx.lineCap = 'round'
 
@@ -417,6 +417,17 @@ export default function AudioVisualization({
     const pulseRadius = baseRadius * 0.3 + (volume / 100) * 10
     ctx.beginPath()
     ctx.arc(centerX, centerY, pulseRadius, 0, Math.PI * 2)
+    
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
     
     ctx.fillStyle = getColorWithAlpha(canvasColor, 0.25)
     ctx.fill()
@@ -455,7 +466,7 @@ export default function AudioVisualization({
       
       ctx.beginPath()
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
-      ctx.strokeStyle = getColorWithAlpha(canvasColor, opacity)
+      ctx.strokeStyle = getColorWithAlpha(color, opacity)
       ctx.lineWidth = 3
       ctx.stroke()
     }
@@ -463,8 +474,8 @@ export default function AudioVisualization({
     // Central core
     const coreRadius = (volume / 100) * 15 + 5
     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius)
-    gradient.addColorStop(0, canvasColor)
-    gradient.addColorStop(1, getColorWithAlpha(canvasColor, 0.25))
+    gradient.addColorStop(0, color)
+    gradient.addColorStop(1, getColorWithAlpha(color, 0.25))
     
     ctx.beginPath()
     ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2)
