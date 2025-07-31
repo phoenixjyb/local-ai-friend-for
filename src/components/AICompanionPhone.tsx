@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette, CloudArrowUp, DeviceMobile, Robot } from '@phosphor-icons/react'
+import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette, CloudArrowUp, DeviceMobile, Robot, Bug } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -10,6 +10,7 @@ import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
 import AudioVisualization from '@/components/AudioVisualization'
+import VoiceDebugger from '@/components/VoiceDebugger'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
@@ -53,6 +54,7 @@ export default function AICompanionPhone() {
   const [isNativeApp, setIsNativeApp] = useState(false)
   const [llmMode, setLlmMode] = useKV<LLMMode>('llm-mode', 'cloud')
   const [llmStatus, setLlmStatus] = useState(llmService.getStatus())
+  const [isDebuggerOpen, setIsDebuggerOpen] = useState(false)
   
   // Animation and sound effect states
   const [showHearts, setShowHearts] = useState(false)
@@ -226,18 +228,32 @@ export default function AICompanionPhone() {
     } else {
       // Use web speech recognition with improved error handling
       if (!recognitionRef.current) {
-        toast.error('Voice recognition not available')
+        console.error('❌ No speech recognition available')
+        toast.error('Voice recognition not available in this browser')
         return
       }
       
       try {
         // Stop any existing recognition first
         if (isListening) {
+          console.log('⚠️ Already listening, stopping current session first')
           recognitionRef.current.stop()
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise(resolve => setTimeout(resolve, 200))
+        }
+        
+        // Double-check microphone permissions
+        try {
+          await navigator.mediaDevices.getUserMedia({ audio: true })
+        } catch (permError) {
+          console.error('❌ Microphone permission check failed:', permError)
+          toast.error('🎤 Please allow microphone access and refresh the page.')
+          return
         }
         
         console.log('🔄 Starting web speech recognition...')
+        console.log('Recognition state - continuous:', recognitionRef.current.continuous, 'lang:', recognitionRef.current.lang)
+        
+        // Set state before starting to avoid race conditions
         setIsListening(true)
         recognitionRef.current.start()
         
@@ -245,19 +261,31 @@ export default function AICompanionPhone() {
         console.error('❌ Web speech recognition start error:', error)
         setIsListening(false)
         
-        // Handle specific errors
+        // Handle specific errors with better user guidance
         if (error.name === 'InvalidStateError') {
-          toast.info('Restarting voice recognition...')
+          console.log('⚠️ Speech recognition in invalid state, waiting and retrying...')
+          toast.info('🎤 Restarting voice recognition...')
           // Wait a bit and try again
           setTimeout(() => {
             if (callState === 'active' && !aiSpeaking) {
               startListening()
             }
-          }, 1000)
+          }, 1500)
         } else if (error.name === 'NotAllowedError') {
-          toast.error('Microphone permission denied. Please allow microphone access.')
+          toast.error('🎤 Microphone permission denied. Please allow microphone access and refresh.')
+        } else if (error.name === 'ServiceNotAllowedError') {
+          toast.error('🎤 Speech recognition service not allowed. Please check browser settings.')
         } else {
-          toast.error('Voice recognition failed. Please try again.')
+          console.error('❌ Unknown speech recognition error:', error)
+          toast.error('🎤 Voice recognition failed: ' + error.message)
+          
+          // Generic retry for unknown errors
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              console.log('🔄 Retrying after unknown error...')
+              startListening()
+            }
+          }, 2000)
         }
       }
     }
@@ -394,33 +422,121 @@ export default function AICompanionPhone() {
   // Initialize speech APIs with better error handling
   useEffect(() => {
     const initializeSpeechApis = async () => {
+      try {
+        // Request microphone permission FIRST and provide clear feedback
+        console.log('🎤 Requesting microphone access...')
+        toast.info('🎤 Requesting microphone access...')
+        
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 44100
+          } 
+        })
+        
+        console.log('✅ Microphone permission granted')
+        toast.success('🎤 Microphone access granted!')
+        
+        // Test audio levels to verify microphone is working
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+        const analyser = audioContext.createAnalyser()
+        const microphone = audioContext.createMediaStreamSource(stream)
+        microphone.connect(analyser)
+        
+        analyser.fftSize = 256
+        const bufferLength = analyser.frequencyBinCount
+        const dataArray = new Uint8Array(bufferLength)
+        
+        // Test for 2 seconds to see if we get audio input
+        let testCount = 0
+        let hasAudioInput = false
+        const testInterval = setInterval(() => {
+          analyser.getByteFrequencyData(dataArray)
+          const sum = dataArray.reduce((a, b) => a + b, 0)
+          const average = sum / dataArray.length
+          
+          if (average > 0) {
+            hasAudioInput = true
+            console.log('✅ Audio input detected:', average)
+          }
+          
+          testCount++
+          if (testCount >= 20) { // 2 seconds of testing
+            clearInterval(testInterval)
+            audioContext.close()
+            stream.getTracks().forEach(track => track.stop())
+            
+            if (hasAudioInput) {
+              toast.success('🎤 Microphone is working! Audio input detected.')
+            } else {
+              toast.warning('🎤 Microphone connected but no audio detected. Please check your microphone.')
+            }
+          }
+        }, 100)
+        
+      } catch (error) {
+        console.error('❌ Microphone permission error:', error)
+        if (error.name === 'NotAllowedError') {
+          toast.error('🎤 Microphone access denied. Please allow microphone access in your browser settings.')
+        } else if (error.name === 'NotFoundError') {
+          toast.error('🎤 No microphone found. Please connect a microphone.')
+        } else {
+          toast.error('🎤 Microphone error: ' + error.message)
+        }
+      }
+      
       // Check for speech recognition support
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         recognitionRef.current = new SpeechRecognition()
-        recognitionRef.current.continuous = true
+        
+        // Enhanced speech recognition settings
+        recognitionRef.current.continuous = false // Changed to false for better control
         recognitionRef.current.interimResults = true
         recognitionRef.current.lang = 'en-GB'
-        recognitionRef.current.maxAlternatives = 1
+        recognitionRef.current.maxAlternatives = 3
         
-        toast.success('🎤 Voice recognition ready!')
+        // Add better error handling during setup
+        recognitionRef.current.onerror = null // Clear any existing handlers
+        
+        console.log('✅ Speech Recognition initialized')
+        toast.success('🗣️ Voice recognition ready!')
       } else {
-        toast.warning('Voice recognition not supported in this browser')
+        console.error('❌ Speech recognition not supported')
+        toast.warning('Voice recognition not supported in this browser. Please use Chrome or Safari.')
       }
       
       // Check for speech synthesis support
       if ('speechSynthesis' in window) {
         synthRef.current = window.speechSynthesis
         
-        // Wait for voices to load
+        // Wait for voices to load with timeout
         const waitForVoices = () => {
           return new Promise<void>((resolve) => {
+            const timeout = setTimeout(() => {
+              console.log('⚠️ Voice loading timeout - proceeding anyway')
+              resolve()
+            }, 3000)
+            
             const voices = synthRef.current?.getVoices() || []
             if (voices.length > 0) {
+              clearTimeout(timeout)
               console.log('✅ Speech Synthesis voices loaded:', voices.length)
+              
+              // Log available British voices
+              const britishVoices = voices.filter(voice => 
+                voice.lang.includes('en-GB') || 
+                voice.name.includes('British') || 
+                voice.name.includes('Daniel') || 
+                voice.name.includes('Kate')
+              )
+              console.log('🇬🇧 British voices available:', britishVoices.map(v => v.name))
               resolve()
             } else {
               synthRef.current?.addEventListener('voiceschanged', () => {
+                clearTimeout(timeout)
                 const newVoices = synthRef.current?.getVoices() || []
                 console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
                 resolve()
@@ -431,18 +547,10 @@ export default function AICompanionPhone() {
         
         await waitForVoices()
         console.log('✅ Speech Synthesis initialized')
+        toast.success('🗣️ Text-to-speech ready!')
       } else {
+        console.error('❌ Text-to-speech not supported')
         toast.warning('Text-to-speech not supported in this browser')
-      }
-      
-      // Request microphone permission
-      try {
-        await navigator.mediaDevices.getUserMedia({ audio: true })
-        console.log('✅ Microphone permission granted')
-        toast.success('🎤 Microphone access granted!')
-      } catch (error) {
-        console.error('❌ Microphone permission error:', error)
-        toast.error('Please allow microphone access for voice features')
       }
     }
     
@@ -536,99 +644,157 @@ export default function AICompanionPhone() {
     }
   }
 
-  // Handle speech recognition
+  // Handle speech recognition with enhanced debugging and feedback
   useEffect(() => {
     if (isNativeApp) return // Skip web speech setup for native app
     
-    if (!recognitionRef.current) return
+    if (!recognitionRef.current) {
+      console.log('⚠️ No speech recognition available')
+      return
+    }
 
     recognitionRef.current.onresult = async (event) => {
-      console.log('🎤 Speech recognition result received')
-      const result = event.results[event.results.length - 1]
-      if (result.isFinal) {
+      console.log('🎤 Speech recognition result received, results count:', event.results.length)
+      
+      // Process interim results for better feedback
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i]
         const transcript = result[0].transcript.trim()
-        console.log('📝 Final transcript:', transcript)
-        if (transcript && transcript.length > 2) {
-          setIsListening(false)
-          playSound('success-chime', 0.6)
-          triggerCelebration('emoji', '👂')
-          toast.success(`Heard: "${transcript}"`)
+        const confidence = result[0].confidence || 0
+        
+        if (result.isFinal) {
+          console.log('📝 Final transcript:', transcript, 'Confidence:', confidence)
           
-          console.log('🤖 Generating AI response...')
-          const aiResponse = await generateAIResponse(transcript)
-          console.log('💬 AI response ready:', aiResponse.substring(0, 50) + '...')
-          await speakResponse(aiResponse)
+          if (transcript && transcript.length > 2) {
+            setIsListening(false)
+            playSound('success-chime', 0.6)
+            triggerCelebration('emoji', '👂')
+            toast.success(`Heard: "${transcript}" (${Math.round(confidence * 100)}% confident)`)
+            
+            console.log('🤖 Generating AI response...')
+            const aiResponse = await generateAIResponse(transcript)
+            console.log('💬 AI response ready:', aiResponse.substring(0, 50) + '...')
+            await speakResponse(aiResponse)
+          } else {
+            console.log('⚠️ Transcript too short or empty:', transcript)
+            toast.info('Didn\'t catch that. Try speaking louder or closer to the microphone.')
+            // Continue listening if transcript is too short
+            setTimeout(() => {
+              if (callState === 'active' && !aiSpeaking) {
+                console.log('🔄 Restarting listening after short transcript')
+                startListening()
+              }
+            }, 1000)
+          }
         } else {
-          console.log('⚠️ Transcript too short, continuing to listen...')
-          // Continue listening if transcript is too short
-          setTimeout(() => {
-            if (callState === 'active' && !aiSpeaking) {
-              startListening()
+          // Show interim results for user feedback
+          if (transcript.length > 3) {
+            console.log('🔄 Interim transcript:', transcript)
+            // Show interim feedback to user
+            if (transcript.length > 10) {
+              toast.info(`Hearing: "${transcript.substring(0, 30)}${transcript.length > 30 ? '...' : ''}"`)
             }
-          }, 500)
-        }
-      } else {
-        // Show interim results
-        const interimTranscript = result[0].transcript
-        if (interimTranscript.length > 5) {
-          console.log('🔄 Interim transcript:', interimTranscript)
+          }
         }
       }
     }
 
     recognitionRef.current.onerror = (event) => {
-      console.error('❌ Speech recognition error:', event.error)
+      console.error('❌ Speech recognition error:', event.error, event)
       setIsListening(false)
       playSound('error-boop')
       triggerCelebration('emoji', '🤔')
       
-      // Different error handling
-      if (event.error === 'no-speech') {
-        toast.info('No speech detected. Trying again...')
-        // Restart listening after a short delay
-        setTimeout(() => {
-          if (callState === 'active' && !aiSpeaking) {
-            startListening()
-          }
-        }, 1500)
-      } else if (event.error === 'audio-capture') {
-        toast.error('Microphone access denied. Please allow microphone access.')
-      } else if (event.error === 'not-allowed') {
-        toast.error('Microphone permission needed. Please allow and refresh.')
-      } else {
-        toast.error(`Voice recognition error: ${event.error}. Trying again...`)
-        // Restart listening after error
-        setTimeout(() => {
-          if (callState === 'active' && !aiSpeaking) {
-            startListening()
-          }
-        }, 2000)
+      // Enhanced error handling with specific messages
+      switch (event.error) {
+        case 'no-speech':
+          console.log('⚠️ No speech detected - user might not be speaking')
+          toast.info('🎤 No speech detected. Try speaking louder or check your microphone.')
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 2000)
+          break
+          
+        case 'audio-capture':
+          console.error('❌ Audio capture failed - microphone issue')
+          toast.error('🎤 Microphone access issue. Please check your microphone connection.')
+          break
+          
+        case 'not-allowed':
+          console.error('❌ Microphone permission denied')
+          toast.error('🎤 Microphone permission needed. Please allow access and refresh the page.')
+          break
+          
+        case 'network':
+          console.error('❌ Network error during speech recognition')
+          toast.error('🌐 Network error. Please check your internet connection.')
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 3000)
+          break
+          
+        case 'aborted':
+          console.log('ℹ️ Speech recognition aborted (normal during cleanup)')
+          break
+          
+        default:
+          console.error('❌ Unknown speech recognition error:', event.error)
+          toast.error(`🎤 Voice error: ${event.error}. Retrying...`)
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 2000)
       }
     }
 
     recognitionRef.current.onstart = () => {
-      console.log('🎤 Speech recognition started')
+      console.log('🎤 Speech recognition started successfully')
       setIsListening(true)
       playSound('pop', 0.4)
       triggerCelebration('sparkles')
-      toast.info('🎤 Listening...')
+      toast.success('🎤 Now listening - speak clearly!')
     }
 
     recognitionRef.current.onend = () => {
-      console.log('🛑 Speech recognition ended')
-      if (callState === 'active' && !aiSpeaking && isListening) {
-        // Restart listening if call is still active and we were listening
-        console.log('🔄 Restarting speech recognition...')
+      console.log('🛑 Speech recognition ended, callState:', callState, 'aiSpeaking:', aiSpeaking, 'isListening:', isListening)
+      
+      // Only restart if we should still be listening
+      if (callState === 'active' && !aiSpeaking) {
+        console.log('🔄 Auto-restarting speech recognition...')
         setTimeout(() => {
           if (callState === 'active' && !aiSpeaking) {
             startListening()
           }
         }, 1000)
       } else {
+        console.log('ℹ️ Not restarting speech recognition - call ended or AI speaking')
         setIsListening(false)
       }
     }
-  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp, isListening])
+
+    recognitionRef.current.onspeechstart = () => {
+      console.log('🗣️ Speech detected - user started speaking')
+      toast.info('🗣️ Speech detected!')
+    }
+
+    recognitionRef.current.onspeechend = () => {
+      console.log('🤐 Speech ended - user stopped speaking')
+    }
+
+    recognitionRef.current.onsoundstart = () => {
+      console.log('🔊 Sound detected by microphone')
+    }
+
+    recognitionRef.current.onsoundend = () => {
+      console.log('🔇 Sound ended')
+    }
+
+  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp, isListening, startListening])
 
   const startCall = async () => {
     handleButtonPress('call-button', 'call-start')
@@ -643,21 +809,38 @@ export default function AICompanionPhone() {
     const conversationId = Date.now().toString()
     setCurrentConversationId(conversationId)
     
+    console.log('📞 Starting call with conversation ID:', conversationId)
+    toast.info('📞 Connecting to your AI friend...')
+    
+    // Check if speech recognition is ready
+    if (!recognitionRef.current && !isNativeApp) {
+      console.error('❌ Speech recognition not available during call start')
+      toast.error('🎤 Speech recognition not ready. Please refresh and try again.')
+      setCallState('idle')
+      return
+    }
+    
     // Simulate connection delay with cute sound
     setTimeout(async () => {
       setCallState('active')
       triggerCelebration('emoji', '🎉')
       playSound('success-chime')
-      toast.success('Connected to your AI friend!')
+      toast.success('✅ Connected to your AI friend!')
+      
+      console.log('🤖 Call active, preparing greeting...')
       
       // AI greeting with personality
       const greeting = `Hello! I'm ${selectedPersonality.name} and I'm so excited to chat with you! ${selectedPersonality.conversationStyle.greeting}`
+      
+      console.log('🗣️ Speaking greeting:', greeting.substring(0, 50) + '...')
       await speakResponse(greeting)
       
       // Start listening after greeting with longer delay to ensure TTS finishes
+      console.log('⏳ Setting up voice recognition after greeting...')
       setTimeout(() => {
         if (callState === 'active') {
           console.log('🎤 Starting voice recognition after greeting...')
+          toast.info('🎤 Ready to listen! Start speaking...')
           startListening()
         }
       }, 5000) // Increased delay to let greeting finish
@@ -825,6 +1008,24 @@ export default function AICompanionPhone() {
             <div className="flex items-center gap-2 text-sm text-orange-700">
               <WifiX size={16} />
               <span>Offline - {llmStatus.localAvailable ? 'Using local AI' : 'Limited functionality'}</span>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Debug Panel - only show during development/testing */}
+      {callState === 'active' && (
+        <div className="fixed top-4 right-4 z-40 max-w-xs">
+          <Card className="cute-card p-3 text-xs">
+            <div className="space-y-1">
+              <div className="font-medium">Debug Info:</div>
+              <div>Call State: {callState}</div>
+              <div>Listening: {isListening ? '✅' : '❌'}</div>
+              <div>AI Speaking: {aiSpeaking ? '✅' : '❌'}</div>
+              <div>Recognition Available: {recognitionRef.current ? '✅' : '❌'}</div>
+              <div>Synthesis Available: {synthRef.current ? '✅' : '❌'}</div>
+              <div>Native App: {isNativeApp ? '✅' : '❌'}</div>
+              <div>Browser: {navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : 'Other'}</div>
             </div>
           </Card>
         </div>
@@ -1182,6 +1383,86 @@ export default function AICompanionPhone() {
           Test Voice
         </Button>
 
+        {/* Test Microphone Button */}
+        <Button
+          id="test-mic-button"
+          onClick={async () => {
+            handleButtonPress('test-mic-button', 'pop')
+            triggerCelebration('sparkles')
+            
+            try {
+              console.log('🎤 Testing microphone...')
+              toast.info('🎤 Testing microphone... Please speak!')
+              
+              // Create a temporary speech recognition for testing
+              if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+                const testRecognition = new SpeechRecognition()
+                
+                testRecognition.continuous = false
+                testRecognition.interimResults = false
+                testRecognition.lang = 'en-GB'
+                testRecognition.maxAlternatives = 1
+                
+                testRecognition.onresult = (event) => {
+                  const transcript = event.results[0][0].transcript
+                  const confidence = event.results[0][0].confidence
+                  console.log('✅ Microphone test successful:', transcript)
+                  toast.success(`🎤 Microphone working! Heard: "${transcript}" (${Math.round(confidence * 100)}% confident)`)
+                  triggerCelebration('confetti')
+                }
+                
+                testRecognition.onerror = (event) => {
+                  console.error('❌ Microphone test failed:', event.error)
+                  toast.error(`🎤 Microphone test failed: ${event.error}`)
+                }
+                
+                testRecognition.onstart = () => {
+                  toast.info('🎤 Speak now for 3 seconds...')
+                }
+                
+                testRecognition.start()
+                
+                // Auto-stop after 3 seconds
+                setTimeout(() => {
+                  testRecognition.stop()
+                }, 3000)
+                
+              } else {
+                toast.error('🎤 Speech recognition not available')
+              }
+            } catch (error) {
+              console.error('❌ Microphone test error:', error)
+              toast.error('🎤 Microphone test failed: ' + error.message)
+            }
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-blue-300 hover:border-blue-400 transition-all text-blue-600 hover:text-blue-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'test-mic-button'}>
+            🎤
+          </WigglyIcon>
+          Test Mic
+        </Button>
+
+        {/* Voice Debugger Button */}
+        <Button
+          id="voice-debug-button"
+          onClick={() => {
+            handleButtonPress('voice-debug-button', 'pop')
+            setIsDebuggerOpen(true)
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-red-300 hover:border-red-400 transition-all text-red-600 hover:text-red-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'voice-debug-button'}>
+            <Bug size={20} className="mr-2" />
+          </WigglyIcon>
+          Voice Debug
+        </Button>
+
         <Button
           id="drawing-button"
           onClick={() => {
@@ -1241,6 +1522,57 @@ export default function AICompanionPhone() {
         >
           <Settings size={20} className="mr-2" />
           Settings
+        </Button>
+
+        {/* Quick Voice Test Button */}
+        <Button
+          id="quick-voice-test"
+          onClick={async () => {
+            handleButtonPress('quick-voice-test', 'pop')
+            
+            try {
+              // Quick microphone test
+              const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+              toast.success('🎤 Microphone access granted!')
+              
+              // Quick speech recognition test
+              if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                toast.success('🗣️ Speech recognition available!')
+                
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+                const recognition = new SpeechRecognition()
+                recognition.lang = 'en-GB'
+                
+                recognition.onstart = () => toast.info('🎤 Say "hello" to test...')
+                recognition.onresult = (event) => {
+                  const transcript = event.results[0][0].transcript
+                  toast.success(`✅ Heard: "${transcript}"`)
+                }
+                recognition.onerror = (event) => {
+                  toast.error(`❌ Error: ${event.error}`)
+                }
+                
+                recognition.start()
+                setTimeout(() => recognition.stop(), 3000)
+              } else {
+                toast.error('❌ Speech recognition not supported')
+              }
+              
+              stream.getTracks().forEach(track => track.stop())
+              
+            } catch (error) {
+              toast.error('❌ Microphone access denied or not available')
+              console.error('Quick voice test error:', error)
+            }
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-orange-300 hover:border-orange-400 transition-all text-orange-600 hover:text-orange-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'quick-voice-test'}>
+            ⚡
+          </WigglyIcon>
+          Quick Test
         </Button>
       </div>
     </div>
@@ -1531,6 +1863,12 @@ export default function AICompanionPhone() {
         onClose={() => setIsDrawingOpen(false)}
         onShareDrawing={handleDrawingShare}
         personality={selectedPersonality}
+      />
+      
+      {/* Voice Debugger Modal */}
+      <VoiceDebugger
+        isOpen={isDebuggerOpen}
+        onClose={() => setIsDebuggerOpen(false)}
       />
       
       {/* Sound Toggle Button */}

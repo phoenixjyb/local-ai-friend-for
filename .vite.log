@@ -2004,3 +2004,92 @@ Use --emptyOutDir to override.
 [2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/index-DkfKF82J.js   403.30 kB │ gzip: 122.21 kB
 [2025-07-31T05:50:20.445Z] [INFO] ✓ built in 6.42s
 [2025-07-31T05:51:40.521Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:02:05.205Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:02:05.263Z] [INFO] transforming...
+[2025-07-31T06:02:11.222Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:02:11.337Z] [INFO] rendering chunks...
+[2025-07-31T06:02:11.495Z] [INFO] computing gzip size...
+[2025-07-31T06:02:11.512Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:02:11.512Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:02:11.514Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:02:11.514Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:02:11.514Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:02:11.514Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:02:11.514Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:02:11.515Z] [INFO] ✓ built in 6.29s
+[2025-07-31T06:07:11.047Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:07:11.106Z] [INFO] transforming...
+[2025-07-31T06:07:17.093Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:07:17.214Z] [INFO] rendering chunks...
+[2025-07-31T06:07:17.392Z] [INFO] computing gzip size...
+[2025-07-31T06:07:17.409Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:07:17.409Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:07:17.409Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:07:17.409Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:07:17.410Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:07:17.410Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:07:17.410Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:07:17.411Z] [INFO] ✓ built in 6.34s
+[2025-07-31T06:08:41.393Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:08:41.451Z] [INFO] transforming...
+[2025-07-31T06:08:47.236Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:08:47.353Z] [INFO] rendering chunks...
+[2025-07-31T06:08:47.498Z] [INFO] computing gzip size...
+[2025-07-31T06:08:47.514Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:08:47.514Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:08:47.515Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:08:47.515Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:08:47.515Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:08:47.515Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:08:47.515Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:08:47.516Z] [INFO] ✓ built in 6.10s
+[2025-07-31T06:12:18.202Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:12:18.260Z] [INFO] transforming...
+[2025-07-31T06:12:24.035Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:12:24.154Z] [INFO] rendering chunks...
+[2025-07-31T06:12:24.307Z] [INFO] computing gzip size...
+[2025-07-31T06:12:24.322Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:12:24.322Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:12:24.322Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:12:24.322Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:12:24.323Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:12:24.323Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:12:24.323Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:12:24.323Z] [INFO] ✓ built in 6.10s
+[2025-07-31T06:52:04.515Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:52:04.574Z] [INFO] transforming...
+[2025-07-31T06:52:10.562Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:52:10.675Z] [INFO] rendering chunks...
+[2025-07-31T06:52:10.825Z] [INFO] computing gzip size...
+[2025-07-31T06:52:10.840Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:52:10.840Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:52:10.841Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:52:10.841Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:52:10.841Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:52:10.842Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:52:10.842Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:52:10.843Z] [INFO] ✓ built in 6.31s
+[2025-07-31T06:53:18.065Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T06:53:18.128Z] [INFO] transforming...
+[2025-07-31T06:53:23.895Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T06:53:24.007Z] [INFO] rendering chunks...
+[2025-07-31T06:53:24.154Z] [INFO] computing gzip size...
+[2025-07-31T06:53:24.168Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T06:53:24.169Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T06:53:24.169Z] [INFO] ../preview-build/assets/web-B-rXylnd.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T06:53:24.169Z] [INFO] ../preview-build/assets/web-BxBqE7Y2.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T06:53:24.170Z] [INFO] ../preview-build/assets/web-DPDJFzxz.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T06:53:24.170Z] [INFO] ../preview-build/assets/web-70GkMF7L.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T06:53:24.170Z] [INFO] ../preview-build/assets/index-BgyjVdvK.js   403.32 kB │ gzip: 122.22 kB
+[2025-07-31T06:53:24.171Z] [INFO] ✓ built in 6.09s
+[2025-07-31T06:54:59.938Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:55:38.530Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:56:05.513Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:56:25.151Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:56:37.517Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:56:53.483Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:58:16.542Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:58:22.834Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:58:33.812Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:58:39.449Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T06:58:52.493Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
