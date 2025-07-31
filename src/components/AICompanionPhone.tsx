@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette } from '@phosphor-icons/react'
+import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette, CloudArrowUp, DeviceMobile, Robot } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -14,6 +14,7 @@ import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
 import { soundEffectsService } from '@/services/SoundEffectsService'
+import { llmService, LLMMode } from '@/services/LLMService'
 import { 
   FloatingHearts, 
   TwinklingStars, 
@@ -50,6 +51,8 @@ export default function AICompanionPhone() {
   const [selectedPersonality, setSelectedPersonality] = useKV<AIPersonality>('selected-personality', AI_PERSONALITIES[0])
   const [isDrawingOpen, setIsDrawingOpen] = useState(false)
   const [isNativeApp, setIsNativeApp] = useState(false)
+  const [llmMode, setLlmMode] = useKV<LLMMode>('llm-mode', 'cloud')
+  const [llmStatus, setLlmStatus] = useState(llmService.getStatus())
   
   // Animation and sound effect states
   const [showHearts, setShowHearts] = useState(false)
@@ -135,36 +138,64 @@ export default function AICompanionPhone() {
     initializeNativeServices()
   }, [])
 
-  // Generate AI response using Web LLM only (Local LLM temporarily disabled for testing)
+  // Initialize LLM service with saved mode
+  useEffect(() => {
+    llmService.setMode(llmMode)
+    const updateStatus = async () => {
+      await llmService.checkAvailability()
+      setLlmStatus(llmService.getStatus())
+    }
+    updateStatus()
+  }, [llmMode])
+
+  // Update LLM status when network changes
+  useEffect(() => {
+    llmService.updateAvailability(isOnline)
+    setLlmStatus(llmService.getStatus())
+  }, [isOnline])
+
+  // Handle LLM mode change
+  const handleLlmModeChange = useCallback(() => {
+    const modes: LLMMode[] = ['cloud', 'local', 'auto']
+    const currentIndex = modes.indexOf(llmMode)
+    const nextMode = modes[(currentIndex + 1) % modes.length]
+    
+    setLlmMode(nextMode)
+    llmService.setMode(nextMode)
+    setLlmStatus(llmService.getStatus())
+    
+    handleButtonPress('llm-toggle', 'magic-sparkle')
+    triggerCelebration('sparkles')
+  }, [llmMode, handleButtonPress, triggerCelebration])
+
+  // Generate AI response using the enhanced LLM service
   const generateAIResponse = useCallback(async (userInput: string) => {
     try {
+      console.log(`🤖 Generating response using ${llmStatus.currentLLM} LLM...`)
+      
       // Use personality-specific prompt template
       const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
       const personalizedPrompt = promptTemplate.replace('{input}', userInput)
 
-      // TEMPORARILY DISABLED: Local LLM (Ollama) - Force web-only for testing
-      // This allows us to test voice recognition and web LLM integration
-      console.log('🌐 LOCAL LLM DISABLED - Using web LLM only for testing...')
-
-      // Use cloud LLM if online
-      if (isOnline) {
-        console.log('☁️ Using cloud LLM for response generation...')
-        const prompt = spark.llmPrompt`${personalizedPrompt}`
-        const response = await spark.llm(prompt, 'gpt-4o-mini')
-        console.log('✅ Web LLM response received:', response.substring(0, 50) + '...')
-        return response
-      } else {
-        // Personality-specific offline fallback responses
-        console.log('📱 Using offline fallback responses')
-        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
-        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
-      }
+      const result = await llmService.generateResponse(personalizedPrompt, selectedPersonality.id)
+      
+      // Show source indicator
+      const sourceEmoji = result.source === 'cloud' ? '☁️' : result.source === 'local' ? '📱' : '💾'
+      console.log(`✅ ${sourceEmoji} Response from ${result.source}: ${result.response.substring(0, 50)}...`)
+      
+      // Update status after successful generation
+      setLlmStatus(llmService.getStatus())
+      
+      return result.response
     } catch (error) {
       console.error('❌ Error generating AI response:', error)
-      toast.error('AI response failed. Please try again.')
-      return "I'm sorry, I didn't quite catch that. Could you say that again?"
+      toast.error('AI response failed. Using fallback response.')
+      
+      // Fallback to personality-specific responses
+      const fallbackResponses = getPersonalityFallbackResponses(selectedPersonality)
+      return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
     }
-  }, [isOnline, selectedPersonality])
+  }, [selectedPersonality, llmStatus.currentLLM])
 
   // Handle speech recognition (unified for web and native) - Define this first
   const startListening = useCallback(async () => {
@@ -333,19 +364,11 @@ export default function AICompanionPhone() {
     }
   }, [selectedPersonality, isNativeApp, playSound, triggerCelebration, callState, isListening, startListening])
 
-  // TEMPORARILY DISABLED: Check for local LLM availability 
-  // This forces web-only LLM for testing voice recognition and web integration
+  // DISABLED: Force local LLM check - Using new LLM service instead
   useEffect(() => {
-    console.log('🌐 LOCAL LLM TEMPORARILY DISABLED FOR TESTING')
-    console.log('🔄 All AI responses will use web-based LLM only')
-    
-    // Force local LLM to be unavailable for testing
-    setLocalLLMAvailable(false)
-    
-    setTimeout(() => {
-      toast.info('🌐 Using web-based AI for testing - Local LLM disabled')
-    }, 2000)
-  }, [])
+    console.log('🔄 Using enhanced LLM service with cloud/local toggle')
+    console.log(`Current mode: ${llmMode}, Status: ${JSON.stringify(llmStatus)}`)
+  }, [llmMode, llmStatus])
 
   // Monitor online/offline status
   useEffect(() => {
@@ -641,29 +664,18 @@ export default function AICompanionPhone() {
     }, 1500)
   }
 
-  // Handle sharing drawings with AI - TESTING MODE: Web LLM only
+  // Handle sharing drawings with AI using enhanced LLM service
   const handleDrawingShare = useCallback(async (imageData: string) => {
     try {
       // Create a prompt for the AI to respond to the drawing
       const basePrompt = `A child has just drawn a picture and wants to show it to you. You are ${selectedPersonality.name}, ${selectedPersonality.description}. Please respond enthusiastically and encourage their creativity. Ask them about their drawing in a ${selectedPersonality.conversationStyle.responseStyle} way. Keep it short and age-appropriate for a 4-year-old.`
       
-      let aiResponse
+      console.log(`🎨 Generating drawing response using ${llmStatus.currentLLM} LLM...`)
       
-      // TESTING MODE: Skip local LLM, use web LLM only
-      console.log('🌐 TESTING MODE: Using web LLM for drawing response...')
-      
-      if (isOnline) {
-        const prompt = spark.llmPrompt`${basePrompt}`
-        aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
-        console.log('✅ Web LLM drawing response received')
-      } else {
-        // Final fallback to personality-specific responses
-        const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
-        aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
-      }
+      const result = await llmService.generateResponse(basePrompt, selectedPersonality.id)
       
       triggerCelebration('confetti')
-      await speakResponse(aiResponse)
+      await speakResponse(result.response)
       setIsDrawingOpen(false)
       
     } catch (error) {
@@ -672,7 +684,7 @@ export default function AICompanionPhone() {
       await speakResponse(fallbackResponse)
       setIsDrawingOpen(false)
     }
-  }, [selectedPersonality, isOnline, speakResponse])
+  }, [selectedPersonality, llmStatus.currentLLM, speakResponse, triggerCelebration])
 
   // Get personality-specific drawing responses
   const getDrawingResponsesByPersonality = (personality: AIPersonality) => {
@@ -768,28 +780,74 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* Web LLM Testing Mode Indicator */}
-      <div className="fixed top-4 left-4 z-50">
-        <Card className="cute-card p-3 border-blue-300 bg-blue-50">
-          <div className="flex items-center gap-2 text-sm text-blue-700">
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
-            <div className="flex flex-col">
-              <span className="font-medium">Web LLM Testing Mode</span>
-              <span className="text-xs text-blue-600">
-                🌐 Using web-based AI for testing - Local LLM temporarily disabled
+      {/* LLM Mode Toggle and Status */}
+      <div className="fixed top-4 left-4 z-50 space-y-2">
+        {/* LLM Mode Toggle Button */}
+        <Button
+          id="llm-toggle"
+          onClick={handleLlmModeChange}
+          variant="outline"
+          size="sm"
+          className="cute-card border-2 hover:shadow-lg transition-all"
+          style={{
+            borderColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
+                        llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8',
+            backgroundColor: llmStatus.currentLLM === 'cloud' ? '#eff6ff' : 
+                           llmStatus.currentLLM === 'local' ? '#ecfdf5' : '#f1f5f9'
+          }}
+        >
+          <div className="flex items-center gap-2">
+            {llmMode === 'cloud' && <CloudArrowUp size={16} className="text-blue-600" />}
+            {llmMode === 'local' && <DeviceMobile size={16} className="text-green-600" />}
+            {llmMode === 'auto' && <Robot size={16} className="text-purple-600" />}
+            <span className="text-xs font-medium">
+              {llmMode === 'cloud' ? 'Cloud' : llmMode === 'local' ? 'Local' : 'Auto'}
+            </span>
+          </div>
+        </Button>
+
+        {/* LLM Status Card */}
+        <Card className="cute-card p-3 max-w-xs">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm">
+              <div 
+                className="w-2 h-2 rounded-full"
+                style={{
+                  backgroundColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
+                                 llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8'
+                }}
+              />
+              <span className="font-medium">
+                {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud AI' : 
+                 llmStatus.currentLLM === 'local' ? '📱 Local AI' : '💾 Offline'}
+              </span>
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {llmStatus.modelInfo}
+            </div>
+            <div className="flex gap-1 text-xs">
+              <span className={`px-1 py-0.5 rounded text-xs ${
+                llmStatus.cloudAvailable ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
+              }`}>
+                ☁️ {llmStatus.cloudAvailable ? 'On' : 'Off'}
+              </span>
+              <span className={`px-1 py-0.5 rounded text-xs ${
+                llmStatus.localAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+              }`}>
+                📱 {llmStatus.localAvailable ? 'On' : 'Off'}
               </span>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* TESTING MODE: No offline indicator since we're testing web LLM */}
+      {/* Network Status Warning */}
       {!isOnline && (
-        <div className="fixed top-16 left-4 right-4 z-50">
+        <div className="fixed top-4 right-4 z-50">
           <Card className="cute-card p-3 border-orange-300 bg-orange-50">
             <div className="flex items-center gap-2 text-sm text-orange-700">
               <WifiX size={16} />
-              <span>Offline - Web AI not available in testing mode</span>
+              <span>Offline - {llmStatus.localAvailable ? 'Using local AI' : 'Limited functionality'}</span>
             </div>
           </Card>
         </div>
@@ -1292,7 +1350,8 @@ export default function AICompanionPhone() {
           <p className="font-medium">AI Features:</p>
           <ul className="text-sm text-muted-foreground space-y-1 ml-4">
             <li>• Multiple AI personalities with unique conversation styles</li>
-            <li>• Local AI model support (via Ollama)</li>
+            <li>• Dual AI mode: Cloud (OpenAI) + Local (Ollama) support</li>
+            <li>• Smart fallback: Auto-switches if primary AI fails</li>
             <li>• British English voice responses</li>
             <li>• Real-time audio visualization showing voice input levels</li>
             <li>• Vivid visual feedback when microphone detects sound</li>
@@ -1300,11 +1359,76 @@ export default function AICompanionPhone() {
             <li>• Easy interrupt and hang-up controls</li>
             <li>• Local conversation history</li>
             <li>• No personal data collection</li>
-            <li>• Works completely offline with local AI</li>
+            <li>• Privacy-first: Local AI keeps all data on device</li>
           </ul>
         </div>
         
+        <div className="space-y-2">
+          <p className="font-medium">AI Modes Explained:</p>
+          <div className="space-y-3 ml-4">
+            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 mb-1">
+                <CloudArrowUp size={16} className="text-blue-600" />
+                <span className="font-medium text-blue-900">Cloud Mode</span>
+              </div>
+              <p className="text-sm text-blue-700">
+                Uses OpenAI's GPT models via internet. More conversational but requires internet connection.
+                Falls back to local AI if cloud is unavailable.
+              </p>
+            </div>
+            
+            <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+              <div className="flex items-center gap-2 mb-1">
+                <DeviceMobile size={16} className="text-green-600" />
+                <span className="font-medium text-green-900">Local Mode</span>
+              </div>
+              <p className="text-sm text-green-700">
+                Uses Ollama AI running on your device. Complete privacy, works offline.
+                Falls back to cloud AI if local model isn't available.
+              </p>
+            </div>
+            
+            <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
+              <div className="flex items-center gap-2 mb-1">
+                <Robot size={16} className="text-purple-600" />
+                <span className="font-medium text-purple-900">Auto Mode</span>
+              </div>
+              <p className="text-sm text-purple-700">
+                Intelligently chooses the best available AI. Prefers local for privacy, 
+                uses cloud for advanced features. Always has offline backup responses.
+              </p>
+            </div>
+          </div>
+        </div>
+        
         <div className="mt-4 p-4 cute-card border-2 border-primary/20">
+          <p className="text-sm font-medium mb-2">Current AI Status:</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Mode:</span>
+              <Badge variant="outline" className={`text-xs ${
+                llmStatus.currentLLM === 'cloud' ? 'border-blue-300 text-blue-700 bg-blue-50' :
+                llmStatus.currentLLM === 'local' ? 'border-green-300 text-green-700 bg-green-50' :
+                'border-gray-300 text-gray-700 bg-gray-50'
+              }`}>
+                {llmMode.charAt(0).toUpperCase() + llmMode.slice(1)}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Current AI:</span>
+              <span className="text-sm font-medium">
+                {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+                 llmStatus.currentLLM === 'local' ? '📱 Local' : '💾 Offline'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Model:</span>
+              <span className="text-xs text-muted-foreground">{llmStatus.modelInfo}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="p-4 cute-card border-2 border-primary/20">
           <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
           <div className="space-y-1 text-xs text-muted-foreground">
             <code className="text-xs bg-muted p-2 rounded block">
@@ -1321,11 +1445,11 @@ export default function AICompanionPhone() {
             </code>
           </div>
           <div className="mt-3 p-3 bg-muted/50 rounded-md">
-            <p className="text-xs font-medium mb-1">Current Status:</p>
+            <p className="text-xs font-medium mb-1">Local AI Status:</p>
             <p className="text-xs text-muted-foreground">
-              Connection: {localLLMAvailable ? '✅ Connected' : '❌ Not detected'}
+              Connection: {llmStatus.localAvailable ? '✅ Connected' : '❌ Not detected'}
             </p>
-            {localLLMAvailable && (
+            {llmStatus.localAvailable && (
               <>
                 <p className="text-xs text-muted-foreground">
                   Model: {ollamaService.getModelDisplayName()} ({ollamaService.getCurrentModel()})
@@ -1335,7 +1459,7 @@ export default function AICompanionPhone() {
                 </p>
               </>
             )}
-            {!localLLMAvailable && (
+            {!llmStatus.localAvailable && (
               <p className="text-xs text-orange-600 mt-1">
                 💡 Start Ollama in Termux to enable offline AI conversations
               </p>

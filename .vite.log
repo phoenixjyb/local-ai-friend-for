@@ -1953,3 +1953,12 @@ Use --emptyOutDir to override.
 [2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/web-CNmE55jM.js       2.44 kB │ gzip:   1.09 kB
 [2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/index-DZyTRYEx.js   385.91 kB │ gzip: 118.89 kB
 [2025-07-31T05:33:30.917Z] [INFO] ✓ built in 6.07s
+[2025-07-31T05:35:42.053Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:35:49.352Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:36:09.921Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:36:17.928Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:36:32.128Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:36:55.036Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:37:13.940Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:37:35.673Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:37:42.578Z] [INFO] hmr update /src/App.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
