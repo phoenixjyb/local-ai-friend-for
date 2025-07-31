@@ -340,6 +340,22 @@ export default function AICompanionPhone() {
           toast.error('🎤 Microphone permission denied. Please allow microphone access and refresh.')
         } else if (error.name === 'ServiceNotAllowedError') {
           toast.error('🎤 Speech recognition service not allowed. Please check browser settings.')
+        } else if (error.name === 'LanguageNotSupportedError') {
+          console.log('⚠️ Language not supported, trying fallback language...')
+          // Try fallback to English US
+          if (recognitionRef.current) {
+            try {
+              recognitionRef.current.lang = 'en-US'
+              toast.info('🎤 Switching to US English and retrying...')
+              setTimeout(() => {
+                if (callState === 'active' && !aiSpeaking && !isListening) {
+                  startListening()
+                }
+              }, 1500)
+            } catch (fallbackError) {
+              toast.error('🎤 Speech recognition not supported in this browser')
+            }
+          }
         } else {
           console.error('❌ Unknown speech recognition error:', error)
           toast.error(`🎤 Voice recognition failed: ${error.message}`)
@@ -568,7 +584,27 @@ export default function AICompanionPhone() {
           // Enhanced speech recognition settings for better reliability
           recognitionRef.current.continuous = false // Single shot for better control
           recognitionRef.current.interimResults = true // Show interim results for feedback
-          recognitionRef.current.lang = 'en-GB'
+          
+          // Try different language codes for better compatibility
+          const supportedLanguages = ['en-US', 'en-GB', 'en', 'en-AU', 'en-CA']
+          let languageSet = false
+          
+          for (const lang of supportedLanguages) {
+            try {
+              recognitionRef.current.lang = lang
+              languageSet = true
+              console.log(`✅ Speech recognition language set to: ${lang}`)
+              break
+            } catch (error) {
+              console.log(`⚠️ Language ${lang} not supported, trying next...`)
+            }
+          }
+          
+          if (!languageSet) {
+            console.log('⚠️ Using default browser language for speech recognition')
+            recognitionRef.current.lang = navigator.language || 'en-US'
+          }
+          
           recognitionRef.current.maxAlternatives = 1 // Reduce to 1 for simpler processing
           
           console.log('✅ Speech Recognition initialized with settings:', {
@@ -850,6 +886,19 @@ export default function AICompanionPhone() {
         case 'service-not-allowed':
           console.error('❌ Speech recognition service not allowed')
           toast.error('🎤 Speech recognition blocked. Please check browser settings.')
+          break
+          
+        case 'language-not-supported':
+          console.error('❌ Language not supported, trying fallback')
+          toast.info('🎤 Switching to US English and retrying...')
+          if (recognitionRef.current) {
+            recognitionRef.current.lang = 'en-US'
+            setTimeout(() => {
+              if (callState === 'active' && !aiSpeaking && !isListening) {
+                startListening()
+              }
+            }, 2000)
+          }
           break
           
         case 'aborted':
@@ -1711,7 +1760,8 @@ export default function AICompanionPhone() {
                 
                 testRecognition.continuous = false
                 testRecognition.interimResults = false
-                testRecognition.lang = 'en-GB'
+                // Try US English for broader compatibility
+                testRecognition.lang = 'en-US'
                 testRecognition.maxAlternatives = 1
                 
                 testRecognition.onresult = (event) => {
@@ -1851,7 +1901,7 @@ export default function AICompanionPhone() {
                 
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
                 const recognition = new SpeechRecognition()
-                recognition.lang = 'en-GB'
+                recognition.lang = 'en-US' // Use US English for broader compatibility
                 
                 recognition.onstart = () => toast.info('🎤 Say "hello" to test...')
                 recognition.onresult = (event) => {
