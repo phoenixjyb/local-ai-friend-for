@@ -134,6 +134,115 @@ export default function AICompanionPhone() {
     initializeNativeServices()
   }, [])
 
+  // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback  
+  const generateAIResponse = useCallback(async (userInput: string) => {
+    try {
+      // Use personality-specific prompt template
+      const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
+      const personalizedPrompt = promptTemplate.replace('{input}', userInput)
+
+      // Try local LLM first (Ollama with enhanced service)
+      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
+        try {
+          console.log('🤖 Using local Ollama for response generation...')
+          const localResponse = await ollamaService.generatePersonalizedResponse(
+            userInput, 
+            selectedPersonality.id
+          )
+          if (localResponse && localResponse.trim().length > 0) {
+            console.log('✅ Local AI response generated successfully')
+            return localResponse
+          }
+        } catch (localError) {
+          console.error('❌ Local Ollama failed:', localError)
+          toast.warning('Local AI temporarily unavailable - using cloud backup')
+        }
+      }
+
+      // If local LLM fails and online, use cloud LLM
+      if (isOnline) {
+        console.log('☁️ Using cloud LLM for response generation...')
+        const prompt = spark.llmPrompt`${personalizedPrompt}`
+        const response = await spark.llm(prompt, 'gpt-4o-mini')
+        return response
+      } else {
+        // Personality-specific offline fallback responses
+        console.log('📱 Using offline fallback responses')
+        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
+        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
+      }
+    } catch (error) {
+      console.error('Error generating AI response:', error)
+      return "I'm sorry, I didn't quite catch that. Could you say that again?"
+    }
+  }, [isOnline, selectedPersonality, localLLMAvailable])
+
+  // Handle speech recognition (unified for web and native) - Define this first
+  const startListening = useCallback(async () => {
+    console.log('🎤 Starting to listen...')
+    
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      // Use native speech recognition
+      setIsListening(true)
+      try {
+        const transcript = await voiceChatService.startListening()
+        if (transcript.trim()) {
+          setIsListening(false)
+          const aiResponse = await generateAIResponse(transcript)
+          await speakResponse(aiResponse)
+          
+          // Save to conversation
+          if (currentConversationId) {
+            const timestamp = Date.now()
+            // Add conversation logic here
+          }
+        }
+        setIsListening(false)
+      } catch (error) {
+        console.error('Native speech recognition error:', error)
+        setIsListening(false)
+        toast.error('Voice recognition failed. Please try again.')
+      }
+    } else {
+      // Use web speech recognition with improved error handling
+      if (!recognitionRef.current) {
+        toast.error('Voice recognition not available')
+        return
+      }
+      
+      try {
+        // Stop any existing recognition first
+        if (isListening) {
+          recognitionRef.current.stop()
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
+        
+        console.log('🔄 Starting web speech recognition...')
+        setIsListening(true)
+        recognitionRef.current.start()
+        
+      } catch (error) {
+        console.error('❌ Web speech recognition start error:', error)
+        setIsListening(false)
+        
+        // Handle specific errors
+        if (error.name === 'InvalidStateError') {
+          toast.info('Restarting voice recognition...')
+          // Wait a bit and try again
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 1000)
+        } else if (error.name === 'NotAllowedError') {
+          toast.error('Microphone permission denied. Please allow microphone access.')
+        } else {
+          toast.error('Voice recognition failed. Please try again.')
+        }
+      }
+    }
+  }, [isNativeApp, currentConversationId, callState, aiSpeaking, isListening, generateAIResponse])
+
   // Speak AI response (unified for web and native)
   const speakResponse = useCallback(async (text: string) => {
     console.log('🤖 Starting to speak:', text.substring(0, 50) + '...')
@@ -393,48 +502,7 @@ export default function AICompanionPhone() {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
-  const generateAIResponse = useCallback(async (userInput: string) => {
-    try {
-      // Use personality-specific prompt template
-      const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
-      const personalizedPrompt = promptTemplate.replace('{input}', userInput)
 
-      // Try local LLM first (Ollama with enhanced service)
-      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
-        try {
-          console.log('🤖 Using local Ollama for response generation...')
-          const localResponse = await ollamaService.generatePersonalizedResponse(
-            userInput, 
-            selectedPersonality.id
-          )
-          if (localResponse && localResponse.trim().length > 0) {
-            console.log('✅ Local AI response generated successfully')
-            return localResponse
-          }
-        } catch (localError) {
-          console.error('❌ Local Ollama failed:', localError)
-          toast.warning('Local AI temporarily unavailable - using cloud backup')
-        }
-      }
-
-      // If local LLM fails and online, use cloud LLM
-      if (isOnline) {
-        console.log('☁️ Using cloud LLM for response generation...')
-        const prompt = spark.llmPrompt`${personalizedPrompt}`
-        const response = await spark.llm(prompt, 'gpt-4o-mini')
-        return response
-      } else {
-        // Personality-specific offline fallback responses
-        console.log('📱 Using offline fallback responses')
-        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
-        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
-      }
-    } catch (error) {
-      console.error('Error generating AI response:', error)
-      return "I'm sorry, I didn't quite catch that. Could you say that again?"
-    }
-  }, [isOnline, selectedPersonality, localLLMAvailable])
 
 
   // Get personality-specific fallback responses
@@ -497,71 +565,7 @@ export default function AICompanionPhone() {
     }
   }
 
-  // Handle speech recognition (unified for web and native)
-  const startListening = useCallback(async () => {
-    console.log('🎤 Starting to listen...')
-    
-    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
-      // Use native speech recognition
-      setIsListening(true)
-      try {
-        const transcript = await voiceChatService.startListening()
-        if (transcript.trim()) {
-          setIsListening(false)
-          const aiResponse = await generateAIResponse(transcript)
-          await speakResponse(aiResponse)
-          
-          // Save to conversation
-          if (currentConversationId) {
-            const timestamp = Date.now()
-            // Add conversation logic here
-          }
-        }
-        setIsListening(false)
-      } catch (error) {
-        console.error('Native speech recognition error:', error)
-        setIsListening(false)
-        toast.error('Voice recognition failed. Please try again.')
-      }
-    } else {
-      // Use web speech recognition with improved error handling
-      if (!recognitionRef.current) {
-        toast.error('Voice recognition not available')
-        return
-      }
-      
-      try {
-        // Stop any existing recognition first
-        if (isListening) {
-          recognitionRef.current.stop()
-          await new Promise(resolve => setTimeout(resolve, 100))
-        }
-        
-        console.log('🔄 Starting web speech recognition...')
-        setIsListening(true)
-        recognitionRef.current.start()
-        
-      } catch (error) {
-        console.error('❌ Web speech recognition start error:', error)
-        setIsListening(false)
-        
-        // Handle specific errors
-        if (error.name === 'InvalidStateError') {
-          toast.info('Restarting voice recognition...')
-          // Wait a bit and try again
-          setTimeout(() => {
-            if (callState === 'active' && !aiSpeaking) {
-              startListening()
-            }
-          }, 1000)
-        } else if (error.name === 'NotAllowedError') {
-          toast.error('Microphone permission denied. Please allow microphone access.')
-        } else {
-          toast.error('Voice recognition failed. Please try again.')
-        }
-      }
-    }
-  }, [isNativeApp, currentConversationId, generateAIResponse, speakResponse, callState, aiSpeaking, isListening])
+
 
   // Handle speech recognition
   useEffect(() => {
