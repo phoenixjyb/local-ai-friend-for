@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
+import AudioVisualization from '@/components/AudioVisualization'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
@@ -916,9 +917,18 @@ export default function AICompanionPhone() {
         
         {isListening && (
           <div className="absolute -bottom-4 -left-4 z-30">
-            <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
-              🎤 Listening
-            </Badge>
+            <div className="flex flex-col items-center gap-2">
+              <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
+                🎤 Listening
+              </Badge>
+              {/* Mini audio visualization */}
+              <AudioVisualization
+                isListening={isListening}
+                color={selectedPersonality.color}
+                size="small"
+                type="bars"
+              />
+            </div>
           </div>
         )}
       </div>
@@ -929,27 +939,38 @@ export default function AICompanionPhone() {
             Call Duration: {formatDuration(callDuration)}
           </p>
           
-          {/* Enhanced status indicators */}
-          {isListening && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
-              <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
-              <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
-            </div>
-          )}
-          
-          {aiSpeaking && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-              <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
-            </div>
-          )}
-          
-          {!isListening && !aiSpeaking && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
-              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-              <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
-            </div>
-          )}
+          {/* Audio Visualization Component */}
+          <div className="flex flex-col items-center gap-4">
+            {/* Vivid audio visualization - different types for speaking vs listening */}
+            <AudioVisualization
+              isListening={isListening || aiSpeaking}
+              color={selectedPersonality.color}
+              size="large"
+              type={aiSpeaking ? "circle" : "wave"}
+            />
+            
+            {/* Enhanced status indicators */}
+            {isListening && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
+                <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
+                <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
+              </div>
+            )}
+            
+            {aiSpeaking && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
+              </div>
+            )}
+            
+            {!isListening && !aiSpeaking && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
+                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -1112,6 +1133,24 @@ export default function AICompanionPhone() {
           Draw for AI
         </Button>
 
+        {/* Test Visualizations Button */}
+        <Button
+          id="test-viz-button"
+          onClick={() => {
+            handleButtonPress('test-viz-button', 'magic-sparkle')
+            triggerCelebration('sparkles')
+            toast.success('Audio visualization shows sound levels!')
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-cyan-300 hover:border-cyan-400 transition-all text-cyan-600 hover:text-cyan-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'test-viz-button'}>
+            📊
+          </WigglyIcon>
+          Audio Viz
+        </Button>
+
         <Button
           id="history-button"
           onClick={() => {
@@ -1255,6 +1294,8 @@ export default function AICompanionPhone() {
             <li>• Multiple AI personalities with unique conversation styles</li>
             <li>• Local AI model support (via Ollama)</li>
             <li>• British English voice responses</li>
+            <li>• Real-time audio visualization showing voice input levels</li>
+            <li>• Vivid visual feedback when microphone detects sound</li>
             <li>• Child-friendly conversation topics</li>
             <li>• Easy interrupt and hang-up controls</li>
             <li>• Local conversation history</li>
