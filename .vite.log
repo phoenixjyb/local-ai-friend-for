@@ -2931,3 +2931,15 @@ Use --emptyOutDir to override.
 [2025-07-31T14:55:38.894Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
 [2025-07-31T14:55:48.313Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
 [2025-07-31T14:56:04.487Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:59:42.957Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:00:25.281Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:00:30.708Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:00:35.423Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:00:41.966Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:00:57.001Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:01:11.439Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:01:27.122Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:01:41.459Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:01:56.552Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:02:53.535Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T15:03:22.800Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css

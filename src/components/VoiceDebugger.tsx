@@ -182,10 +182,12 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       recognition.interimResults = true
       recognition.maxAlternatives = 1
       
-      // Force English language instead of using auto-detection
-      // Auto-detection often defaults to system language which may not be supported
-      recognition.lang = 'en-US'
-      addTestResult(`🌐 Using forced English language: en-US`)
+      // Use best available English language instead of forcing en-US
+      const availableLanguages = navigator.languages
+      const englishLang = availableLanguages.find(lang => lang.startsWith('en')) || 'en'
+      
+      recognition.lang = englishLang
+      addTestResult(`🌐 Using best available English: ${englishLang}`)
       addTestResult(`🌍 Browser languages: ${navigator.languages.slice(0, 3).join(', ')}`)
       
       recognition.onstart = () => {

@@ -56,6 +56,15 @@ export default function AICompanionPhone() {
   const [llmStatus, setLlmStatus] = useState(llmService.getStatus())
   const [isDebuggerOpen, setIsDebuggerOpen] = useState(false)
   
+  // Helper function to get the best available English language
+  const getBestEnglishLanguage = useCallback(() => {
+    const availableLanguages = navigator.languages || [navigator.language]
+    const englishLang = availableLanguages.find(lang => lang.startsWith('en')) || 'en'
+    console.log('🌍 Available languages:', availableLanguages.slice(0, 3))
+    console.log('🗣️ Selected English variant:', englishLang)
+    return englishLang
+  }, [])
+  
   // Animation and sound effect states
   const [showHearts, setShowHearts] = useState(false)
   const [showStars, setShowStars] = useState(false)
@@ -350,13 +359,13 @@ export default function AICompanionPhone() {
             recognitionRef.current.continuous = false
             recognitionRef.current.interimResults = true
             recognitionRef.current.maxAlternatives = 1
-            // Force English language to prevent language-not-supported errors
-            recognitionRef.current.lang = 'en-US'
+            // Use best available English language to prevent language-not-supported errors
+            recognitionRef.current.lang = getBestEnglishLanguage()
             
             // Re-attach all the event handlers
             setupSpeechRecognitionHandlers()
             
-            toast.info('🎤 Reset speech recognition to English (en-US)...')
+            toast.info(`🎤 Reset speech recognition to English (${getBestEnglishLanguage()})...`)
             setTimeout(() => {
               if (callState === 'active' && !aiSpeaking && !isListening) {
                 console.log('🔄 Retrying with fresh recognition instance')
@@ -381,7 +390,7 @@ export default function AICompanionPhone() {
         }
       }
     }
-  }, [isNativeApp, currentConversationId, callState, aiSpeaking, isListening, generateAIResponse])
+  }, [isNativeApp, currentConversationId, callState, aiSpeaking, isListening, generateAIResponse, getBestEnglishLanguage])
 
   // Speak AI response (unified for web and native)
   const speakResponse = useCallback(async (text: string) => {
@@ -600,10 +609,10 @@ export default function AICompanionPhone() {
         console.log('🌐 Navigator language:', navigator.language)
         console.log('🌍 Available languages:', navigator.languages)
         
-        // Force English language instead of auto-detection
-        // Auto-detection often defaults to system language which may not be supported
-        recognitionRef.current.lang = 'en-US'
-        let supportedLang = 'en-US (forced English)'
+        // Use best available English language for better compatibility
+        const bestEnglishLang = getBestEnglishLanguage()
+        recognitionRef.current.lang = bestEnglishLang
+        let supportedLang = `${bestEnglishLang} (auto-detected English)`
         
         toast.success(`🗣️ Voice recognition ready (${supportedLang})`)
         
@@ -913,8 +922,8 @@ export default function AICompanionPhone() {
               recognitionRef.current.continuous = false
               recognitionRef.current.interimResults = true
               recognitionRef.current.maxAlternatives = 1
-              // Force English language to prevent language errors
-              recognitionRef.current.lang = 'en-US'
+              // Use best available English language to prevent language errors
+              recognitionRef.current.lang = getBestEnglishLanguage()
               
               setupSpeechRecognitionHandlers() // Re-setup handlers
               
@@ -1141,11 +1150,11 @@ export default function AICompanionPhone() {
               recognitionRef.current.continuous = false
               recognitionRef.current.interimResults = true
               recognitionRef.current.maxAlternatives = 1
-              // Force English language to prevent language errors
-              recognitionRef.current.lang = 'en-US'
+              // Use best available English language to prevent language errors
+              recognitionRef.current.lang = getBestEnglishLanguage()
               
               setupSpeechRecognitionHandlers()
-              console.log(`🔄 Created fresh recognition instance with English (en-US)`)
+              console.log(`🔄 Created fresh recognition instance with English (${getBestEnglishLanguage()})`)
               toast.success(`🎤 Reset to English language`)
               
               // Retry if we're in an active call
@@ -1232,7 +1241,7 @@ export default function AICompanionPhone() {
       toast.info('🎤 Didn\'t understand that. Please try speaking again.')
     }
 
-  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp, isListening, startListening, playSound, triggerCelebration])
+  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp, isListening, startListening, playSound, triggerCelebration, getBestEnglishLanguage])
 
   const startCall = async () => {
     handleButtonPress('call-button', 'call-start')
@@ -2175,10 +2184,10 @@ export default function AICompanionPhone() {
               toast.info('🔍 Checking language compatibility...')
               
               const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-              const testLanguages = [
-                'en-US', 'en-GB', 'en', 'en-AU', 'en-CA', 
-                'en-IN', 'en-NZ', 'en-ZA'
-              ]
+              // Test with browser's available languages first, then fallback to common English variants
+              const navigatorLanguages = navigator.languages.filter(lang => lang.startsWith('en'))
+              const commonEnglishLanguages = ['en', 'en-GB', 'en-US', 'en-AU', 'en-CA']
+              const testLanguages = [...navigatorLanguages, ...commonEnglishLanguages.filter(lang => !navigatorLanguages.includes(lang))]
               
               const supportedLanguages = []
               const unsupportedLanguages = []
@@ -2285,12 +2294,13 @@ export default function AICompanionPhone() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
                 const recognition = new SpeechRecognition()
                 
-                // Force English language for quick test
-                recognition.lang = 'en-US'
-                console.log(`🗣️ Quick test using English (en-US)`)
+                // Use best available English language for quick test
+                const bestLang = getBestEnglishLanguage()
+                recognition.lang = bestLang
+                console.log(`🗣️ Quick test using English (${bestLang})`)
                 console.log(`🌐 Navigator language: ${navigator.language}`)
                 console.log(`🌍 Available languages: ${navigator.languages.join(', ')}`)
-                toast.info(`🎤 Testing with auto-detection - Say "hello"...`)
+                toast.info(`🎤 Testing with ${bestLang} - Say "hello"...`)
                 
                 recognition.continuous = false
                 recognition.interimResults = false
@@ -2318,7 +2328,7 @@ export default function AICompanionPhone() {
                       const fallbackRecognition = new SpeechRecognition()
                       fallbackRecognition.continuous = false
                       fallbackRecognition.interimResults = false
-                      fallbackRecognition.lang = 'en-US'
+                      fallbackRecognition.lang = getBestEnglishLanguage()
                       fallbackRecognition.onresult = (event) => {
                         const transcript = event.results[0][0].transcript
                         toast.success(`✅ Fallback test heard: "${transcript}"`)
