@@ -28,10 +28,10 @@ function useKV<T>(key: string, defaultValue: T): [T, (value: T) => void] {
 
   return [state, setValue]
 }
-
 import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
+import AudioVisualization from '@/components/AudioVisualization'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
@@ -98,29 +98,29 @@ export default function AICompanionPhone() {
     switch (type) {
       case 'hearts':
         setShowHearts(true)
-        setTimeout(() => setShowHearts(false), 100)
+        setTimeout(() => setShowHearts(false), 3000)
         playSound('heart-beat')
         break
       case 'stars':
         setShowStars(true)
-        setTimeout(() => setShowStars(false), 100)
+        setTimeout(() => setShowStars(false), 3000)
         playSound('magic-sparkle')
         break
       case 'sparkles':
         setShowSparkles(true)
-        setTimeout(() => setShowSparkles(false), 100)
+        setTimeout(() => setShowSparkles(false), 3000)
         playSound('magic-sparkle', 0.5)
         break
       case 'confetti':
         setShowConfetti(true)
-        setTimeout(() => setShowConfetti(false), 100)
+        setTimeout(() => setShowConfetti(false), 3000)
         playSound('success-chime')
         break
       case 'emoji':
         if (emoji) {
           setCurrentEmoji(emoji)
           setShowEmojiReaction(true)
-          setTimeout(() => setShowEmojiReaction(false), 100)
+          setTimeout(() => setShowEmojiReaction(false), 2000)
           playSound('pop')
         }
         break
@@ -157,18 +157,140 @@ export default function AICompanionPhone() {
     initializeNativeServices()
   }, [])
 
+  // Generate AI response using Web LLM only (Local LLM temporarily disabled for testing)
+  const generateAIResponse = useCallback(async (userInput: string) => {
+    try {
+      // Use personality-specific prompt template
+      const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
+      const personalizedPrompt = promptTemplate.replace('{input}', userInput)
+
+      // TEMPORARILY DISABLED: Local LLM (Ollama) - Force web-only for testing
+      // This allows us to test voice recognition and web LLM integration
+      console.log('🌐 LOCAL LLM DISABLED - Using web LLM only for testing...')
+
+      // Use cloud LLM if online
+      if (isOnline) {
+        console.log('☁️ Using cloud LLM for response generation...')
+        // TODO: Replace with actual cloud LLM service
+        // const prompt = `${personalizedPrompt}`
+        // const response = await cloudLLMService.generateResponse(prompt, 'gpt-4o-mini')
+        console.log('⚠️ Cloud LLM temporarily disabled - using offline fallback')
+        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
+        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
+      } else {
+        // Personality-specific offline fallback responses
+        console.log('📱 Using offline fallback responses')
+        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
+        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
+      }
+    } catch (error) {
+      console.error('❌ Error generating AI response:', error)
+      toast.error('AI response failed. Please try again.')
+      return "I'm sorry, I didn't quite catch that. Could you say that again?"
+    }
+  }, [isOnline, selectedPersonality])
+
+  // Handle speech recognition (unified for web and native) - Define this first
+  const startListening = useCallback(async () => {
+    console.log('🎤 Starting to listen...')
+    
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      // Use native speech recognition
+      setIsListening(true)
+      try {
+        const transcript = await voiceChatService.startListening()
+        if (transcript.trim()) {
+          setIsListening(false)
+          const aiResponse = await generateAIResponse(transcript)
+          await speakResponse(aiResponse)
+          
+          // Save to conversation
+          if (currentConversationId) {
+            const timestamp = Date.now()
+            // Add conversation logic here
+          }
+        }
+        setIsListening(false)
+      } catch (error) {
+        console.error('Native speech recognition error:', error)
+        setIsListening(false)
+        toast.error('Voice recognition failed. Please try again.')
+      }
+    } else {
+      // Use web speech recognition with improved error handling
+      if (!recognitionRef.current) {
+        toast.error('Voice recognition not available')
+        return
+      }
+      
+      try {
+        // Stop any existing recognition first
+        if (isListening) {
+          recognitionRef.current.stop()
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
+        
+        console.log('🔄 Starting web speech recognition...')
+        setIsListening(true)
+        recognitionRef.current.start()
+        
+      } catch (error) {
+        console.error('❌ Web speech recognition start error:', error)
+        setIsListening(false)
+        
+        // Handle specific errors
+        if (error.name === 'InvalidStateError') {
+          toast.info('Restarting voice recognition...')
+          // Wait a bit and try again
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 1000)
+        } else if (error.name === 'NotAllowedError') {
+          toast.error('Microphone permission denied. Please allow microphone access.')
+        } else {
+          toast.error('Voice recognition failed. Please try again.')
+        }
+      }
+    }
+  }, [isNativeApp, currentConversationId, callState, aiSpeaking, isListening, generateAIResponse])
+
   // Speak AI response (unified for web and native)
   const speakResponse = useCallback(async (text: string) => {
+    console.log('🤖 Starting to speak:', text.substring(0, 50) + '...')
+    
     // Trigger speaking animation and sounds
     playSound('ai-thinking', 0.4)
     triggerCelebration('sparkles')
+    setAiSpeaking(true)
     
     if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
       // Use native TTS with Samsung S24 Ultra optimizations
-      await voiceChatService.speak(text, selectedPersonality.id)
+      try {
+        await voiceChatService.speak(text, selectedPersonality.id)
+        setAiSpeaking(false)
+        playSound('pop', 0.3)
+        
+        // Auto-restart listening after speaking finishes
+        setTimeout(() => {
+          if (callState === 'active' && !isListening) {
+            startListening()
+          }
+        }, 1000)
+      } catch (error) {
+        console.error('Native TTS error:', error)
+        setAiSpeaking(false)
+      }
     } else {
       // Use web TTS
-      if (!synthRef.current) return
+      if (!synthRef.current) {
+        setAiSpeaking(false)
+        return
+      }
+      
+      // Cancel any existing speech
+      synthRef.current.cancel()
       
       const utterance = new SpeechSynthesisUtterance(text)
       // Use personality-specific voice settings
@@ -179,13 +301,22 @@ export default function AICompanionPhone() {
       // Try to use British English voice
       const voices = synthRef.current.getVoices()
       const britishVoice = voices.find(voice => 
-        voice.lang.includes('en-GB') || voice.name.includes('British') || voice.name.includes('Daniel') || voice.name.includes('Kate')
+        voice.lang.includes('en-GB') || 
+        voice.name.includes('British') || 
+        voice.name.includes('Daniel') || 
+        voice.name.includes('Kate') ||
+        voice.name.includes('Female') ||
+        voice.name.includes('UK')
       )
       if (britishVoice) {
         utterance.voice = britishVoice
+        console.log('🗣️ Using British voice:', britishVoice.name)
+      } else {
+        console.log('🗣️ Using default voice')
       }
       
       utterance.onstart = () => {
+        console.log('🗣️ TTS started speaking')
         setAiSpeaking(true)
         // Different animations based on personality
         if (selectedPersonality.id === 'cheerful-buddy') {
@@ -200,63 +331,45 @@ export default function AICompanionPhone() {
           triggerCelebration('confetti')
         }
       }
+      
       utterance.onend = () => {
+        console.log('✅ TTS finished speaking')
         setAiSpeaking(false)
         playSound('pop', 0.3)
+        
+        // Auto-restart listening after speaking finishes (with delay)
+        setTimeout(() => {
+          if (callState === 'active' && !isListening) {
+            console.log('🔄 Auto-restarting listening after AI finished speaking')
+            startListening()
+          }
+        }, 1500) // Give a bit more time for the user to process what was said
       }
       
+      utterance.onerror = (event) => {
+        console.error('❌ TTS error:', event.error)
+        setAiSpeaking(false)
+        toast.error('Text-to-speech error occurred')
+      }
+      
+      console.log('🗣️ Starting TTS...')
       synthRef.current.speak(utterance)
     }
-  }, [selectedPersonality, isNativeApp, playSound, triggerCelebration])
+  }, [selectedPersonality, isNativeApp, playSound, triggerCelebration, callState, isListening, startListening])
 
-  // Check for local LLM availability and auto-connect
+  // TEMPORARILY DISABLED: Check for local LLM availability 
+  // This forces web-only LLM for testing voice recognition and web integration
   useEffect(() => {
-    const initializeOllama = async () => {
-      console.log('🔄 Checking for local Ollama + Gemma3 setup...')
-      
-      const isInitialized = await ollamaService.initialize()
-      setLocalLLMAvailable(isInitialized)
-      
-      if (isInitialized) {
-        const modelName = ollamaService.getModelDisplayName()
-        toast.success(`🤖 ${modelName} AI connected! Ready for offline chats.`)
-        
-        // Auto-greet the user when first connected (with delay for better UX)
-        setTimeout(() => {
-          const greeting = `Hello there! I'm your ${selectedPersonality.name} and I'm running right here on your Samsung Galaxy S24 Ultra with ${modelName}! ` +
-                          `No internet needed - we can chat anytime you want. What would you like to talk about today?`
-          speakResponse(greeting)
-        }, 3000) // 3 second delay to let the user see the UI first
-      } else {
-        // Provide helpful setup guidance
-        setTimeout(() => {
-          toast.info('💡 To enable offline AI: Run "ollama pull gemma2:2b" in Termux, then restart the app!')
-        }, 2000)
-      }
-    }
+    console.log('🌐 LOCAL LLM TEMPORARILY DISABLED FOR TESTING')
+    console.log('🔄 All AI responses will use web-based LLM only')
     
-    // Initial check with delay for app startup
-    setTimeout(initializeOllama, 1500)
+    // Force local LLM to be unavailable for testing
+    setLocalLLMAvailable(false)
     
-    // Periodic connection check
-    const interval = setInterval(async () => {
-      const isConnected = await ollamaService.checkConnection()
-      if (isConnected !== localLLMAvailable) {
-        if (isConnected) {
-          const isInitialized = await ollamaService.initialize()
-          setLocalLLMAvailable(isInitialized)
-          if (isInitialized) {
-            toast.success('🔄 Local AI reconnected!')
-          }
-        } else {
-          setLocalLLMAvailable(false)
-          toast.warning('⚠️ Local AI disconnected - using cloud backup')
-        }
-      }
-    }, 15000) // Check every 15 seconds
-    
-    return () => clearInterval(interval)
-  }, [selectedPersonality, speakResponse])
+    setTimeout(() => {
+      toast.info('🌐 Using web-based AI for testing - Local LLM disabled')
+    }, 2000)
+  }, [])
 
   // Monitor online/offline status
   useEffect(() => {
@@ -279,22 +392,65 @@ export default function AICompanionPhone() {
     }
   }, [])
 
-  // Initialize speech APIs
+  // Initialize speech APIs with better error handling
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      recognitionRef.current = new SpeechRecognition()
-      recognitionRef.current.continuous = true
-      recognitionRef.current.interimResults = true
-      recognitionRef.current.lang = 'en-GB'
+    const initializeSpeechApis = async () => {
+      // Check for speech recognition support
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        recognitionRef.current = new SpeechRecognition()
+        recognitionRef.current.continuous = true
+        recognitionRef.current.interimResults = true
+        recognitionRef.current.lang = 'en-GB'
+        recognitionRef.current.maxAlternatives = 1
+        
+        toast.success('🎤 Voice recognition ready!')
+      } else {
+        toast.warning('Voice recognition not supported in this browser')
+      }
+      
+      // Check for speech synthesis support
+      if ('speechSynthesis' in window) {
+        synthRef.current = window.speechSynthesis
+        
+        // Wait for voices to load
+        const waitForVoices = () => {
+          return new Promise<void>((resolve) => {
+            const voices = synthRef.current?.getVoices() || []
+            if (voices.length > 0) {
+              console.log('✅ Speech Synthesis voices loaded:', voices.length)
+              resolve()
+            } else {
+              synthRef.current?.addEventListener('voiceschanged', () => {
+                const newVoices = synthRef.current?.getVoices() || []
+                console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
+                resolve()
+              }, { once: true })
+            }
+          })
+        }
+        
+        await waitForVoices()
+        console.log('✅ Speech Synthesis initialized')
+      } else {
+        toast.warning('Text-to-speech not supported in this browser')
+      }
+      
+      // Request microphone permission
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true })
+        console.log('✅ Microphone permission granted')
+        toast.success('🎤 Microphone access granted!')
+      } catch (error) {
+        console.error('❌ Microphone permission error:', error)
+        toast.error('Please allow microphone access for voice features')
+      }
     }
     
-    if ('speechSynthesis' in window) {
-      synthRef.current = window.speechSynthesis
-    }
+    initializeSpeechApis()
   }, [])
 
-  // Handle call timer
+  // Call timer management
   useEffect(() => {
     if (callState === 'active') {
       callTimerRef.current = setInterval(() => {
@@ -306,10 +462,11 @@ export default function AICompanionPhone() {
         callTimerRef.current = null
       }
     }
-    
+
     return () => {
       if (callTimerRef.current) {
         clearInterval(callTimerRef.current)
+        callTimerRef.current = null
       }
     }
   }, [callState])
@@ -320,50 +477,6 @@ export default function AICompanionPhone() {
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
-
-  // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback
-  const generateAIResponse = useCallback(async (userInput: string) => {
-    try {
-      // Use personality-specific prompt template
-      const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
-      const personalizedPrompt = promptTemplate.replace('{input}', userInput)
-
-      // Try local LLM first (Ollama with enhanced service)
-      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
-        try {
-          console.log('🤖 Using local Ollama for response generation...')
-          const localResponse = await ollamaService.generatePersonalizedResponse(
-            userInput, 
-            selectedPersonality.id
-          )
-          if (localResponse && localResponse.trim().length > 0) {
-            console.log('✅ Local AI response generated successfully')
-            return localResponse
-          }
-        } catch (localError) {
-          console.error('❌ Local Ollama failed:', localError)
-          toast.warning('Local AI temporarily unavailable - using cloud backup')
-        }
-      }
-
-      // If local LLM fails and online, use cloud LLM
-      if (isOnline) {
-        console.log('☁️ Using cloud LLM for response generation...')
-        const prompt = spark.llmPrompt`${personalizedPrompt}`
-        const response = await spark.llm(prompt, 'gpt-4o-mini')
-        return response
-      } else {
-        // Personality-specific offline fallback responses
-        console.log('📱 Using offline fallback responses')
-        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
-        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
-      }
-    } catch (error) {
-      console.error('Error generating AI response:', error)
-      return "I'm sorry, I didn't quite catch that. Could you say that again?"
-    }
-  }, [isOnline, selectedPersonality, localLLMAvailable])
-
 
   // Get personality-specific fallback responses
   const getPersonalityFallbackResponses = (personality: AIPersonality) => {
@@ -402,15 +515,14 @@ export default function AICompanionPhone() {
         ]
       case 'wise-owl':
         return [
-          "That's a very thoughtful observation. What do you think that means?",
-          "How interesting! That reminds me of something fascinating...",
-          "You're showing great wisdom there. Can you tell me more?",
-          "That's quite perceptive of you. How did you learn that?",
-          "What a scholarly question! You have a wonderful mind."
+          "That's very thoughtful. What do you think about it?",
+          "How wise of you to notice that. What else can you learn?",
+          "That shows great thinking! What would you do next?",
+          "Very perceptive! How might that help others?",
+          "That's a clever observation. What patterns do you see?"
         ]
       case 'creative-artist':
         return [
-          "What a beautifully creative idea! How did you imagine that?",
           "That sounds absolutely artistic! What colors would you use?",
           "How wonderfully imaginative! What inspired that thought?",
           "That's so creative! You have such an artistic soul!",
@@ -425,45 +537,6 @@ export default function AICompanionPhone() {
     }
   }
 
-  // Handle speech recognition (unified for web and native)
-  const startListening = useCallback(async () => {
-    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
-      // Use native speech recognition
-      setIsListening(true)
-      try {
-        const transcript = await voiceChatService.startListening()
-        if (transcript.trim()) {
-          setIsListening(false)
-          const aiResponse = await generateAIResponse(transcript)
-          await speakResponse(aiResponse)
-          
-          // Save to conversation
-          if (currentConversationId) {
-            const timestamp = Date.now()
-            // Add conversation logic here
-          }
-        }
-        setIsListening(false)
-      } catch (error) {
-        console.error('Native speech recognition error:', error)
-        setIsListening(false)
-        toast.error('Voice recognition failed. Please try again.')
-      }
-    } else {
-      // Use web speech recognition
-      if (!recognitionRef.current) return
-      
-      try {
-        setIsListening(true)
-        recognitionRef.current.start()
-      } catch (error) {
-        console.error('Web speech recognition error:', error)
-        setIsListening(false)
-        toast.error('Voice recognition failed. Please try again.')
-      }
-    }
-  }, [isNativeApp, currentConversationId, generateAIResponse, speakResponse])
-
   // Handle speech recognition
   useEffect(() => {
     if (isNativeApp) return // Skip web speech setup for native app
@@ -471,44 +544,92 @@ export default function AICompanionPhone() {
     if (!recognitionRef.current) return
 
     recognitionRef.current.onresult = async (event) => {
+      console.log('🎤 Speech recognition result received')
       const result = event.results[event.results.length - 1]
       if (result.isFinal) {
         const transcript = result[0].transcript.trim()
-        if (transcript) {
+        console.log('📝 Final transcript:', transcript)
+        if (transcript && transcript.length > 2) {
           setIsListening(false)
           playSound('success-chime', 0.6)
           triggerCelebration('emoji', '👂')
+          toast.success(`Heard: "${transcript}"`)
           
+          console.log('🤖 Generating AI response...')
           const aiResponse = await generateAIResponse(transcript)
-          speakResponse(aiResponse)
+          console.log('💬 AI response ready:', aiResponse.substring(0, 50) + '...')
+          await speakResponse(aiResponse)
+        } else {
+          console.log('⚠️ Transcript too short, continuing to listen...')
+          // Continue listening if transcript is too short
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              startListening()
+            }
+          }, 500)
+        }
+      } else {
+        // Show interim results
+        const interimTranscript = result[0].transcript
+        if (interimTranscript.length > 5) {
+          console.log('🔄 Interim transcript:', interimTranscript)
         }
       }
     }
 
     recognitionRef.current.onerror = (event) => {
-      console.error('Speech recognition error:', event.error)
+      console.error('❌ Speech recognition error:', event.error)
       setIsListening(false)
       playSound('error-boop')
       triggerCelebration('emoji', '🤔')
-      toast.error('Having trouble hearing you. Please try again!')
+      
+      // Different error handling
+      if (event.error === 'no-speech') {
+        toast.info('No speech detected. Trying again...')
+        // Restart listening after a short delay
+        setTimeout(() => {
+          if (callState === 'active' && !aiSpeaking) {
+            startListening()
+          }
+        }, 1500)
+      } else if (event.error === 'audio-capture') {
+        toast.error('Microphone access denied. Please allow microphone access.')
+      } else if (event.error === 'not-allowed') {
+        toast.error('Microphone permission needed. Please allow and refresh.')
+      } else {
+        toast.error(`Voice recognition error: ${event.error}. Trying again...`)
+        // Restart listening after error
+        setTimeout(() => {
+          if (callState === 'active' && !aiSpeaking) {
+            startListening()
+          }
+        }, 2000)
+      }
     }
 
     recognitionRef.current.onstart = () => {
+      console.log('🎤 Speech recognition started')
+      setIsListening(true)
       playSound('pop', 0.4)
       triggerCelebration('sparkles')
+      toast.info('🎤 Listening...')
     }
 
     recognitionRef.current.onend = () => {
-      if (callState === 'active' && !aiSpeaking) {
-        // Restart listening if call is still active
+      console.log('🛑 Speech recognition ended')
+      if (callState === 'active' && !aiSpeaking && isListening) {
+        // Restart listening if call is still active and we were listening
+        console.log('🔄 Restarting speech recognition...')
         setTimeout(() => {
-          if (callState === 'active') {
+          if (callState === 'active' && !aiSpeaking) {
             startListening()
           }
         }, 1000)
+      } else {
+        setIsListening(false)
       }
     }
-  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp])
+  }, [callState, aiSpeaking, generateAIResponse, speakResponse, isNativeApp, isListening])
 
   const startCall = async () => {
     handleButtonPress('call-button', 'call-start')
@@ -530,22 +651,21 @@ export default function AICompanionPhone() {
       playSound('success-chime')
       toast.success('Connected to your AI friend!')
       
-      // Start the timer
-      callTimerRef.current = setInterval(() => {
-        setCallDuration(prev => prev + 1)
-      }, 1000)
-      
       // AI greeting with personality
-      speakResponse(selectedPersonality.conversationStyle.greeting)
+      const greeting = `Hello! I'm ${selectedPersonality.name} and I'm so excited to chat with you! ${selectedPersonality.conversationStyle.greeting}`
+      await speakResponse(greeting)
       
-      // Start listening after greeting
+      // Start listening after greeting with longer delay to ensure TTS finishes
       setTimeout(() => {
-        startListening()
-      }, 3000)
+        if (callState === 'active') {
+          console.log('🎤 Starting voice recognition after greeting...')
+          startListening()
+        }
+      }, 5000) // Increased delay to let greeting finish
     }, 1500)
   }
 
-  // Handle sharing drawings with AI
+  // Handle sharing drawings with AI - TESTING MODE: Web LLM only
   const handleDrawingShare = useCallback(async (imageData: string) => {
     try {
       // Create a prompt for the AI to respond to the drawing
@@ -553,102 +673,77 @@ export default function AICompanionPhone() {
       
       let aiResponse
       
-      // Try local LLM first with enhanced drawing response
-      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
-        try {
-          aiResponse = await ollamaService.generatePersonalizedResponse(
-            "I just drew a beautiful picture and want to show it to you!", 
-            selectedPersonality.id
-          )
-        } catch (localError) {
-          console.log('Local LLM unavailable for drawing response:', localError)
-        }
-      }
+      // TESTING MODE: Skip local LLM, use web LLM only
+      console.log('🌐 TESTING MODE: Using web LLM for drawing response...')
       
-      // Fallback to cloud LLM if available
-      if (!aiResponse && isOnline) {
-        const prompt = spark.llmPrompt`${basePrompt}`
-        aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
-      }
-      
-      // Final fallback to personality-specific responses
-      if (!aiResponse) {
-        const drawingResponses = getDrawingFallbackResponses(selectedPersonality)
+      if (isOnline) {
+        // TODO: Replace with actual cloud LLM service
+        // const prompt = `${basePrompt}`
+        // aiResponse = await cloudLLMService.generateResponse(prompt, 'gpt-4o-mini')
+        console.log('⚠️ Cloud LLM temporarily disabled for drawing - using fallback')
+        const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
+        aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
+      } else {
+        // Final fallback to personality-specific responses
+        const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
       
-      // Speak the AI response with celebration
       triggerCelebration('confetti')
-      setTimeout(() => triggerCelebration('hearts'), 500)
-      playSound('drawing-brush', 0.5)
-      speakResponse(aiResponse)
+      await speakResponse(aiResponse)
       setIsDrawingOpen(false)
       
     } catch (error) {
-      console.error('Error processing drawing:', error)
-      playSound('error-boop')
-      triggerCelebration('emoji', '😅')
-      speakResponse("What a wonderful drawing! You're such a talented artist!")
+      console.error('❌ Error generating drawing response:', error)
+      const fallbackResponse = "What a wonderful drawing! You're such a talented artist!"
+      await speakResponse(fallbackResponse)
       setIsDrawingOpen(false)
     }
-  }, [selectedPersonality, localLLMAvailable, isOnline, speakResponse])
+  }, [selectedPersonality, isOnline, speakResponse])
 
   // Get personality-specific drawing responses
-  const getDrawingFallbackResponses = (personality: AIPersonality) => {
+  const getDrawingResponsesByPersonality = (personality: AIPersonality) => {
     switch (personality.id) {
       case 'cheerful-buddy':
         return [
-          "Wow! What an absolutely amazing drawing! You're such a brilliant artist!",
           "That's the most wonderful picture I've ever seen! Tell me all about it!",
           "Oh my goodness, that's fantastic! What's your favorite part of your drawing?",
-          "You're so creative! I love all the beautiful colors you used!",
           "What a masterpiece! You should be so proud of your amazing art!"
         ]
       case 'curious-explorer':
         return [
-          "How fascinating! What inspired you to draw this? Tell me the story behind it!",
-          "What an intriguing creation! Can you explain what's happening in your picture?",
-          "How interesting! What made you choose those particular colors and shapes?",
-          "That's a wonderful observation in your art! What else can you tell me about it?",
-          "What a creative exploration! How did you decide what to draw?"
+          "What an interesting drawing! Can you tell me about the story behind it?",
+          "How fascinating! What materials did you use to create this?",
+          "That's a wonderful observation in art form! What inspired you to draw this?"
         ]
       case 'gentle-friend':
         return [
           "That's such a beautiful drawing, dear. It makes me feel so happy to see it.",
           "What a lovely picture. Thank you for sharing your special art with me.",
-          "That's very thoughtful and creative. Tell me what you were thinking about while drawing.",
-          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch.",
-          "That's very sweet of you to show me. Your art tells a wonderful story."
+          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch."
         ]
       case 'silly-joker':
         return [
           "Haha! That's absolutely bonkers and brilliant! What a giggly good drawing!",
           "What a wonderfully wacky and fantastic picture! It makes me want to dance!",
-          "That's hilariously awesome! Did you have fun making all those silly details?",
-          "Ha! You're such a funny and creative artist! Tell me about the silliest part!",
-          "What a delightfully daft and amazing drawing! You always make me smile!"
+          "That's hilariously awesome! Did you have fun making all those silly details?"
         ]
       case 'wise-owl':
         return [
           "What a thoughtfully composed artwork! You show great artistic wisdom.",
           "That's a very perceptive piece of art. What techniques did you use?",
-          "How scholarly and creative! Your drawing shows deep thinking and planning.",
-          "That's quite an accomplished piece of art! What did you learn while creating it?",
-          "What an intellectually engaging drawing! You have a very artistic mind."
+          "How scholarly and creative! Your drawing shows deep thinking and planning."
         ]
       case 'creative-artist':
         return [
           "What an absolutely magnificent piece of art! Your creativity shines so brightly!",
           "That's gorgeously imaginative! What beautiful artistic choices you made!",
-          "How wonderfully expressive and colorful! You have such an artistic soul!",
-          "That's breathtakingly creative! Tell me about your artistic inspiration!",
-          "What a magically beautiful creation! Your art fills my heart with joy!"
+          "How wonderfully expressive and colorful! You have such an artistic soul!"
         ]
       default:
         return [
-          "What a beautiful drawing! You're such a talented artist!",
           "That's wonderful! Tell me all about your amazing artwork!",
-          "What a creative masterpiece! I love seeing your art!"
+          "What a beautiful drawing! I love seeing your creativity!"
         ]
     }
   }
@@ -657,7 +752,6 @@ export default function AICompanionPhone() {
     handleButtonPress('end-call-button', 'call-end')
     setCallState('ending')
     
-    // Gentle goodbye animation
     triggerCelebration('emoji', '👋')
     setTimeout(() => triggerCelebration('hearts'), 300)
     
@@ -694,36 +788,35 @@ export default function AICompanionPhone() {
     setTimeout(() => {
       setCallState('idle')
       setCurrentConversationId(null)
+      setCallDuration(0)
       toast.success('Call ended. Thanks for chatting!')
     }, 1000)
   }
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* Local LLM Status Indicator */}
-      {localLLMAvailable && (
-        <div className="fixed top-4 left-4 z-50">
-          <Card className="cute-card p-3 border-primary/30">
-            <div className="flex items-center gap-2 text-sm text-primary">
-              <Brain size={16} className="cute-wiggle" />
-              <div className="flex flex-col">
-                <span className="font-medium">Local AI Active</span>
-                <span className="text-xs text-muted-foreground">
-                  {ollamaService.getModelDisplayName()}
-                </span>
-              </div>
+      {/* Web LLM Testing Mode Indicator */}
+      <div className="fixed top-4 left-4 z-50">
+        <Card className="cute-card p-3 border-blue-300 bg-blue-50">
+          <div className="flex items-center gap-2 text-sm text-blue-700">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <div className="flex flex-col">
+              <span className="font-medium">Web LLM Testing Mode</span>
+              <span className="text-xs text-blue-600">
+                🌐 Using web-based AI for testing - Local LLM temporarily disabled
+              </span>
             </div>
-          </Card>
-        </div>
-      )}
+          </div>
+        </Card>
+      </div>
 
-      {/* Offline Indicator */}
-      {!isOnline && !localLLMAvailable && (
-        <div className="fixed top-4 left-4 right-4 z-50">
-          <Card className="cute-card p-3 border-muted-foreground/20">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+      {/* TESTING MODE: No offline indicator since we're testing web LLM */}
+      {!isOnline && (
+        <div className="fixed top-16 left-4 right-4 z-50">
+          <Card className="cute-card p-3 border-orange-300 bg-orange-50">
+            <div className="flex items-center gap-2 text-sm text-orange-700">
               <WifiSlash size={16} />
-              <span>Offline Mode - Limited AI features</span>
+              <span>Offline - Web AI not available in testing mode</span>
             </div>
           </Card>
         </div>
@@ -734,34 +827,20 @@ export default function AICompanionPhone() {
         <p className="text-lg text-muted-foreground">
           Your {selectedPersonality.name} is ready to chat!
         </p>
-        <div className="flex items-center justify-center gap-2">
-          <div 
-            className="w-8 h-8 rounded-full flex items-center justify-center text-lg cute-pulse"
-            style={{ backgroundColor: `${selectedPersonality.color}20` }}
-          >
-            {selectedPersonality.emoji}
-          </div>
-          <Badge 
-            variant="secondary"
-            className="cute-card border-0"
-            style={{ backgroundColor: `${selectedPersonality.color}15` }}
-          >
-            {selectedPersonality.conversationStyle.responseStyle}
-          </Badge>
+        
+        <div 
+          className="p-3 rounded-lg border-2 cute-card flex items-center justify-center text-lg cute-pulse"
+          style={{ backgroundColor: `${selectedPersonality.color}20` }}
+        >
+          {selectedPersonality.emoji}
         </div>
-        {localLLMAvailable ? (
-          <p className="text-sm text-primary font-medium">
-            ✓ {ollamaService.getModelDisplayName()} AI running locally - No internet required!
-          </p>
-        ) : !isOnline ? (
-          <p className="text-sm text-muted-foreground">
-            Basic conversation available offline
-          </p>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Cloud AI available
-          </p>
-        )}
+        <Badge 
+          variant="secondary"
+          className="cute-card border-0"
+          style={{ backgroundColor: `${selectedPersonality.color}15` }}
+        >
+          {selectedPersonality.conversationStyle.responseStyle}
+        </Badge>
       </div>
 
       {/* Adorable AI Avatar with cute styling and particle effects */}
@@ -771,14 +850,15 @@ export default function AICompanionPhone() {
           isActive={callState === 'active' || aiSpeaking || callState === 'connecting'}
           color={selectedPersonality.color}
           intensity={
-            callState === 'connecting' ? 'high' :
             aiSpeaking ? 'high' : 
             callState === 'active' ? 'medium' : 
+            callState === 'connecting' ? 'low' : 
             'low'
           }
           type={
+            selectedPersonality.id === 'cheerful-buddy' ? 'mixed' :
             callState === 'connecting' ? 'mixed' :
-            selectedPersonality.id === 'cheerful-buddy' ? 'sparkles' :
+            aiSpeaking ? 'sparkles' :
             selectedPersonality.id === 'gentle-friend' ? 'hearts' :
             selectedPersonality.id === 'silly-joker' ? 'mixed' :
             selectedPersonality.id === 'wise-owl' ? 'stars' :
@@ -794,72 +874,68 @@ export default function AICompanionPhone() {
             color={selectedPersonality.color}
             intensity="low"
             type="sparkles"
-            hoverEffect={true}
           />
         )}
         
-        <BreathingAvatar isActive={callState === 'active' || aiSpeaking}>
-          <div className="relative">
-            <MagicSparkles 
-              active={aiSpeaking || callState === 'connecting'} 
-              intensity={aiSpeaking ? 'high' : 'medium'} 
-            />
+        <div className="relative">
+          <PulsingGlow 
+            active={aiSpeaking || callState === 'connecting'} 
+            intensity={aiSpeaking ? 'high' : 'medium'} 
+            color={selectedPersonality.color}
+          >
             <Avatar 
-              className="w-40 h-40 border-4 border-white shadow-xl relative z-10 transition-all duration-300 hover:scale-105 cursor-pointer"
-              style={{ 
+              className="w-40 h-40 border-8 transition-all duration-300 hover:scale-105 cursor-pointer"
+              style={{
                 borderColor: selectedPersonality.color,
                 background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
               }}
               onClick={() => {
-                handleButtonPress('avatar-click', 'magic-sparkle')
+                handleButtonPress('avatar-tap', 'pop')
                 triggerCelebration('sparkles')
               }}
             >
-              <PulsingGlow active={callState === 'active'} color="primary">
-                <AvatarFallback 
-                  className="text-6xl"
-                  style={{ 
-                    backgroundColor: `${selectedPersonality.color}15`,
-                    color: selectedPersonality.color,
-                    background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
-                  }}
-                >
-                  <WigglyIcon active={isListening}>
-                    {selectedPersonality.emoji}
-                  </WigglyIcon>
-                </AvatarFallback>
-              </PulsingGlow>
-            </Avatar>
-            
-            {/* Enhanced decorative elements around avatar */}
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-300 rounded-full animate-ping opacity-75 z-20">
-              <span className="text-xs">✨</span>
-            </div>
-            <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-300 rounded-full animate-pulse z-20 flex items-center justify-center">
-              <span className="text-xs">💫</span>
-            </div>
-            <div className="absolute -top-3 -left-3 w-4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
-              <span className="text-xs">⭐</span>
-            </div>
-            
-            {/* Magical glow effect when active */}
-            {(callState === 'active' || aiSpeaking) && (
-              <div 
-                className="absolute inset-0 rounded-full animate-pulse"
-                style={{
-                  background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
-                  filter: 'blur(8px)',
-                  transform: 'scale(1.3)',
-                  zIndex: 0
+              <AvatarFallback 
+                className="text-6xl bg-transparent"
+                style={{ 
+                  backgroundColor: `${selectedPersonality.color}15`,
+                  background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
                 }}
-              />
-            )}
+              >
+                <WigglyIcon active={isListening}>
+                  {selectedPersonality.emoji}
+                </WigglyIcon>
+              </AvatarFallback>
+            </Avatar>
+          </PulsingGlow>
+
+          {/* Enhanced decorative elements around avatar */}
+          <div className="absolute -top-3 -right-3 w-4 h-4 bg-yellow-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">✨</span>
           </div>
-        </BreathingAvatar>
-        
+          <div className="absolute -bottom-3 -right-3 w-4 h-4 bg-purple-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">💫</span>
+          </div>
+          <div className="absolute -top-3 -left-3 w-4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">⭐</span>
+          </div>
+
+          {/* Magical glow effect when active */}
+          {(callState === 'active' || aiSpeaking) && (
+            <div 
+              className="absolute inset-0 rounded-full animate-pulse"
+              style={{
+                background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
+                filter: 'blur(8px)',
+                transform: 'scale(1.3)',
+                zIndex: 0
+              }}
+            />
+          )}
+        </div>
+
         {aiSpeaking && (
           <div className="absolute -bottom-4 -right-4 z-30">
-            <Badge variant="secondary" className="cute-card animate-pulse border-accent text-accent">
+            <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
               <SpeakerHigh size={16} className="mr-1" />
               Speaking
             </Badge>
@@ -868,9 +944,18 @@ export default function AICompanionPhone() {
         
         {isListening && (
           <div className="absolute -bottom-4 -left-4 z-30">
-            <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
-              🎤 Listening
-            </Badge>
+            <div className="flex flex-col items-center gap-2">
+              <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
+                🎤 Listening
+              </Badge>
+              {/* Mini audio visualization */}
+              <AudioVisualization
+                isListening={isListening}
+                color={selectedPersonality.color}
+                size="small"
+                type="bars"
+              />
+            </div>
           </div>
         )}
       </div>
@@ -880,9 +965,39 @@ export default function AICompanionPhone() {
           <p className="text-xl font-semibold text-primary cute-pulse">
             Call Duration: {formatDuration(callDuration)}
           </p>
-          <p className="text-muted-foreground">
-            {isListening ? "I'm listening..." : aiSpeaking ? "AI is speaking..." : "Waiting..."}
-          </p>
+          
+          {/* Audio Visualization Component */}
+          <div className="flex flex-col items-center gap-4">
+            {/* Vivid audio visualization - different types for speaking vs listening */}
+            <AudioVisualization
+              isListening={isListening || aiSpeaking}
+              color={selectedPersonality.color}
+              size="large"
+              type={aiSpeaking ? "circle" : "wave"}
+            />
+            
+            {/* Enhanced status indicators */}
+            {isListening && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
+                <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
+                <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
+              </div>
+            )}
+            
+            {aiSpeaking && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
+              </div>
+            )}
+            
+            {!isListening && !aiSpeaking && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
+                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -911,42 +1026,87 @@ export default function AICompanionPhone() {
 
         {callState === 'connecting' && (
           <Button 
-            size="lg" 
             disabled 
+            size="lg"
             className="button-text h-20 w-56 rounded-full shadow-lg cute-breathe"
             style={{ 
-              background: `linear-gradient(135deg, ${selectedPersonality.color}80 0%, ${selectedPersonality.color}60 100%)`,
+              background: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
               border: '3px solid white'
             }}
           >
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
-            Connecting...
+            <div className="flex items-center justify-center gap-3">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
+              Connecting...
+            </div>
           </Button>
         )}
 
-        {(callState === 'active' || callState === 'ending') && (
-          <PulsingGlow active={true} color="warning">
-            <Button
-              id="end-call-button"
-              onClick={endCall}
-              size="lg"
-              className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
-              style={{ 
-                background: 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
-                border: '3px solid white'
-              }}
-            >
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <PhoneX size={24} />
+        {callState === 'active' && (
+          <div className="flex flex-col items-center gap-4">
+            <PulsingGlow active={true} color="warning">
+              <Button
+                id="end-call-button"
+                onClick={endCall}
+                size="lg"
+                className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
+                style={{ 
+                  background: 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
+                  border: '3px solid white'
+                }}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <PhoneX size={24} />
+                  </div>
+                  <span>Hang Up</span>
                 </div>
-                <span>Hang Up</span>
-              </div>
-            </Button>
-          </PulsingGlow>
+              </Button>
+            </PulsingGlow>
+
+            {/* Push to Talk Button - only show during active call */}
+            {callState === 'active' && (
+              <PulsingGlow active={isListening} color="accent">
+                <Button
+                  id="push-to-talk-button"
+                  onClick={() => {
+                    handleButtonPress('push-to-talk-button', 'pop')
+                    if (!isListening) {
+                      startListening()
+                    }
+                  }}
+                  size="lg"
+                  disabled={aiSpeaking}
+                  className={`button-text h-16 w-48 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
+                    isListening ? 'cute-pulse' : 'cute-bounce'
+                  }`}
+                  style={{ 
+                    background: isListening 
+                      ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+                      : 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+                    opacity: aiSpeaking ? 0.5 : 1
+                  }}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    {isListening ? (
+                      <>
+                        <div className="w-3 h-3 bg-white rounded-full animate-ping"></div>
+                        <span>🎤 Listening...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>🎤</span>
+                        <span>Push to Talk</span>
+                      </>
+                    )}
+                  </div>
+                </Button>
+              </PulsingGlow>
+            )}
+          </div>
         )}
       </div>
 
+      {/* Action buttons */}
       <div className="flex flex-wrap justify-center gap-3 mt-8">
         <Button
           id="personality-button"
@@ -961,8 +1121,28 @@ export default function AICompanionPhone() {
           <WigglyIcon active={lastButtonPressed === 'personality-button'}>
             <User size={20} className="mr-2" />
           </WigglyIcon>
-          Choose Friend
+          AI Friends
         </Button>
+
+        {/* Test Voice Button */}
+        <Button
+          id="test-voice-button"
+          onClick={() => {
+            handleButtonPress('test-voice-button', 'magic-sparkle')
+            triggerCelebration('sparkles')
+            const testMessage = `Hello! This is ${selectedPersonality.name} testing the voice. Can you hear me clearly?`
+            speakResponse(testMessage)
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-green-300 hover:border-green-400 transition-all text-green-600 hover:text-green-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'test-voice-button'}>
+            <SpeakerHigh size={20} className="mr-2 cute-bounce" />
+          </WigglyIcon>
+          Test Voice
+        </Button>
+
         <Button
           id="drawing-button"
           onClick={() => {
@@ -977,8 +1157,27 @@ export default function AICompanionPhone() {
           <WigglyIcon active={lastButtonPressed === 'drawing-button'}>
             <Palette size={20} className="mr-2 magic-sparkle" />
           </WigglyIcon>
-          Draw & Show
+          Draw for AI
         </Button>
+
+        {/* Test Visualizations Button */}
+        <Button
+          id="test-viz-button"
+          onClick={() => {
+            handleButtonPress('test-viz-button', 'magic-sparkle')
+            triggerCelebration('sparkles')
+            toast.success('Audio visualization shows sound levels!')
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-cyan-300 hover:border-cyan-400 transition-all text-cyan-600 hover:text-cyan-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'test-viz-button'}>
+            📊
+          </WigglyIcon>
+          Audio Viz
+        </Button>
+
         <Button
           id="history-button"
           onClick={() => {
@@ -994,11 +1193,12 @@ export default function AICompanionPhone() {
           </WigglyIcon>
           History
         </Button>
+
         <Button
           onClick={() => setCurrentView('settings')}
           variant="outline"
           size="lg"
-          className="button-text h-16 cute-card border-2 border-secondary/30 hover:border-secondary/50 transition-all"
+          className="button-text h-16 cute-card border-2 border-muted-foreground/30 hover:border-muted-foreground/50 transition-all"
         >
           <Gear size={20} className="mr-2" />
           Settings
@@ -1030,15 +1230,15 @@ export default function AICompanionPhone() {
             const personality = AI_PERSONALITIES.find(p => p.id === conv.personalityId) || selectedPersonality
             return (
               <Card key={conv.id} className="cute-card p-4 hover:shadow-lg transition-all">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div 
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-sm cute-pulse"
-                        style={{ backgroundColor: `${personality.color}20` }}
-                      >
-                        {personality.emoji}
-                      </div>
+                <div className="flex items-start gap-3">
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-sm cute-pulse"
+                    style={{ backgroundColor: `${personality.color}20` }}
+                  >
+                    {personality.emoji}
+                  </div>
+                  <div className="flex-1">
+                    <div>
                       <p className="font-semibold">
                         Chat with {personality.name}
                       </p>
@@ -1050,7 +1250,7 @@ export default function AICompanionPhone() {
                     <p className="text-sm text-muted-foreground">
                       Duration: {formatDuration(conv.duration)}
                     </p>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex gap-1 mt-2">
                       {conv.topics.map((topic, index) => (
                         <Badge key={index} variant="secondary" className="cute-card border-0">
                           {topic}
@@ -1058,7 +1258,7 @@ export default function AICompanionPhone() {
                       ))}
                     </div>
                   </div>
-                  <Heart size={20} className="text-pink-400 cute-pulse" />
+                  <Heart className="text-pink-400 cute-pulse" />
                 </div>
               </Card>
             )
@@ -1081,10 +1281,9 @@ export default function AICompanionPhone() {
         </Button>
       </div>
 
-      <Card className="cute-card p-6 space-y-4">
+      <Card className="cute-card p-6">
         <h3 className="text-lg font-semibold">Safety & Parental Controls</h3>
         <p className="text-muted-foreground">
-          This AI companion is designed to be safe and appropriate for children. 
           All conversations are processed locally when possible, and responses are 
           filtered for age-appropriate content.
         </p>
@@ -1110,8 +1309,8 @@ export default function AICompanionPhone() {
               {selectedPersonality.emoji}
             </div>
             <div>
-              <p className="font-medium">{selectedPersonality.name}</p>
-              <p className="text-xs text-muted-foreground">{selectedPersonality.description}</p>
+              <p className="font-semibold">{selectedPersonality.name}</p>
+              <p className="text-sm text-muted-foreground">{selectedPersonality.description}</p>
             </div>
           </div>
         </div>
@@ -1122,6 +1321,8 @@ export default function AICompanionPhone() {
             <li>• Multiple AI personalities with unique conversation styles</li>
             <li>• Local AI model support (via Ollama)</li>
             <li>• British English voice responses</li>
+            <li>• Real-time audio visualization showing voice input levels</li>
+            <li>• Vivid visual feedback when microphone detects sound</li>
             <li>• Child-friendly conversation topics</li>
             <li>• Easy interrupt and hang-up controls</li>
             <li>• Local conversation history</li>
@@ -1131,19 +1332,10 @@ export default function AICompanionPhone() {
         </div>
         
         <div className="mt-4 p-4 cute-card border-2 border-primary/20">
-          <h4 className="font-medium text-primary mb-2">Local AI Setup (Ollama + Gemma3)</h4>
-          <p className="text-sm text-muted-foreground mb-2">
-            For true offline functionality, install Ollama with Gemma3 model in Termux on your Samsung S24 Ultra:
-          </p>
-          <div className="space-y-1">
+          <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+          <div className="space-y-1 text-xs text-muted-foreground">
             <code className="text-xs bg-muted p-2 rounded block">
-              # In Termux - Install Ollama if not done yet:
-            </code>
-            <code className="text-xs bg-muted p-2 rounded block">
-              curl -fsSL https://ollama.ai/install.sh | sh
-            </code>
-            <code className="text-xs bg-muted p-2 rounded block">
-              # Download Gemma3 model (optimized for S24 Ultra):
+              # In Termux, install Ollama and download model:
             </code>
             <code className="text-xs bg-muted p-2 rounded block">
               ollama pull gemma2:2b
@@ -1247,9 +1439,11 @@ export default function AICompanionPhone() {
           }}
           variant="outline"
           size="sm"
-          className="cute-card border-2 w-12 h-12 rounded-full"
+          className="cute-card border-2 border-accent/30 hover:border-accent/50"
         >
-          <SpeakerHigh size={16} className={`${soundEnabled ? 'text-primary' : 'text-muted-foreground'} cute-wiggle`} />
+          <WigglyIcon active={!soundEnabled}>
+            {soundEnabled ? '🔊' : '🔇'}
+          </WigglyIcon>
         </Button>
       </div>
     </div>
