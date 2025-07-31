@@ -610,8 +610,6 @@ export default function AICompanionPhone() {
           console.log(`⚠️ Using fallback language: ${recognitionRef.current.lang}`)
         }
         
-        }
-        
         console.log('🎤 Speech recognition configured:', {
           continuous: recognitionRef.current.continuous,
           interimResults: recognitionRef.current.interimResults,
