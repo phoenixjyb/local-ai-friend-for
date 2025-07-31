@@ -2767,3 +2767,17 @@ Use --emptyOutDir to override.
 [2025-07-31T10:23:12.913Z] [INFO] ../preview-build/assets/web-DeV0QXzD.js       2.44 kB │ gzip:   1.09 kB
 [2025-07-31T10:23:12.913Z] [INFO] ../preview-build/assets/index-Bc40mZ5w.js   430.17 kB │ gzip: 128.69 kB
 [2025-07-31T10:23:12.914Z] [INFO] ✓ built in 5.57s
+[2025-07-31T10:24:21.294Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T10:24:21.366Z] [INFO] transforming...
+[2025-07-31T10:24:26.575Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T10:24:26.693Z] [INFO] rendering chunks...
+[2025-07-31T10:24:26.870Z] [INFO] computing gzip size...
+[2025-07-31T10:24:26.888Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.22 kB
+[2025-07-31T10:24:26.889Z] [INFO] ../preview-build/assets/index-j2Rqg2xg.css  442.08 kB │ gzip:  74.24 kB
+[2025-07-31T10:24:26.889Z] [INFO] ../preview-build/assets/web-poQM5Nn3.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T10:24:26.889Z] [INFO] ../preview-build/assets/web-CgVjEPUq.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T10:24:26.889Z] [INFO] ../preview-build/assets/web-CrvYKaJU.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T10:24:26.890Z] [INFO] ../preview-build/assets/spark-xLPddfwx.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T10:24:26.890Z] [INFO] ../preview-build/assets/web-DeV0QXzD.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T10:24:26.890Z] [INFO] ../preview-build/assets/index-Bc40mZ5w.js   430.17 kB │ gzip: 128.69 kB
+[2025-07-31T10:24:26.890Z] [INFO] ✓ built in 5.57s
