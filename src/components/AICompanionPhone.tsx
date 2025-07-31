@@ -341,19 +341,51 @@ export default function AICompanionPhone() {
         } else if (error.name === 'ServiceNotAllowedError') {
           toast.error('🎤 Speech recognition service not allowed. Please check browser settings.')
         } else if (error.name === 'LanguageNotSupportedError') {
-          console.log('⚠️ Language not supported, trying fallback language...')
-          // Try fallback to English US
+          console.log('⚠️ Language not supported in startListening, trying multiple fallbacks...')
+          // Try multiple fallback languages
           if (recognitionRef.current) {
-            try {
-              recognitionRef.current.lang = 'en-US'
-              toast.info('🎤 Switching to US English and retrying...')
+            const fallbackLanguages = ['en-US', 'en', 'en-GB', 'en-AU']
+            let fallbackSuccess = false
+            
+            for (const lang of fallbackLanguages) {
+              try {
+                recognitionRef.current.lang = lang
+                fallbackSuccess = true
+                console.log(`✅ Successfully set fallback language: ${lang}`)
+                toast.info(`🎤 Switched to ${lang} and retrying...`)
+                break
+              } catch (fallbackError) {
+                console.log(`❌ Fallback language ${lang} also failed`)
+              }
+            }
+            
+            if (fallbackSuccess) {
               setTimeout(() => {
                 if (callState === 'active' && !aiSpeaking && !isListening) {
+                  console.log('🔄 Retrying with fallback language')
                   startListening()
                 }
               }, 1500)
-            } catch (fallbackError) {
-              toast.error('🎤 Speech recognition not supported in this browser')
+            } else {
+              // Last resort - try creating new recognition without language setting
+              try {
+                console.log('🔄 Last resort: creating new recognition without language')
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+                recognitionRef.current = new SpeechRecognition()
+                recognitionRef.current.continuous = false
+                recognitionRef.current.interimResults = true
+                recognitionRef.current.maxAlternatives = 1
+                // Don't set language - let browser choose
+                
+                toast.info('🎤 Using browser default language...')
+                setTimeout(() => {
+                  if (callState === 'active' && !aiSpeaking && !isListening) {
+                    startListening()
+                  }
+                }, 1500)
+              } catch (finalError) {
+                toast.error('🎤 Speech recognition completely incompatible with this browser')
+              }
             }
           }
         } else {
@@ -584,7 +616,50 @@ export default function AICompanionPhone() {
         recognitionRef.current.interimResults = true
         recognitionRef.current.maxAlternatives = 1
         
-        // Set language with fallback logic
+        // Set language with enhanced fallback logic
+        // Test language support by actually starting recognition
+        const testLanguageSupport = async (lang: string): Promise<boolean> => {
+          return new Promise((resolve) => {
+            try {
+              const testRecognition = new SpeechRecognition()
+              testRecognition.lang = lang
+              testRecognition.continuous = false
+              testRecognition.interimResults = false
+              
+              let resolved = false
+              const timeout = setTimeout(() => {
+                if (!resolved) {
+                  resolved = true
+                  testRecognition.stop()
+                  resolve(false)
+                }
+              }, 1000)
+              
+              testRecognition.onstart = () => {
+                if (!resolved) {
+                  resolved = true
+                  clearTimeout(timeout)
+                  testRecognition.stop()
+                  resolve(true)
+                }
+              }
+              
+              testRecognition.onerror = (event) => {
+                if (!resolved) {
+                  resolved = true
+                  clearTimeout(timeout)
+                  console.log(`Language ${lang} error:`, event.error)
+                  resolve(event.error !== 'language-not-supported')
+                }
+              }
+              
+              testRecognition.start()
+            } catch (error) {
+              resolve(false)
+            }
+          })
+        }
+        
         const preferredLanguages = [
           'en-US',  // US English (most widely supported)
           'en-GB',  // British English 
@@ -594,21 +669,34 @@ export default function AICompanionPhone() {
         ]
         
         let languageSet = false
+        let supportedLang = 'en-US' // Safe default
+        
+        // First try simple setting without test for speed
         for (const lang of preferredLanguages) {
           try {
             recognitionRef.current.lang = lang
-            toast.success(`🗣️ Voice recognition ready (${lang})`)
+            supportedLang = lang
             languageSet = true
+            console.log(`🗣️ Set language to: ${lang}`)
             break
           } catch (error) {
-            console.log(`⚠️ Language ${lang} failed, trying next...`)
+            console.log(`⚠️ Language ${lang} setting failed, trying next...`)
           }
         }
         
+        // If no language could be set, use the most compatible default
         if (!languageSet) {
-          // Fallback to browser default
-          console.log(`⚠️ Using fallback language: ${recognitionRef.current.lang}`)
+          try {
+            recognitionRef.current.lang = 'en-US'
+            supportedLang = 'en-US'
+            languageSet = true
+            console.log('🗣️ Using safe default: en-US')
+          } catch (error) {
+            console.log('⚠️ Even en-US failed, using browser default')
+          }
         }
+        
+        toast.success(`🗣️ Voice recognition ready (${supportedLang})`)
         
         console.log('🎤 Speech recognition configured:', {
           continuous: recognitionRef.current.continuous,
@@ -890,12 +978,34 @@ export default function AICompanionPhone() {
           break
           
         case 'language-not-supported':
-          console.error('❌ Language not supported, trying fallback')
-          toast.info('🎤 Switching to US English and retrying...')
+          console.error('❌ Language not supported, trying safer fallback')
+          toast.info('🎤 Language issue detected - trying alternative settings...')
           if (recognitionRef.current) {
-            recognitionRef.current.lang = 'en-US'
+            // Try multiple fallback languages
+            const fallbackLanguages = ['en-US', 'en', 'en-GB', 'en-AU']
+            let fallbackSet = false
+            
+            for (const lang of fallbackLanguages) {
+              try {
+                recognitionRef.current.lang = lang
+                fallbackSet = true
+                console.log(`🔄 Set fallback language to: ${lang}`)
+                toast.info(`🎤 Switched to ${lang}, retrying...`)
+                break
+              } catch (error) {
+                console.log(`Fallback language ${lang} also failed`)
+              }
+            }
+            
+            if (!fallbackSet) {
+              // Last resort - try without setting any language
+              console.log('🔄 Using browser default language as last resort')
+              toast.info('🎤 Using browser default language...')
+            }
+            
             setTimeout(() => {
               if (callState === 'active' && !aiSpeaking && !isListening) {
+                console.log('🔄 Retrying with fallback language settings')
                 startListening()
               }
             }, 2000)
@@ -1761,13 +1871,30 @@ export default function AICompanionPhone() {
                 
                 testRecognition.continuous = false
                 testRecognition.interimResults = false
-                // Try US English for broader compatibility
-                testRecognition.lang = 'en-US'
                 testRecognition.maxAlternatives = 1
+                
+                // Try to set a compatible language
+                const testLanguages = ['en-US', 'en-GB', 'en', 'en-AU', 'en-CA']
+                let langSet = false
+                
+                for (const lang of testLanguages) {
+                  try {
+                    testRecognition.lang = lang
+                    langSet = true
+                    console.log(`🎤 Microphone test using language: ${lang}`)
+                    break
+                  } catch (error) {
+                    console.log(`Language ${lang} failed in microphone test`)
+                  }
+                }
+                
+                if (!langSet) {
+                  console.log('🎤 Microphone test using browser default language')
+                }
                 
                 testRecognition.onresult = (event) => {
                   const transcript = event.results[0][0].transcript
-                  const confidence = event.results[0][0].confidence
+                  const confidence = event.results[0][0].confidence || 0
                   console.log('✅ Microphone test successful:', transcript)
                   toast.success(`🎤 Microphone working! Heard: "${transcript}" (${Math.round(confidence * 100)}% confident)`)
                   triggerCelebration('confetti')
@@ -1775,22 +1902,39 @@ export default function AICompanionPhone() {
                 
                 testRecognition.onerror = (event) => {
                   console.error('❌ Microphone test failed:', event.error)
-                  toast.error(`🎤 Microphone test failed: ${event.error}`)
+                  if (event.error === 'language-not-supported') {
+                    toast.warning('⚠️ Language not supported, but microphone hardware seems fine. The Quick Test button may work better.')
+                  } else {
+                    toast.error(`🎤 Microphone test failed: ${event.error}`)
+                  }
                 }
                 
                 testRecognition.onstart = () => {
                   toast.info('🎤 Speak now for 3 seconds...')
                 }
                 
-                testRecognition.start()
+                testRecognition.onend = () => {
+                  console.log('🛑 Microphone test ended')
+                }
                 
-                // Auto-stop after 3 seconds
-                setTimeout(() => {
-                  testRecognition.stop()
-                }, 3000)
+                try {
+                  testRecognition.start()
+                  
+                  // Auto-stop after 3 seconds
+                  setTimeout(() => {
+                    try {
+                      testRecognition.stop()
+                    } catch (e) {
+                      console.log('Test recognition already stopped')
+                    }
+                  }, 3000)
+                } catch (startError) {
+                  console.error('❌ Failed to start microphone test:', startError)
+                  toast.error('❌ Failed to start microphone test: ' + startError.message)
+                }
                 
               } else {
-                toast.error('🎤 Speech recognition not available')
+                toast.error('🎤 Speech recognition not available in this browser')
               }
             } catch (error) {
               console.error('❌ Microphone test error:', error)
@@ -1885,6 +2029,109 @@ export default function AICompanionPhone() {
           Settings
         </Button>
 
+        {/* Language Compatibility Check Button */}
+        <Button
+          id="language-check-button"
+          onClick={async () => {
+            handleButtonPress('language-check-button', 'magic-sparkle')
+            
+            try {
+              console.log('🔍 Running comprehensive language compatibility check...')
+              toast.info('🔍 Checking language compatibility...')
+              
+              const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+              const testLanguages = [
+                'en-US', 'en-GB', 'en', 'en-AU', 'en-CA', 
+                'en-IN', 'en-NZ', 'en-ZA'
+              ]
+              
+              const supportedLanguages = []
+              const unsupportedLanguages = []
+              
+              for (const lang of testLanguages) {
+                try {
+                  const testRec = new SpeechRecognition()
+                  testRec.lang = lang
+                  
+                  // Test if we can access the lang property after setting
+                  if (testRec.lang === lang) {
+                    supportedLanguages.push(lang)
+                    console.log(`✅ ${lang} - Supported`)
+                  } else {
+                    unsupportedLanguages.push(lang)
+                    console.log(`❌ ${lang} - Setting failed`)
+                  }
+                } catch (error) {
+                  unsupportedLanguages.push(lang)
+                  console.log(`❌ ${lang} - Error: ${error.message}`)
+                }
+              }
+              
+              // Show results
+              if (supportedLanguages.length > 0) {
+                toast.success(`✅ Supported languages: ${supportedLanguages.join(', ')}`)
+                console.log('✅ Supported languages:', supportedLanguages)
+              }
+              
+              if (unsupportedLanguages.length > 0) {
+                toast.warning(`⚠️ Unsupported: ${unsupportedLanguages.join(', ')}`)
+                console.log('❌ Unsupported languages:', unsupportedLanguages)
+              }
+              
+              // Now test default browser language
+              try {
+                const defaultTest = new SpeechRecognition()
+                console.log(`🌐 Browser default language: ${defaultTest.lang}`)
+                toast.info(`🌐 Browser default: ${defaultTest.lang}`)
+              } catch (error) {
+                console.log('❌ Could not access default browser language')
+              }
+              
+              // Test actual recognition start with best supported language
+              if (supportedLanguages.length > 0) {
+                const bestLang = supportedLanguages[0]
+                toast.info(`🎤 Testing speech recognition with ${bestLang}...`)
+                
+                const finalTest = new SpeechRecognition()
+                finalTest.lang = bestLang
+                finalTest.continuous = false
+                finalTest.interimResults = false
+                
+                finalTest.onstart = () => {
+                  toast.success(`✅ ${bestLang} recognition started! Say "test"...`)
+                }
+                
+                finalTest.onresult = (event) => {
+                  const transcript = event.results[0][0].transcript
+                  toast.success(`✅ Perfect! Heard: "${transcript}" with ${bestLang}`)
+                  triggerCelebration('confetti')
+                }
+                
+                finalTest.onerror = (event) => {
+                  toast.error(`❌ Even ${bestLang} failed: ${event.error}`)
+                }
+                
+                finalTest.start()
+                setTimeout(() => finalTest.stop(), 3000)
+              } else {
+                toast.error('❌ No compatible languages found!')
+              }
+              
+            } catch (error) {
+              console.error('❌ Language compatibility check failed:', error)
+              toast.error('❌ Language check failed: ' + error.message)
+            }
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-purple-300 hover:border-purple-400 transition-all text-purple-600 hover:text-purple-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'language-check-button'}>
+            🌐
+          </WigglyIcon>
+          Check Languages
+        </Button>
+
         {/* Quick Voice Test Button */}
         <Button
           id="quick-voice-test"
@@ -1902,21 +2149,92 @@ export default function AICompanionPhone() {
                 
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
                 const recognition = new SpeechRecognition()
-                recognition.lang = 'en-US' // Use US English for broader compatibility
                 
-                recognition.onstart = () => toast.info('🎤 Say "hello" to test...')
+                // Try multiple language settings for compatibility
+                const testLanguages = ['en-US', 'en-GB', 'en', 'en-AU']
+                let langSet = false
+                
+                for (const lang of testLanguages) {
+                  try {
+                    recognition.lang = lang
+                    langSet = true
+                    console.log(`🗣️ Quick test using language: ${lang}`)
+                    toast.info(`🎤 Testing with ${lang} - Say "hello"...`)
+                    break
+                  } catch (error) {
+                    console.log(`Language ${lang} failed in quick test`)
+                  }
+                }
+                
+                if (!langSet) {
+                  // Use whatever the browser default is
+                  console.log(`🗣️ Quick test using browser default language`)
+                  toast.info(`🎤 Testing with browser default - Say "hello"...`)
+                }
+                
+                recognition.continuous = false
+                recognition.interimResults = false
+                recognition.maxAlternatives = 1
+                
+                recognition.onstart = () => {
+                  console.log('✅ Quick test recognition started')
+                  toast.info('🎤 Listening now - speak clearly!')
+                }
+                
                 recognition.onresult = (event) => {
                   const transcript = event.results[0][0].transcript
-                  toast.success(`✅ Heard: "${transcript}"`)
-                }
-                recognition.onerror = (event) => {
-                  toast.error(`❌ Error: ${event.error}`)
+                  const confidence = event.results[0][0].confidence || 0
+                  console.log('✅ Quick test result:', transcript, 'confidence:', confidence)
+                  toast.success(`✅ Heard: "${transcript}" (${Math.round(confidence * 100)}% sure)`)
+                  triggerCelebration('confetti')
                 }
                 
-                recognition.start()
-                setTimeout(() => recognition.stop(), 3000)
+                recognition.onerror = (event) => {
+                  console.error('❌ Quick test error:', event.error)
+                  if (event.error === 'language-not-supported') {
+                    toast.error(`❌ Language not supported. Trying browser default...`)
+                    // Try again without setting language
+                    try {
+                      const fallbackRecognition = new SpeechRecognition()
+                      fallbackRecognition.continuous = false
+                      fallbackRecognition.interimResults = false
+                      fallbackRecognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript
+                        toast.success(`✅ Fallback test heard: "${transcript}"`)
+                      }
+                      fallbackRecognition.onerror = (event) => {
+                        toast.error(`❌ Even fallback failed: ${event.error}`)
+                      }
+                      fallbackRecognition.start()
+                      setTimeout(() => fallbackRecognition.stop(), 3000)
+                    } catch (fallbackError) {
+                      toast.error('❌ Speech recognition completely unavailable')
+                    }
+                  } else {
+                    toast.error(`❌ Error: ${event.error}`)
+                  }
+                }
+                
+                recognition.onend = () => {
+                  console.log('🛑 Quick test recognition ended')
+                }
+                
+                try {
+                  recognition.start()
+                  // Auto-stop after 5 seconds for quick test
+                  setTimeout(() => {
+                    try {
+                      recognition.stop()
+                    } catch (e) {
+                      console.log('Recognition already stopped')
+                    }
+                  }, 5000)
+                } catch (startError) {
+                  console.error('❌ Failed to start quick test:', startError)
+                  toast.error('❌ Failed to start recognition test')
+                }
               } else {
-                toast.error('❌ Speech recognition not supported')
+                toast.error('❌ Speech recognition not supported in this browser')
               }
               
               stream.getTracks().forEach(track => track.stop())

@@ -3721,3 +3721,24 @@ Use --emptyOutDir to override.
       at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
       at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
       at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T12:20:54.789Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:31:58.038Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T12:31:58.120Z] [INFO] transforming...
+[2025-07-31T12:32:03.811Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T12:32:03.931Z] [INFO] rendering chunks...
+[2025-07-31T12:32:04.099Z] [INFO] computing gzip size...
+[2025-07-31T12:32:04.116Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T12:32:04.116Z] [INFO] ../preview-build/assets/index-DfoXsczC.css  443.17 kB │ gzip:  74.34 kB
+[2025-07-31T12:32:04.116Z] [INFO] ../preview-build/assets/web-B0j6Kpv6.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T12:32:04.116Z] [INFO] ../preview-build/assets/web-BVfx_95J.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T12:32:04.117Z] [INFO] ../preview-build/assets/web-BSi8yghG.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T12:32:04.117Z] [INFO] ../preview-build/assets/spark-BPCwvJAI.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T12:32:04.117Z] [INFO] ../preview-build/assets/web-D_JXROz_.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T12:32:04.117Z] [INFO] ../preview-build/assets/index-BvRkf39A.js   431.55 kB │ gzip: 129.08 kB
+[2025-07-31T12:32:04.117Z] [INFO] ✓ built in 6.04s
+[2025-07-31T12:32:59.202Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:33:21.189Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:33:40.053Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:33:59.983Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:34:20.792Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:34:42.573Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
