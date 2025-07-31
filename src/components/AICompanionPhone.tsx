@@ -780,41 +780,43 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* LLM Status Card - moved to top-left only */}
-      <div className="fixed top-4 left-4 z-50">
-        <Card className="cute-card p-3 max-w-xs">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm">
-              <div 
-                className="w-2 h-2 rounded-full"
-                style={{
-                  backgroundColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
-                                 llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8'
-                }}
-              />
-              <span className="font-medium">
-                {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud AI' : 
-                 llmStatus.currentLLM === 'local' ? '📱 Local AI' : '💾 Offline'}
-              </span>
+      {/* LLM Status Card - only show in cloud mode */}
+      {llmMode === 'cloud' && (
+        <div className="fixed top-4 left-4 z-50">
+          <Card className="cute-card p-3 max-w-xs">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm">
+                <div 
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    backgroundColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
+                                   llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8'
+                  }}
+                />
+                <span className="font-medium">
+                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud AI' : 
+                   llmStatus.currentLLM === 'local' ? '📱 Local AI' : '💾 Offline'}
+                </span>
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {llmStatus.modelInfo}
+              </div>
+              <div className="flex gap-1 text-xs">
+                <span className={`px-1 py-0.5 rounded text-xs ${
+                  llmStatus.cloudAvailable ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
+                }`}>
+                  ☁️ {llmStatus.cloudAvailable ? 'On' : 'Off'}
+                </span>
+                <span className={`px-1 py-0.5 rounded text-xs ${
+                  llmStatus.localAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                }`}>
+                  📱 {llmStatus.localAvailable ? 'On' : 'Off'}
+                </span>
+              </div>
             </div>
-            <div className="text-xs text-muted-foreground">
-              {llmStatus.modelInfo}
-            </div>
-            <div className="flex gap-1 text-xs">
-              <span className={`px-1 py-0.5 rounded text-xs ${
-                llmStatus.cloudAvailable ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
-              }`}>
-                ☁️ {llmStatus.cloudAvailable ? 'On' : 'Off'}
-              </span>
-              <span className={`px-1 py-0.5 rounded text-xs ${
-                llmStatus.localAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
-              }`}>
-                📱 {llmStatus.localAvailable ? 'On' : 'Off'}
-              </span>
-            </div>
-          </div>
-        </Card>
-      </div>
+          </Card>
+        </div>
+      )}
 
       {/* Network Status Warning */}
       {!isOnline && (

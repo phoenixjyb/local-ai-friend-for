@@ -1990,3 +1990,17 @@ Use --emptyOutDir to override.
 [2025-07-31T05:44:51.597Z] [INFO] ✓ built in 6.17s
 [2025-07-31T05:46:55.104Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T05:47:11.363Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:50:14.008Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T05:50:14.068Z] [INFO] transforming...
+[2025-07-31T05:50:20.167Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T05:50:20.278Z] [INFO] rendering chunks...
+[2025-07-31T05:50:20.428Z] [INFO] computing gzip size...
+[2025-07-31T05:50:20.443Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T05:50:20.443Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/web-C-iAsE-Y.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/web-CFoCycVi.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/web-D8hNQhxV.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/web-C8iUEQRS.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T05:50:20.444Z] [INFO] ../preview-build/assets/index-DkfKF82J.js   403.30 kB │ gzip: 122.21 kB
+[2025-07-31T05:50:20.445Z] [INFO] ✓ built in 6.42s
+[2025-07-31T05:51:40.521Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
