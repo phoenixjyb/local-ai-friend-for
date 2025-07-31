@@ -2612,3 +2612,43 @@ Caused by:
   File: /workspaces/spark-template/src/services/SoundEffectsService.ts
   
 [2025-07-31T07:29:26.274Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:31:05.148Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T07:31:05.210Z] [INFO] transforming...
+[2025-07-31T07:31:10.311Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T07:31:10.432Z] [INFO] rendering chunks...
+[2025-07-31T07:31:10.603Z] [INFO] computing gzip size...
+[2025-07-31T07:31:10.619Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T07:31:10.619Z] [INFO] ../preview-build/assets/index-j2Rqg2xg.css  442.08 kB │ gzip:  74.24 kB
+[2025-07-31T07:31:10.619Z] [INFO] ../preview-build/assets/web-Zc1sli6C.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T07:31:10.620Z] [INFO] ../preview-build/assets/web-n8MzEll8.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T07:31:10.620Z] [INFO] ../preview-build/assets/web-BOGD108t.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T07:31:10.621Z] [INFO] ../preview-build/assets/spark-B2J2WoeN.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T07:31:10.621Z] [INFO] ../preview-build/assets/web-Eex1SDH_.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T07:31:10.621Z] [INFO] ../preview-build/assets/index-CIKsaV45.js   428.07 kB │ gzip: 128.18 kB
+[2025-07-31T07:31:10.622Z] [INFO] ✓ built in 5.46s
+[2025-07-31T07:35:26.093Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T07:35:26.168Z] [INFO] transforming...
+[2025-07-31T07:35:31.075Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T07:35:31.213Z] [INFO] rendering chunks...
+[2025-07-31T07:35:31.374Z] [INFO] computing gzip size...
+[2025-07-31T07:35:31.390Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T07:35:31.391Z] [INFO] ../preview-build/assets/index-j2Rqg2xg.css  442.08 kB │ gzip:  74.24 kB
+[2025-07-31T07:35:31.391Z] [INFO] ../preview-build/assets/web-Zc1sli6C.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T07:35:31.391Z] [INFO] ../preview-build/assets/web-n8MzEll8.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T07:35:31.391Z] [INFO] ../preview-build/assets/web-BOGD108t.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T07:35:31.391Z] [INFO] ../preview-build/assets/spark-B2J2WoeN.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T07:35:31.392Z] [INFO] ../preview-build/assets/web-Eex1SDH_.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T07:35:31.392Z] [INFO] ../preview-build/assets/index-CIKsaV45.js   428.07 kB │ gzip: 128.18 kB
+[2025-07-31T07:35:31.392Z] [INFO] ✓ built in 5.28s
+[2025-07-31T07:36:52.120Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:37:07.338Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:37:21.278Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:37:38.795Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:37:53.764Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:38:05.614Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:38:29.240Z] [INFO] page reload test-canvas-colors.html
+[2025-07-31T07:39:12.614Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:39:21.696Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:39:25.466Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:39:31.179Z] [INFO] hmr update /src/components/AudioVisualization.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T07:39:42.065Z] [INFO] page reload test-canvas-colors.html

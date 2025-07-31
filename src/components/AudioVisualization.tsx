@@ -22,6 +22,49 @@ export default function AudioVisualization({
   const [audioData, setAudioData] = useState<Uint8Array>(new Uint8Array(128))
   const [volumeLevel, setVolumeLevel] = useState(0)
 
+  // Convert oklch/oklch color to hex for canvas compatibility
+  const getCanvasCompatibleColor = (inputColor: string): string => {
+    if (inputColor.startsWith('#')) {
+      return inputColor
+    }
+    
+    // For oklch colors, convert to a compatible hex color
+    if (inputColor.startsWith('oklch(')) {
+      // Extract the lightness and chroma values to create a similar hex color
+      const oklchMatch = inputColor.match(/oklch\(([^)]+)\)/)
+      if (oklchMatch) {
+        const values = oklchMatch[1].split(/\s+/)
+        const lightness = parseFloat(values[0])
+        const chroma = parseFloat(values[1] || '0')
+        const hue = parseFloat(values[2] || '0')
+        
+        // Convert to a rough RGB approximation
+        // This is a simplified conversion - for exact conversion you'd need a color library
+        const rgbValue = Math.round(lightness * 255)
+        const chromaBoost = Math.round(chroma * 100)
+        
+        if (hue >= 0 && hue < 60) {
+          // Red-orange range
+          return `#${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}`
+        } else if (hue >= 60 && hue < 180) {
+          // Yellow-green range
+          return `#${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}`
+        } else if (hue >= 180 && hue < 300) {
+          // Blue-purple range
+          return `#${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}`
+        } else {
+          // Purple-red range
+          return `#${Math.min(255, rgbValue + chromaBoost / 2).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost / 2).toString(16).padStart(2, '0')}`
+        }
+      }
+    }
+    
+    // Fallback to blue
+    return '#3b82f6'
+  }
+
+  const canvasColor = getCanvasCompatibleColor(color)
+
   // Size configurations
   const sizeConfig = {
     small: { width: 120, height: 60, lineWidth: 2 },
@@ -153,29 +196,40 @@ export default function AudioVisualization({
 
     if (!isListening) {
       // Draw idle state
-      drawIdleState(ctx, width, height, color)
+      drawIdleState(ctx, width, height, canvasColor)
       return
     }
 
     // Draw based on type
     switch (type) {
       case 'wave':
-        drawWaveform(ctx, width, height, audioData, color, lineWidth, volumeLevel)
+        drawWaveform(ctx, width, height, audioData, canvasColor, lineWidth, volumeLevel)
         break
       case 'bars':
-        drawBars(ctx, width, height, audioData, color, volumeLevel)
+        drawBars(ctx, width, height, audioData, canvasColor, volumeLevel)
         break
       case 'circle':
-        drawCircle(ctx, width, height, audioData, color, lineWidth, volumeLevel)
+        drawCircle(ctx, width, height, audioData, canvasColor, lineWidth, volumeLevel)
         break
       case 'pulse':
-        drawPulse(ctx, width, height, volumeLevel, color)
+        drawPulse(ctx, width, height, volumeLevel, canvasColor)
         break
     }
-  }, [audioData, isListening, color, type, config, volumeLevel])
+  }, [audioData, isListening, canvasColor, type, config, volumeLevel])
 
   const drawIdleState = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string) => {
-    ctx.strokeStyle = color + '40' // 25% opacity
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+
+    ctx.strokeStyle = getColorWithAlpha(color, 0.25)
     ctx.lineWidth = 2
     ctx.lineCap = 'round'
 
@@ -191,13 +245,13 @@ export default function AudioVisualization({
     ctx.stroke()
 
     // Add microphone icon indicator with ready state
-    ctx.fillStyle = color + '80'
+    ctx.fillStyle = getColorWithAlpha(color, 0.5)
     ctx.font = '16px Arial'
     ctx.textAlign = 'center'
     ctx.fillText('🎤', width / 2, height / 2 + 5)
     
     // Add "Ready" text
-    ctx.fillStyle = color + '60'
+    ctx.fillStyle = getColorWithAlpha(color, 0.4)
     ctx.font = '10px Arial'
     ctx.fillText('Ready', width / 2, height / 2 + 20)
   }
@@ -211,10 +265,21 @@ export default function AudioVisualization({
     lineWidth: number,
     volume: number
   ) => {
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+
     const gradient = ctx.createLinearGradient(0, 0, width, 0)
-    gradient.addColorStop(0, color + '80')
+    gradient.addColorStop(0, getColorWithAlpha(color, 0.5))
     gradient.addColorStop(0.5, color)
-    gradient.addColorStop(1, color + '80')
+    gradient.addColorStop(1, getColorWithAlpha(color, 0.5))
     
     ctx.strokeStyle = gradient
     ctx.lineWidth = lineWidth
@@ -263,6 +328,17 @@ export default function AudioVisualization({
     color: string,
     volume: number
   ) => {
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+
     const barCount = Math.min(32, data.length)
     const barWidth = width / barCount
     const spacing = 2
@@ -273,8 +349,8 @@ export default function AudioVisualization({
       
       // Create gradient for each bar
       const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight)
-      gradient.addColorStop(0, color + '40')
-      gradient.addColorStop(0.5, color + '80')
+      gradient.addColorStop(0, getColorWithAlpha(color, 0.25))
+      gradient.addColorStop(0.5, getColorWithAlpha(color, 0.5))
       gradient.addColorStop(1, color)
       
       ctx.fillStyle = gradient
@@ -341,7 +417,19 @@ export default function AudioVisualization({
     const pulseRadius = baseRadius * 0.3 + (volume / 100) * 10
     ctx.beginPath()
     ctx.arc(centerX, centerY, pulseRadius, 0, Math.PI * 2)
-    ctx.fillStyle = color + '40'
+    
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+    
+    ctx.fillStyle = getColorWithAlpha(color, 0.25)
     ctx.fill()
   }
 
@@ -356,6 +444,17 @@ export default function AudioVisualization({
     const centerY = height / 2
     const maxRadius = Math.min(width, height) / 2 - 10
     
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+    
     // Draw multiple pulse rings
     const rings = 5
     const time = Date.now() * 0.005
@@ -367,7 +466,7 @@ export default function AudioVisualization({
       
       ctx.beginPath()
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
-      ctx.strokeStyle = color + Math.floor(opacity * 255).toString(16).padStart(2, '0')
+      ctx.strokeStyle = getColorWithAlpha(color, opacity)
       ctx.lineWidth = 3
       ctx.stroke()
     }
@@ -376,7 +475,7 @@ export default function AudioVisualization({
     const coreRadius = (volume / 100) * 15 + 5
     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, coreRadius)
     gradient.addColorStop(0, color)
-    gradient.addColorStop(1, color + '40')
+    gradient.addColorStop(1, getColorWithAlpha(color, 0.25))
     
     ctx.beginPath()
     ctx.arc(centerX, centerY, coreRadius, 0, Math.PI * 2)
@@ -391,6 +490,17 @@ export default function AudioVisualization({
     volume: number, 
     color: string
   ) => {
+    // Convert color to rgba for transparency
+    const getColorWithAlpha = (baseColor: string, alpha: number) => {
+      if (baseColor.startsWith('#')) {
+        const r = parseInt(baseColor.slice(1, 3), 16)
+        const g = parseInt(baseColor.slice(3, 5), 16)
+        const b = parseInt(baseColor.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+      return `rgba(59, 130, 246, ${alpha})` // fallback blue
+    }
+
     // Volume level indicator
     const indicatorWidth = 4
     const indicatorHeight = height * 0.8
@@ -398,7 +508,7 @@ export default function AudioVisualization({
     const y = (height - indicatorHeight) / 2
     
     // Background
-    ctx.fillStyle = color + '20'
+    ctx.fillStyle = getColorWithAlpha(color, 0.125)
     ctx.fillRect(x, y, indicatorWidth, indicatorHeight)
     
     // Active volume
@@ -423,7 +533,7 @@ export default function AudioVisualization({
         }`}
         style={{
           filter: isListening && volumeLevel > 10 
-            ? `drop-shadow(0 0 ${Math.min(20, volumeLevel / 2)}px ${color}60)` 
+            ? `drop-shadow(0 0 ${Math.min(20, volumeLevel / 2)}px ${canvasColor}60)` 
             : 'none'
         }}
       />
