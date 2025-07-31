@@ -62,4 +62,5 @@ src/services/SoundEffectsService.ts
 src/services/VoiceChatService.ts
 src/types/personality.ts
 src/vite-end.d.ts
+test-speech.html
 test-syntax.js

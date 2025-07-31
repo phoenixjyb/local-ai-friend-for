@@ -3761,3 +3761,17 @@ Use --emptyOutDir to override.
 [2025-07-31T12:42:51.167Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T12:45:33.256Z] [INFO] page reload test-speech.html
 [2025-07-31T12:45:45.950Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T12:48:43.701Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T12:48:43.764Z] [INFO] transforming...
+[2025-07-31T12:48:48.752Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T12:48:48.877Z] [INFO] rendering chunks...
+[2025-07-31T12:48:49.028Z] [INFO] computing gzip size...
+[2025-07-31T12:48:49.045Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T12:48:49.045Z] [INFO] ../preview-build/assets/index-DfoXsczC.css  443.17 kB │ gzip:  74.34 kB
+[2025-07-31T12:48:49.045Z] [INFO] ../preview-build/assets/web-Du0-1KUz.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T12:48:49.045Z] [INFO] ../preview-build/assets/web-CNezf0oM.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T12:48:49.046Z] [INFO] ../preview-build/assets/web-DnC5lLyW.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T12:48:49.046Z] [INFO] ../preview-build/assets/spark-C1CgSK_m.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T12:48:49.046Z] [INFO] ../preview-build/assets/web-DdCwBe3m.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T12:48:49.046Z] [INFO] ../preview-build/assets/index-mXk6uCvM.js   440.78 kB │ gzip: 130.83 kB
+[2025-07-31T12:48:49.047Z] [INFO] ✓ built in 5.33s
