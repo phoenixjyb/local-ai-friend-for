@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/core';
 
 const config: CapacitorConfig = {
   appId: 'com.aicompanion.phone',
-  appName: 'AI Companion Phone',
+  appName: 'AI Friend',
   webDir: 'dist',
   server: {
     androidScheme: 'https'
@@ -18,17 +18,19 @@ const config: CapacitorConfig = {
     webContentsDebuggingEnabled: false, // Disable for production
     allowMixedContent: false,
     captureInput: true,
-    // Hardware acceleration for smooth animations
+    // Hardware acceleration for smooth animations and audio visualization
     hardwareAccelerated: true,
-    // Enable S Pen support if needed
-    allowBackup: true
+    // Enable S Pen support for drawing features
+    allowBackup: true,
+    // Audio optimizations
+    useLegacyBridge: false
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 1500, // Faster on S24 Ultra
-      backgroundColor: '#f7f0e8',
+      launchShowDuration: 2000, // Show cute splash longer for kids
+      backgroundColor: '#f7f0e8', // Warm background matching theme
       androidScaleType: 'CENTER_CROP',
-      showSpinner: false,
+      showSpinner: true,
       androidSpinnerStyle: 'small',
       iosSpinnerStyle: 'small',
       splashFullScreen: true,
@@ -36,9 +38,9 @@ const config: CapacitorConfig = {
     },
     StatusBar: {
       style: 'LIGHT',
-      backgroundColor: '#f7f0e8'
+      backgroundColor: '#f7f0e8' // Warm theme color
     },
-    // Optimize keyboard handling for large screen
+    // Optimize keyboard handling for large screen drawing
     Keyboard: {
       resize: 'ionic',
       style: 'light',
@@ -51,13 +53,29 @@ const config: CapacitorConfig = {
       allowEditing: true,
       saveToGallery: false
     },
-    // Enhanced haptics for premium feel
+    // Enhanced haptics for premium feel on S24 Ultra
     Haptics: {
-      // Enable rich haptic feedback
+      // Enable rich haptic feedback for button presses and voice interactions
     },
-    // Audio optimization for voice chat
+    // Device info for Samsung optimizations
     Device: {
-      // Device info for optimization
+      // Device detection for S24 Ultra specific features
+    },
+    // Speech Recognition for voice chat
+    SpeechRecognition: {
+      // Voice input configuration
+    },
+    // Text-to-Speech for AI responses
+    TextToSpeech: {
+      // British English voice output
+    },
+    // App state for background conversation
+    App: {
+      // Handle app state changes during voice chat
+    },
+    // Audio focus management
+    NativeAudio: {
+      // Optimize audio playback for voice responses
     }
   }
 };

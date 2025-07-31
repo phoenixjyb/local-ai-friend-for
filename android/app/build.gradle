@@ -7,9 +7,19 @@ android {
         applicationId "com.aicompanion.phone"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0" // Updated version for voice chat features
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Samsung S24 Ultra specific optimizations
+        resConfigs "en", "en-GB" // British English support
+        vectorDrawables.useSupportLibrary = true
+        
+        // Voice and audio configuration
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+        
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
@@ -20,7 +30,26 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Samsung optimization flags
+            debuggable false
+            shrinkResources false
         }
+        debug {
+            // Development optimizations for S24 Ultra
+            debuggable true
+            minifyEnabled false
+        }
+    }
+    
+    // Audio and performance optimizations
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libjsc.so'
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
