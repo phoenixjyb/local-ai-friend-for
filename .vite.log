@@ -3501,3 +3501,176 @@ Use --emptyOutDir to override.
       at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
       at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
       at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:49:43.228Z] [ERROR] Pre-transform error: Unexpected token (722:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:722:8
+  720|            "Brilliant! Tell me more about that amazing thing!",
+  721|            "You're incredible! I love hearing your stories!"
+  722|          ]
+     |          ^
+  723|        case 'curious-explorer':
+  724|          return [
+[2025-07-31T11:49:44.571Z] [ERROR] Internal server error: Unexpected token (722:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:722:8
+  720|            "Brilliant! Tell me more about that amazing thing!",
+  721|            "You're incredible! I love hearing your stories!"
+  722|          ]
+     |          ^
+  723|        case 'curious-explorer':
+  724|          return [
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31962:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27759:21)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:49:45.636Z] [ERROR] Internal server error: Unexpected token (722:8)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:722:8
+  720|            "Brilliant! Tell me more about that amazing thing!",
+  721|            "You're incredible! I love hearing your stories!"
+  722|          ]
+     |          ^
+  723|        case 'curious-explorer':
+  724|          return [
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.unexpected (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24167:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31962:17)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27759:21)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:52:32.991Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:52:35.007Z] [ERROR] Pre-transform error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+[2025-07-31T11:52:36.997Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:52:38.008Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:52:59.219Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:53:03.879Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:53:04.746Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:53:04.796Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:53:08.076Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:53:09.008Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)

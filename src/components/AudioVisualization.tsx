@@ -67,6 +67,20 @@ export default function AudioVisualization({
     return '#3b82f6'
   }
 
+  // Helper to create safe color with alpha for drop-shadow
+  const getDropShadowColor = (hexColor: string, alpha: number = 0.4): string => {
+    if (hexColor.startsWith('#') && hexColor.length === 7) {
+      const r = parseInt(hexColor.slice(1, 3), 16)
+      const g = parseInt(hexColor.slice(3, 5), 16)
+      const b = parseInt(hexColor.slice(5, 7), 16)
+      
+      if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      }
+    }
+    return 'rgba(59, 130, 246, 0.4)' // fallback blue with alpha
+  }
+
   const canvasColor = getCanvasCompatibleColor(color)
 
   // Size configurations
@@ -591,7 +605,7 @@ export default function AudioVisualization({
         }`}
         style={{
           filter: isListening && volumeLevel > 10 
-            ? `drop-shadow(0 0 ${Math.min(20, volumeLevel / 2)}px ${canvasColor}60)` 
+            ? `drop-shadow(0 0 ${Math.min(20, volumeLevel / 2)}px ${getDropShadowColor(canvasColor)})` 
             : 'none'
         }}
       />

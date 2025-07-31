@@ -222,7 +222,7 @@ export default function AICompanionPhone() {
       toast.error('AI response failed. Using fallback response.')
       
       // Fallback to personality-specific responses
-      const fallbackResponses = getPersonalityFallbackResponses(selectedPersonality)
+      const fallbackResponses = getPersonalityResponse(selectedPersonality.id)
       return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
     }
   }, [selectedPersonality, llmStatus.currentLLM])
@@ -715,6 +715,16 @@ export default function AICompanionPhone() {
 
   // Format call duration
   const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${minutes}:${secs.toString().padStart(2, '0')}`
+  }
+
+  // Get personality-based responses
+  const getPersonalityResponse = (personalityId: string): string[] => {
+    switch (personalityId) {
+      case 'cheerful-friend':
+        return [
           "How exciting! I'm so proud of you!",
           "That sounds fantastic! What a superstar you are!",
           "Brilliant! Tell me more about that amazing thing!",
