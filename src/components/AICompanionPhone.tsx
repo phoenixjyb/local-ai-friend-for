@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Phone, PhoneOff, Volume2, History, Settings, Heart, WifiX, Brain, User, Palette } from '@phosphor-icons/react'
+import { Phone, PhoneX, SpeakerHigh, ClockCounterClockwise, Gear, Heart, WifiSlash, Brain, User, Palette } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -722,7 +722,7 @@ export default function AICompanionPhone() {
         <div className="fixed top-4 left-4 right-4 z-50">
           <Card className="cute-card p-3 border-muted-foreground/20">
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <WifiX size={16} />
+              <WifiSlash size={16} />
               <span>Offline Mode - Limited AI features</span>
             </div>
           </Card>
@@ -860,7 +860,7 @@ export default function AICompanionPhone() {
         {aiSpeaking && (
           <div className="absolute -bottom-4 -right-4 z-30">
             <Badge variant="secondary" className="cute-card animate-pulse border-accent text-accent">
-              <Volume2 size={16} className="mr-1" />
+              <SpeakerHigh size={16} className="mr-1" />
               Speaking
             </Badge>
           </div>
@@ -938,7 +938,7 @@ export default function AICompanionPhone() {
             >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <PhoneOff size={24} />
+                  <PhoneX size={24} />
                 </div>
                 <span>Hang Up</span>
               </div>
@@ -990,7 +990,7 @@ export default function AICompanionPhone() {
           className="button-text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
         >
           <WigglyIcon active={lastButtonPressed === 'history-button'}>
-            <History size={20} className="mr-2" />
+            <ClockCounterClockwise size={20} className="mr-2" />
           </WigglyIcon>
           History
         </Button>
@@ -1000,7 +1000,7 @@ export default function AICompanionPhone() {
           size="lg"
           className="button-text h-16 cute-card border-2 border-secondary/30 hover:border-secondary/50 transition-all"
         >
-          <Settings size={20} className="mr-2" />
+          <Gear size={20} className="mr-2" />
           Settings
         </Button>
       </div>
@@ -1249,7 +1249,7 @@ export default function AICompanionPhone() {
           size="sm"
           className="cute-card border-2 w-12 h-12 rounded-full"
         >
-          <Volume2 size={16} className={`${soundEnabled ? 'text-primary' : 'text-muted-foreground'} cute-wiggle`} />
+          <SpeakerHigh size={16} className={`${soundEnabled ? 'text-primary' : 'text-muted-foreground'} cute-wiggle`} />
         </Button>
       </div>
     </div>
