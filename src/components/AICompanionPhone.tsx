@@ -75,29 +75,29 @@ export default function AICompanionPhone() {
     switch (type) {
       case 'hearts':
         setShowHearts(true)
-        setTimeout(() => setShowHearts(false), 100)
+        setTimeout(() => setShowHearts(false), 3000)
         playSound('heart-beat')
         break
       case 'stars':
         setShowStars(true)
-        setTimeout(() => setShowStars(false), 100)
+        setTimeout(() => setShowStars(false), 3000)
         playSound('magic-sparkle')
         break
       case 'sparkles':
         setShowSparkles(true)
-        setTimeout(() => setShowSparkles(false), 100)
+        setTimeout(() => setShowSparkles(false), 3000)
         playSound('magic-sparkle', 0.5)
         break
       case 'confetti':
         setShowConfetti(true)
-        setTimeout(() => setShowConfetti(false), 100)
+        setTimeout(() => setShowConfetti(false), 3000)
         playSound('success-chime')
         break
       case 'emoji':
         if (emoji) {
           setCurrentEmoji(emoji)
           setShowEmojiReaction(true)
-          setTimeout(() => setShowEmojiReaction(false), 100)
+          setTimeout(() => setShowEmojiReaction(false), 2000)
           playSound('pop')
         }
         break
@@ -344,7 +344,7 @@ export default function AICompanionPhone() {
     setTimeout(() => {
       toast.info('🌐 Using web-based AI for testing - Local LLM disabled')
     }, 2000)
-  }, [selectedPersonality, speakResponse])
+  }, [])
 
   // Monitor online/offline status
   useEffect(() => {
@@ -380,47 +380,44 @@ export default function AICompanionPhone() {
         recognitionRef.current.maxAlternatives = 1
         
         toast.success('🎤 Voice recognition ready!')
-        toast.success('🎤 Voice recognition ready!')
       } else {
         toast.warning('Voice recognition not supported in this browser')
       }
-      }
+      
       // Check for speech synthesis support
-      // Check for speech synthesis support
+      if ('speechSynthesis' in window) {
         synthRef.current = window.speechSynthesis
+        
         // Wait for voices to load
-        ces = () => {
-        // Wait for voices to load
+        const waitForVoices = () => {
+          return new Promise<void>((resolve) => {
             const voices = synthRef.current?.getVoices() || []
             if (voices.length > 0) {
-            const voices = synthRef.current?.getVoices() || []
-              resolve()
               console.log('✅ Speech Synthesis voices loaded:', voices.length)
-              resolve()addEventListener('voiceschanged', () => {
-            } else {ces = synthRef.current?.getVoices() || []
-                console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
-                resolve()
+              resolve()
+            } else {
+              synthRef.current?.addEventListener('voiceschanged', () => {
+                const newVoices = synthRef.current?.getVoices() || []
                 console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
                 resolve()
               }, { once: true })
             }
           })
+        }
+        
         await waitForVoices()
         console.log('✅ Speech Synthesis initialized')
-        await waitForVoices()
-        console.log('✅ Speech Synthesis initialized')
+      } else {
         toast.warning('Text-to-speech not supported in this browser')
       }
       
       // Request microphone permission
       try {
-      // Request microphone permissionerMedia({ audio: true })
-      try {hone permission granted')
         await navigator.mediaDevices.getUserMedia({ audio: true })
         console.log('✅ Microphone permission granted')
         toast.success('🎤 Microphone access granted!')
-        toast.error('Please allow microphone access for voice features')
-      }
+      } catch (error) {
+        console.error('❌ Microphone permission error:', error)
         toast.error('Please allow microphone access for voice features')
       }
     }
@@ -428,6 +425,8 @@ export default function AICompanionPhone() {
     initializeSpeechApis()
   }, [])
 
+  // Call timer management
+  useEffect(() => {
     if (callState === 'active') {
       callTimerRef.current = setInterval(() => {
         setCallDuration(prev => prev + 1)
@@ -436,6 +435,16 @@ export default function AICompanionPhone() {
       if (callTimerRef.current) {
         clearInterval(callTimerRef.current)
         callTimerRef.current = null
+      }
+    }
+
+    return () => {
+      if (callTimerRef.current) {
+        clearInterval(callTimerRef.current)
+        callTimerRef.current = null
+      }
+    }
+  }, [callState])
 
   // Format call duration
   const formatDuration = (seconds: number) => {
@@ -444,22 +453,8 @@ export default function AICompanionPhone() {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-
-
-
   // Get personality-specific fallback responses
   const getPersonalityFallbackResponses = (personality: AIPersonality) => {
-    switch (personality.id) {
-      case 'cheerful-buddy':
-        return [
-          "That's absolutely wonderful! You're doing brilliantly!",
-          "How exciting! I'm so proud of you!",
-          "That sounds fantastic! What a superstar you are!",
-          "Brilliant! Tell me more about that amazing thing!",
-          "You're incredible! I love hearing your stories!"
-        ]
-      case 'curious-explorer':
-        return [
     switch (personality.id) {
       case 'cheerful-buddy':
         return [
@@ -493,6 +488,16 @@ export default function AICompanionPhone() {
           "Ha! You're absolutely crackers and I love it!",
           "That tickled me pink! What other silly things happened?"
         ]
+      case 'wise-owl':
+        return [
+          "That's very thoughtful. What do you think about it?",
+          "How wise of you to notice that. What else can you learn?",
+          "That shows great thinking! What would you do next?",
+          "Very perceptive! How might that help others?",
+          "That's a clever observation. What patterns do you see?"
+        ]
+      case 'creative-artist':
+        return [
           "That sounds absolutely artistic! What colors would you use?",
           "How wonderfully imaginative! What inspired that thought?",
           "That's so creative! You have such an artistic soul!",
@@ -506,8 +511,6 @@ export default function AICompanionPhone() {
         ]
     }
   }
-
-
 
   // Handle speech recognition
   useEffect(() => {
@@ -623,11 +626,6 @@ export default function AICompanionPhone() {
       playSound('success-chime')
       toast.success('Connected to your AI friend!')
       
-      // Start the timer
-      callTimerRef.current = setInterval(() => {
-        setCallDuration(prev => prev + 1)
-      }, 1000)
-      
       // AI greeting with personality
       const greeting = `Hello! I'm ${selectedPersonality.name} and I'm so excited to chat with you! ${selectedPersonality.conversationStyle.greeting}`
       await speakResponse(greeting)
@@ -656,272 +654,260 @@ export default function AICompanionPhone() {
       if (isOnline) {
         const prompt = spark.llmPrompt`${basePrompt}`
         aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
-      
-      // Final fallback to personality-specific responses
-      
+        console.log('✅ Web LLM drawing response received')
+      } else {
+        // Final fallback to personality-specific responses
+        const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
-      // TESTING MODE: Skip local LLM, use web LLM only
+      
       triggerCelebration('confetti')
-      
-      
-    } catch (error) {
-        const prompt = spark.llmPrompt`${basePrompt}`
-        aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
-        console.log('✅ Web LLM drawing response received')
-      }wonderful drawing! You're such a talented artist!")
-      case 'cheerful-buddy':
-      // Final fallback to personality-specific responses
-      if (!aiResponse) {ch a brilliant artist!",
-          "What a masterpiece! You should be so proud of your amazing art!"
-          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch.",
-          "That's very sweet of you to show me. Your art tells a wonderful story."
-      }
-      
-        return [
-      triggerCelebration('confetti')d brilliant! What a giggly good drawing!",
-          "What a wonderfully wacky and fantastic picture! It makes me want to dance!",
-          "That's hilariously awesome! Did you have fun making all those silly details?",
-          "Ha! You're such a funny and creative artist! Tell me about the silliest part!",
+      await speakResponse(aiResponse)
       setIsDrawingOpen(false)
       
-      case 'wise-owl':
-        return [
-          "What a thoughtfully composed artwork! You show great artistic wisdom.",
-          "That's a very perceptive piece of art. What techniques did you use?",
-          "How scholarly and creative! Your drawing shows deep thinking and planning.",
+    } catch (error) {
+      console.error('❌ Error generating drawing response:', error)
+      const fallbackResponse = "What a wonderful drawing! You're such a talented artist!"
+      await speakResponse(fallbackResponse)
       setIsDrawingOpen(false)
     }
   }, [selectedPersonality, isOnline, speakResponse])
 
   // Get personality-specific drawing responses
-          "What an absolutely magnificent piece of art! Your creativity shines so brightly!",
-          "That's gorgeously imaginative! What beautiful artistic choices you made!",
-          "How wonderfully expressive and colorful! You have such an artistic soul!",
-        return [eathtakingly creative! Tell me about your artistic inspiration!",
-          "What a magically beautiful creation! Your art fills my heart with joy!"
+  const getDrawingResponsesByPersonality = (personality: AIPersonality) => {
+    switch (personality.id) {
+      case 'cheerful-buddy':
+        return [
           "That's the most wonderful picture I've ever seen! Tell me all about it!",
           "Oh my goodness, that's fantastic! What's your favorite part of your drawing?",
-        return [
           "What a masterpiece! You should be so proud of your amazing art!"
-          "That's wonderful! Tell me all about your amazing artwork!",
-      case 'curious-explorer':
         ]
+      case 'curious-explorer':
+        return [
+          "What an interesting drawing! Can you tell me about the story behind it?",
+          "How fascinating! What materials did you use to create this?",
+          "That's a wonderful observation in art form! What inspired you to draw this?"
+        ]
+      case 'gentle-friend':
+        return [
+          "That's such a beautiful drawing, dear. It makes me feel so happy to see it.",
+          "What a lovely picture. Thank you for sharing your special art with me.",
+          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch."
+        ]
+      case 'silly-joker':
+        return [
+          "Haha! That's absolutely bonkers and brilliant! What a giggly good drawing!",
+          "What a wonderfully wacky and fantastic picture! It makes me want to dance!",
+          "That's hilariously awesome! Did you have fun making all those silly details?"
+        ]
+      case 'wise-owl':
+        return [
+          "What a thoughtfully composed artwork! You show great artistic wisdom.",
+          "That's a very perceptive piece of art. What techniques did you use?",
+          "How scholarly and creative! Your drawing shows deep thinking and planning."
+        ]
+      case 'creative-artist':
+        return [
+          "What an absolutely magnificent piece of art! Your creativity shines so brightly!",
+          "That's gorgeously imaginative! What beautiful artistic choices you made!",
+          "How wonderfully expressive and colorful! You have such an artistic soul!"
+        ]
+      default:
+        return [
+          "That's wonderful! Tell me all about your amazing artwork!",
+          "What a beautiful drawing! I love seeing your creativity!"
+        ]
+    }
   }
 
   const endCall = async () => {
     handleButtonPress('end-call-button', 'call-end')
     setCallState('ending')
-        ]
-      case 'gentle-friend':
+    
     triggerCelebration('emoji', '👋')
-          "That's such a beautiful drawing, dear. It makes me feel so happy to see it.",
-          "What a lovely picture. Thank you for sharing your special art with me.",
-          "That's very thoughtful and creative. Tell me what you were thinking about while drawing.",
-          "How peaceful and beautiful your drawing is. You have such a gentle artistic touch.",
-          "That's very sweet of you to show me. Your art tells a wonderful story."
-        ]ng()
-      case 'silly-joker':
-        return [
-          "Haha! That's absolutely bonkers and brilliant! What a giggly good drawing!",
-          "What a wonderfully wacky and fantastic picture! It makes me want to dance!",
-          "That's hilariously awesome! Did you have fun making all those silly details?",
-          "Ha! You're such a funny and creative artist! Tell me about the silliest part!",
-          "What a delightfully daft and amazing drawing! You always make me smile!"
-        ]
-      case 'wise-owl':
-        return [
+    setTimeout(() => triggerCelebration('hearts'), 300)
+    
+    // Stop speech recognition and synthesis (unified for web and native)
+    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
+      await voiceChatService.stopListening()
+      await voiceChatService.stopSpeaking()
+    } else {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+      if (synthRef.current) {
+        synthRef.current.cancel()
+      }
+    }
+    
+    setIsListening(false)
     setAiSpeaking(false)
     
     // Save conversation to history
     if (currentConversationId && callDuration > 0) {
       const newConversation: ConversationEntry = {
-        ]entConversationId,
-        timestamp: Date.now(),
-        return [
-        topics: selectedPersonality.conversationStyle.topics.slice(0, 3), // Use personality topics
-        personalityId: selectedPersonality.id
-      }
-      
-      setConversations(prev => [newConversation, ...prev.slice(0, 9)]) // Keep last 10
-        ]
-      default:
-    
-    setTimeout(() => {
-      setCallState('idle')
-      setCurrentConversationId(null)
-        ]ting!')
-    }
-  }
-
-  const renderPhoneView = () => (
-    handleButtonPress('end-call-button', 'call-end')
-    setCallState('ending')
-      {false && localLLMAvailable && (
-        <div className="fixed top-4 left-4 z-50">
-    triggerCelebration('emoji', '👋')>
-    setTimeout(() => triggerCelebration('hearts'), 300)text-primary">
-    me="cute-wiggle" />
-    // Stop speech recognition and synthesis (unified for web and native)
-    if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
-      await voiceChatService.stopListening()
-      await voiceChatService.stopSpeaking()splayName()}
-                </span>
-      if (recognitionRef.current) {
-            </div>
-      }
-      if (synthRef.current) {
-        synthRef.current.cancel()
-      }
-    }ator */}
-    v className="fixed top-4 left-4 z-50">
-    setIsListening(false)rder-blue-300 bg-blue-50">
-    setAiSpeaking(false)
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
-            <div className="flex flex-col">
-    if (currentConversationId && callDuration > 0) {
-      const newConversation: ConversationEntry = {
         id: currentConversationId,
         timestamp: Date.now(),
-            </div>
+        duration: callDuration,
         topics: selectedPersonality.conversationStyle.topics.slice(0, 3), // Use personality topics
         personalityId: selectedPersonality.id
       }
       
       setConversations(prev => [newConversation, ...prev.slice(0, 9)]) // Keep last 10
       playSound('success-chime', 0.5)
-        <div className="fixed top-16 left-4 right-4 z-50">
-    -orange-50">
-    setTimeout(() => {ext-orange-700">
+    }
+    
+    setTimeout(() => {
       setCallState('idle')
-              <span>Offline - Web AI not available in testing mode</span>
+      setCurrentConversationId(null)
+      setCallDuration(0)
       toast.success('Call ended. Thanks for chatting!')
-          </Card>
-        </div>
+    }, 1000)
+  }
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* LOCAL LLM DISABLED FOR TESTING */}unce">AI Friend</h1>
-      {false && localLLMAvailable && (
-          Your {selectedPersonality.name} is ready to chat!
-          <Card className="cute-card p-3 border-primary/30">
-            <div className="flex items-center gap-2 text-sm text-primary">
-          <div 
-              <div className="flex flex-col">ustify-center text-lg cute-pulse"
-            style={{ backgroundColor: `${selectedPersonality.color}20` }}
-                <span className="text-xs text-muted-foreground">
-            {selectedPersonality.emoji}
-          </div>
-          <Badge 
-            variant="secondary"
-          </Card>
-            style={{ backgroundColor: `${selectedPersonality.color}15` }}
-      )}
-{selectedPersonality.conversationStyle.responseStyle}
       {/* Web LLM Testing Mode Indicator */}
       <div className="fixed top-4 left-4 z-50">
-        {/* Force web LLM display since local is disabled */}
-        <p className="text-sm text-blue-600 font-medium">
-          🌐 Using web-based AI for testing - Local LLM temporarily disabled
-        </p>
+        <Card className="cute-card p-3 border-blue-300 bg-blue-50">
+          <div className="flex items-center gap-2 text-sm text-blue-700">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <div className="flex flex-col">
               <span className="font-medium">Web LLM Testing Mode</span>
               <span className="text-xs text-blue-600">
-      {/* Adorable AI Avatar with cute styling and particle effects */}
+                🌐 Using web-based AI for testing - Local LLM temporarily disabled
               </span>
-        {/* Active Particle Effects */}
-        <ParticleEffects 
-        </Card> 'active' || aiSpeaking || callState === 'connecting'}
-      </div>lor}
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* TESTING MODE: No offline indicator since we're testing web LLM */}
       {!isOnline && (
-            callState === 'active' ? 'medium' : 
-            'low'
-          }
+        <div className="fixed top-16 left-4 right-4 z-50">
+          <Card className="cute-card p-3 border-orange-300 bg-orange-50">
+            <div className="flex items-center gap-2 text-sm text-orange-700">
               <WifiX size={16} />
-            callState === 'connecting' ? 'mixed' :
-            </div> 'sparkles' :
-            selectedPersonality.id === 'gentle-friend' ? 'hearts' :
-            selectedPersonality.id === 'silly-joker' ? 'mixed' :
-            selectedPersonality.id === 'wise-owl' ? 'stars' :
-edPersonality.id === 'creative-artist' ? 'mixed' :
+              <span>Offline - Web AI not available in testing mode</span>
+            </div>
+          </Card>
+        </div>
+      )}
+
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground cute-bounce">AI Friend</h1>
         <p className="text-lg text-muted-foreground">
           Your {selectedPersonality.name} is ready to chat!
+        </p>
+        
+        <div 
+          className="p-3 rounded-lg border-2 cute-card flex items-center justify-center text-lg cute-pulse"
+          style={{ backgroundColor: `${selectedPersonality.color}20` }}
+        >
+          {selectedPersonality.emoji}
+        </div>
+        <Badge 
+          variant="secondary"
+          className="cute-card border-0"
+          style={{ backgroundColor: `${selectedPersonality.color}15` }}
+        >
+          {selectedPersonality.conversationStyle.responseStyle}
+        </Badge>
+      </div>
+
+      {/* Adorable AI Avatar with cute styling and particle effects */}
+      <div className="relative">
+        {/* Active Particle Effects */}
+        <ParticleEffects 
+          isActive={callState === 'active' || aiSpeaking || callState === 'connecting'}
+          color={selectedPersonality.color}
+          intensity={
+            aiSpeaking ? 'high' : 
+            callState === 'active' ? 'medium' : 
+            callState === 'connecting' ? 'low' : 
+            'low'
+          }
+          type={
+            selectedPersonality.id === 'cheerful-buddy' ? 'mixed' :
+            callState === 'connecting' ? 'mixed' :
+            aiSpeaking ? 'sparkles' :
+            selectedPersonality.id === 'gentle-friend' ? 'hearts' :
+            selectedPersonality.id === 'silly-joker' ? 'mixed' :
+            selectedPersonality.id === 'wise-owl' ? 'stars' :
+            selectedPersonality.id === 'creative-artist' ? 'mixed' :
+            'sparkles'
+          }
+        />
+        
         {/* Hover Particle Effects for Idle State */}
         {callState === 'idle' && (
           <ParticleEffects 
             isActive={false}
             color={selectedPersonality.color}
-          >
-            {selectedPersonality.emoji}
-          </div>
-          <Badge 
-            variant="secondary"
-            className="cute-card border-0"
-            style={{ backgroundColor: `${selectedPersonality.color}15` }}
-          <div className="relative">
-            {selectedPersonality.conversationStyle.responseStyle}
-          </Badge>| callState === 'connecting'} 
-              intensity={aiSpeaking ? 'high' : 'medium'} 
-            />
-            <Avatar 
-          🌐 Using web-based AI for testing - Local LLM temporarily disabledn-300 hover:scale-105 cursor-pointer"
-        </p>
-                borderColor: selectedPersonality.color,
-                background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
-      {/* Adorable AI Avatar with cute styling and particle effects */}
-      <div className="relative">
-        {/* Active Particle Effects */}
-        <ParticleEffects 
-              }}
-          color={selectedPersonality.color}
-          intensity={
-                <AvatarFallback 
-            aiSpeaking ? 'high' : 
-                  style={{ 
-                    backgroundColor: `${selectedPersonality.color}15`,
-          }
-          type={nt(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
-                  }}
-                >
-                  <WigglyIcon active={isListening}>
-            selectedPersonality.id === 'silly-joker' ? 'mixed' :
-                  </WigglyIcon>
-            selectedPersonality.id === 'creative-artist' ? 'mixed' :
-              </PulsingGlow>
-            </Avatar>
-        />
-            {/* Enhanced decorative elements around avatar */}
-        {/* Hover Particle Effects for Idle State */}
-              <span className="text-xs">✨</span>
-            </div>
-            isActive={false} z-20 flex items-center justify-center">
-              <span className="text-xs">💫</span>
             intensity="low"
-            type="sparkles"4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
-              <span className="text-xs">⭐</span>
+            type="sparkles"
           />
         )}
-            {/* Magical glow effect when active */}
-            {(callState === 'active' || aiSpeaking) && (
-              <div 
-                className="absolute inset-0 rounded-full animate-pulse"
-              active={aiSpeaking || callState === 'connecting'} 
-              intensity={aiSpeaking ? 'high' : 'medium'} 
-                  filter: 'blur(8px)',
-                  transform: 'scale(1.3)',
-                  zIndex: 0
-                }}
-              />
-            )}
+        
+        <div className="relative">
+          <PulsingGlow 
+            active={aiSpeaking || callState === 'connecting'} 
+            intensity={aiSpeaking ? 'high' : 'medium'} 
+            color={selectedPersonality.color}
+          >
+            <Avatar 
+              className="w-40 h-40 border-8 transition-all duration-300 hover:scale-105 cursor-pointer"
+              style={{
+                borderColor: selectedPersonality.color,
+                background: `linear-gradient(135deg, ${selectedPersonality.color}20 0%, ${selectedPersonality.color}10 100%)`
               }}
               onClick={() => {
-        
+                handleButtonPress('avatar-tap', 'pop')
                 triggerCelebration('sparkles')
+              }}
+            >
+              <AvatarFallback 
+                className="text-6xl bg-transparent"
+                style={{ 
+                  backgroundColor: `${selectedPersonality.color}15`,
+                  background: `radial-gradient(circle, ${selectedPersonality.color}25 0%, ${selectedPersonality.color}10 100%)`
+                }}
+              >
+                <WigglyIcon active={isListening}>
+                  {selectedPersonality.emoji}
+                </WigglyIcon>
+              </AvatarFallback>
+            </Avatar>
+          </PulsingGlow>
+
+          {/* Enhanced decorative elements around avatar */}
+          <div className="absolute -top-3 -right-3 w-4 h-4 bg-yellow-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">✨</span>
+          </div>
+          <div className="absolute -bottom-3 -right-3 w-4 h-4 bg-purple-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">💫</span>
+          </div>
+          <div className="absolute -top-3 -left-3 w-4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
+            <span className="text-xs">⭐</span>
+          </div>
+
+          {/* Magical glow effect when active */}
+          {(callState === 'active' || aiSpeaking) && (
+            <div 
+              className="absolute inset-0 rounded-full animate-pulse"
+              style={{
+                background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
+                filter: 'blur(8px)',
+                transform: 'scale(1.3)',
+                zIndex: 0
+              }}
+            />
+          )}
+        </div>
+
+        {aiSpeaking && (
           <div className="absolute -bottom-4 -right-4 z-30">
-            >r-accent text-accent">
+            <Badge variant="outline" className="cute-card animate-pulse border-accent text-accent">
               <Volume2 size={16} className="mr-1" />
               Speaking
             </Badge>
@@ -934,131 +920,85 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
               🎤 Listening
             </Badge>
           </div>
-                </AvatarFallback>
-              </PulsingGlow>
-            </Avatar>
-            ' && (
+        )}
+      </div>
+
+      {callState === 'active' && (
         <div className="text-center space-y-2">
           <p className="text-xl font-semibold text-primary cute-pulse">
             Call Duration: {formatDuration(callDuration)}
-            </div>
+          </p>
           
-              <span className="text-xs">💫</span>
+          {/* Enhanced status indicators */}
+          {isListening && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
+              <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
+              <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
             </div>
-            <div className="absolute -top-3 -left-3 w-4 h-4 bg-blue-300 rounded-full cute-float opacity-60 z-20 flex items-center justify-center">
-              <span className="text-xs">⭐</span> bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
-            </div>="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
-                <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
-              </div>
-            {(callState === 'active' || aiSpeaking) && (
-              <div 
-                className="absolute inset-0 rounded-full animate-pulse"
-                style={{ms-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
-                  background: `radial-gradient(circle, ${selectedPersonality.color}30 0%, transparent 70%)`,
-                  filter: 'blur(8px)',ty.name} is speaking...</span>
-                  transform: 'scale(1.3)',
-                  zIndex: 0
-                }}
-            {!isListening && !aiSpeaking && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
-              </div>
-            )}
-          <div className="absolute -bottom-4 -right-4 z-30">
+          )}
+          
+          {aiSpeaking && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+              <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
+            </div>
+          )}
+          
+          {!isListening && !aiSpeaking && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
+              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+              <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
+            </div>
+          )}
         </div>
       )}
 
       <div className="space-y-4">
-          </div>' && (
-        )}w active={true} color="primary">
-        
-        {isListening && (
+        {callState === 'idle' && (
+          <PulsingGlow active={true} color="primary">
+            <Button
+              id="call-button"
               onClick={startCall}
               size="lg"
               className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
               style={{ 
-          </div>inear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
+                background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
                 border: '3px solid white'
-      </div>  }}
-
+              }}
+            >
               <div className="flex items-center justify-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <Phone size={24} />
-            Call Duration: {formatDuration(callDuration)}
-          </p>name}</span>
-          
-          {/* Enhanced status indicators */}
+                </div>
+                <span>Call {selectedPersonality.name}</span>
+              </div>
+            </Button>
           </PulsingGlow>
-            {isListening && (
+        )}
 
         {callState === 'connecting' && (
           <Button 
-              </div>
-            )}
-            t h-20 w-56 rounded-full shadow-lg cute-breathe"
-            {aiSpeaking && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
-              </div>
-            )}full h-8 w-8 border-b-2 border-white mr-3"></div>
-            
-            {!isListening && !aiSpeaking && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
-              </div>-col items-center gap-4">
-            )}
-          </div>
-        </div>
-      )}d-call-button"
-
-                size="lg"
-                className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
-                style={{ 
-            <Button 'linear-gradient(135deg, #ff6b9d 0%, #ff8e9b 100%)',
-                  border: '3px solid white'
-                }}
-              >
-                <div className="flex items-center justify-center gap-3">
-              style={{ 0 rounded-full flex items-center justify-center">
-                background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
-                  </div>
-                  <span>Hang Up</span>
-                </div>
-              </Button>
-            </PulsingGlow>
-                  <Phone size={24} />
-                </div>l */}
-            {callState === 'active' && (
-              <PulsingGlow active={isListening} color="accent">
-                <Button
-          </PulsingGlow>
-                  onClick={() => {
-                    handleButtonPress('push-to-talk-button', 'pop')
-                    if (!isListening) {
-                      startListening()
-                    }
-                  }}
-                  size="lg"
+            disabled 
+            size="lg"
+            className="button-text h-20 w-56 rounded-full shadow-lg cute-breathe"
             style={{ 
-                  className={`button-text h-16 w-48 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
-                    isListening ? 'cute-pulse' : 'cute-bounce'
+              background: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
+              border: '3px solid white'
             }}
-                  style={{ 
-                    background: isListening 
-            Connecting...
-          </Button>%, #60a5fa 100%)',
+          >
+            <div className="flex items-center justify-center gap-3">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
+              Connecting...
+            </div>
+          </Button>
         )}
-                    opacity: aiSpeaking ? 0.5 : 1
-                  }}
-                >
-                  <div className="flex items-center justify-center gap-2">
+
+        {callState === 'active' && (
+          <div className="flex flex-col items-center gap-4">
             <PulsingGlow active={true} color="warning">
-                      <>
-                        <div className="w-3 h-3 bg-white rounded-full animate-ping"></div>
-                onClick={endCall}Listening...</span>
+              <Button
+                id="end-call-button"
+                onClick={endCall}
                 size="lg"
                 className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-wiggle"
                 style={{ 
@@ -1074,39 +1014,38 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
                 </div>
               </Button>
             </PulsingGlow>
-             gap-3 mt-8">
+
             {/* Push to Talk Button - only show during active call */}
             {callState === 'active' && (
-          onClick={() => {
-            handleButtonPress('personality-button', 'whoosh')
-            setCurrentView('personality')
-          }}
-          variant="outline"
+              <PulsingGlow active={isListening} color="accent">
+                <Button
+                  id="push-to-talk-button"
+                  onClick={() => {
+                    handleButtonPress('push-to-talk-button', 'pop')
                     if (!isListening) {
-          className="button-text h-16 cute-card border-2 border-primary/30 hover:border-primary/50 transition-all"
+                      startListening()
                     }
-          <WigglyIcon active={lastButtonPressed === 'personality-button'}>
+                  }}
                   size="lg"
                   disabled={aiSpeaking}
                   className={`button-text h-16 w-48 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
-        </Button>
+                    isListening ? 'cute-pulse' : 'cute-bounce'
                   }`}
-        {/* Test Voice Button */}
-        <Button
-          id="test-voice-button"
-          onClick={() => {
-            handleButtonPress('test-voice-button', 'magic-sparkle')
-            triggerCelebration('sparkles')
+                  style={{ 
+                    background: isListening 
+                      ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+                      : 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+                    opacity: aiSpeaking ? 0.5 : 1
                   }}
-                >testMessage)
+                >
                   <div className="flex items-center justify-center gap-2">
                     {isListening ? (
-          variant="outline"
+                      <>
                         <div className="w-3 h-3 bg-white rounded-full animate-ping"></div>
-                        <span>🎤 Listening...</span>r-green-300 hover:border-green-400 transition-all text-green-600 hover:text-green-700"
-        >
-          <WigglyIcon active={lastButtonPressed === 'test-voice-button'}>
-            <Volume2 size={20} className="mr-2 cute-bounce" />
+                        <span>🎤 Listening...</span>
+                      </>
+                    ) : (
+                      <>
                         <span>🎤</span>
                         <span>Push to Talk</span>
                       </>
@@ -1114,106 +1053,153 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
                   </div>
                 </Button>
               </PulsingGlow>
-            handleButtonPress('drawing-button', 'drawing-brush')
+            )}
           </div>
-        )}rue)
+        )}
       </div>
 
-          size="lg"
-        <Buttonborder-2 border-purple-300 hover:border-purple-400 transition-all text-purple-600 hover:text-purple-700"
-        >
-          <WigglyIcon active={lastButtonPressed === 'drawing-button'}>
-            <Palette size={20} className="mr-2 magic-sparkle" />
-          </WigglyIcon>
+      {/* Action buttons */}
+      <div className="flex flex-wrap justify-center gap-3 mt-8">
+        <Button
+          id="personality-button"
+          onClick={() => {
+            handleButtonPress('personality-button', 'whoosh')
+            setCurrentView('personality')
           }}
           variant="outline"
           size="lg"
-          id="history-button"
+          className="button-text h-16 cute-card border-2 border-primary/30 hover:border-primary/50 transition-all"
         >
           <WigglyIcon active={lastButtonPressed === 'personality-button'}>
-            setCurrentView('history')
-          }}
-          variant="outline"
+            <User size={20} className="mr-2" />
+          </WigglyIcon>
+          AI Friends
         </Button>
-        -text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
+
         {/* Test Voice Button */}
-        <ButtononPressed === 'history-button'}>
+        <Button
           id="test-voice-button"
           onClick={() => {
-          History
-        </Button>
-        <Button
-          onClick={() => setCurrentView('settings')}
+            handleButtonPress('test-voice-button', 'magic-sparkle')
+            triggerCelebration('sparkles')
+            const testMessage = `Hello! This is ${selectedPersonality.name} testing the voice. Can you hear me clearly?`
+            speakResponse(testMessage)
+          }}
           variant="outline"
           size="lg"
-          variant="outline"
-        >
           className="button-text h-16 cute-card border-2 border-green-300 hover:border-green-400 transition-all text-green-600 hover:text-green-700"
-          Settings
+        >
           <WigglyIcon active={lastButtonPressed === 'test-voice-button'}>
             <Volume2 size={20} className="mr-2 cute-bounce" />
-    </div>
-  )
+          </WigglyIcon>
+          Test Voice
+        </Button>
 
-        View = () => (
-        <Button-y-6">
-          id="drawing-button"er justify-between">
-          onClick={() => {-bold cute-bounce">Conversation History</h2>
+        <Button
+          id="drawing-button"
+          onClick={() => {
             handleButtonPress('drawing-button', 'drawing-brush')
-            triggerCelebration('stars')('phone')} 
-          variant="outline"
-          className="cute-card border-2 border-primary/30"
+            triggerCelebration('stars')
+            setIsDrawingOpen(true)
+          }}
           variant="outline"
           size="lg"
           className="button-text h-16 cute-card border-2 border-purple-300 hover:border-purple-400 transition-all text-purple-600 hover:text-purple-700"
         >
           <WigglyIcon active={lastButtonPressed === 'drawing-button'}>
             <Palette size={20} className="mr-2 magic-sparkle" />
+          </WigglyIcon>
+          Draw for AI
+        </Button>
+
+        <Button
+          id="history-button"
+          onClick={() => {
+            handleButtonPress('history-button', 'button-tap')
+            setCurrentView('history')
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
+        >
+          <WigglyIcon active={lastButtonPressed === 'history-button'}>
+            <History size={20} className="mr-2" />
+          </WigglyIcon>
+          History
+        </Button>
+
+        <Button
+          onClick={() => setCurrentView('settings')}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-muted-foreground/30 hover:border-muted-foreground/50 transition-all"
+        >
+          <Settings size={20} className="mr-2" />
+          Settings
+        </Button>
+      </div>
+    </div>
+  )
+
+  const renderHistoryView = () => (
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold cute-bounce">Conversation History</h2>
+        <Button 
+          onClick={() => setCurrentView('phone')} 
+          variant="outline"
+          className="cute-card border-2 border-primary/30"
+        >
+          Back
+        </Button>
+      </div>
+
+      {conversations.length === 0 ? (
         <Card className="cute-card p-8 text-center">
           <p className="text-muted-foreground">No conversations yet. Start your first call!</p>
         </Card>
       ) : (
         <div className="space-y-4">
           {conversations.map((conv) => {
-            handleButtonPress('history-button', 'button-tap')personalityId) || selectedPersonality
-            setCurrentView('history')
+            const personality = AI_PERSONALITIES.find(p => p.id === conv.personalityId) || selectedPersonality
+            return (
               <Card key={conv.id} className="cute-card p-4 hover:shadow-lg transition-all">
-          variant="outline"ems-start">
-                  <div>
-          className="button-text h-16 cute-card border-2 border-accent/30 hover:border-accent/50 transition-all"
-                      <div 
-          <WigglyIcon active={lastButtonPressed === 'history-button'}>stify-center text-sm cute-pulse"
-            <History size={20} className="mr-2" />
-          </WigglyIcon>
-          History
-        </Button>
+                <div className="flex items-start gap-3">
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-sm cute-pulse"
+                    style={{ backgroundColor: `${personality.color}20` }}
+                  >
+                    {personality.emoji}
+                  </div>
+                  <div className="flex-1">
+                    <div>
                       <p className="font-semibold">
                         Chat with {personality.name}
                       </p>
                     </div>
                     <p className="text-sm text-muted-foreground">
-        >p).toLocaleDateString()} at{' '}
+                      {new Date(conv.timestamp).toLocaleDateString()} at{' '}
                       {new Date(conv.timestamp).toLocaleTimeString()}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Duration: {formatDuration(conv.duration)}
-    </div>
-  )
-          {conv.topics.map((topic, index) => (
+                    </p>
+                    <div className="flex gap-1 mt-2">
+                      {conv.topics.map((topic, index) => (
                         <Badge key={index} variant="secondary" className="cute-card border-0">
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
+                          {topic}
+                        </Badge>
                       ))}
-        <Button 
-          onClick={() => setCurrentView('phone')} 
-          variant="outline"sName="text-pink-400 cute-pulse" />
-          className="cute-card border-2 border-primary/30"
-        >  </Card>
-          Back
-        </Button>
-      </div>
-
-      {conversations.length === 0 ? (
+                    </div>
+                  </div>
+                  <Heart className="text-pink-400 cute-pulse" />
+                </div>
+              </Card>
+            )
+          })}
+        </div>
+      )}
+    </div>
   )
 
   const renderSettingsView = () => (
@@ -1221,7 +1207,7 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold cute-bounce">Settings</h2>
         <Button 
-            return (
+          onClick={() => setCurrentView('phone')} 
           variant="outline"
           className="cute-card border-2 border-primary/30"
         >
@@ -1229,10 +1215,9 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
         </Button>
       </div>
 
-                      >
+      <Card className="cute-card p-6">
         <h3 className="text-lg font-semibold">Safety & Parental Controls</h3>
         <p className="text-muted-foreground">
-                      <p className="font-semibold">
           All conversations are processed locally when possible, and responses are 
           filtered for age-appropriate content.
         </p>
@@ -1242,7 +1227,7 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
           <ul className="text-sm text-muted-foreground space-y-1 ml-4">
             {AI_PERSONALITIES.map((personality) => (
               <li key={personality.id}>
-                    </p>name} - {personality.description}
+                • {personality.emoji} {personality.name} - {personality.description}
               </li>
             ))}
           </ul>
@@ -1258,8 +1243,8 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
               {selectedPersonality.emoji}
             </div>
             <div>
-    </div>
-  )on}</p>
+              <p className="font-semibold">{selectedPersonality.name}</p>
+              <p className="text-sm text-muted-foreground">{selectedPersonality.description}</p>
             </div>
           </div>
         </div>
@@ -1279,66 +1264,12 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
         </div>
         
         <div className="mt-4 p-4 cute-card border-2 border-primary/20">
-          filtered for age-appropriate content.
-        </p>
-        ur Samsung S24 Ultra:
-        <div className="space-y-2">
-          <p className="font-medium">AI Personalities:</p>
-          <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-            {AI_PERSONALITIES.map((personality) => (
-              <li key={personality.id}>
-                • {personality.emoji} {personality.name} - {personality.description}
-              </li>
-            ))}
-          </ul>ock">
-        </div>Ultra):
-        
-        <div className="space-y-2">
-          <p className="font-medium">Current Friend:</p>
-          <div className="flex items-center gap-2">
-            <div 
-              className="w-8 h-8 rounded-full flex items-center justify-center text-lg cute-pulse"
-              style={{ backgroundColor: `${selectedPersonality.color}20` }}
-            >">
-              {selectedPersonality.emoji}
-            </div>
-            <div>
-          <div className="mt-3 p-3 bg-muted/50 rounded-md">
-            <p className="text-xs font-medium mb-1">Current Status:</p>
-            <p className="text-xs text-muted-foreground">
-              Connection: {localLLMAvailable ? '✅ Connected' : '❌ Not detected'}
-            </p>
-            {localLLMAvailable && (
-              <>
-                <p className="text-xs text-muted-foreground">
-                  Model: {ollamaService.getModelDisplayName()} ({ollamaService.getCurrentModel()})
-                </p>
-                <p className="text-xs text-green-600 font-medium mt-1">
-                  🚀 Running locally on your Samsung S24 Ultra - No internet required!
-                </p>
-              </>
-            )}
-            {!localLLMAvailable && (
-              <p className="text-xs text-orange-600 mt-1">
-                💡 Start Ollama in Termux to enable offline AI conversations
-              </p>
-            )}
-          </div>
-        </div>
-      </Card>
-
-      <Card className="cute-card p-6">
-        <h3 className="text-lg font-semibold mb-4">About Your AI Friends</h3>
-        <p className="text-muted-foreground mb-4">
-          Each AI friend has their own unique personality and conversation style. 
-          Choose different friends for different moods - whether you want to be silly, 
-          learn something new, or have a gentle chat.
-        </p>
-        <p className="text-sm text-muted-foreground">
-          <strong>Privacy:</strong> When using the local AI model, all conversations 
-          stay completely on your device. No data is sent to external servers. Each 
-          personality maintains the same privacy standards.
-        </p>
+          <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+          <div className="space-y-1 text-xs text-muted-foreground">
+            <code className="text-xs bg-muted p-2 rounded block">
+              # In Termux, install Ollama and download model:
+            </code>
+            <code className="text-xs bg-muted p-2 rounded block">
               ollama pull gemma2:2b
             </code>
             <code className="text-xs bg-muted p-2 rounded block">
@@ -1439,3 +1370,14 @@ edPersonality.id === 'creative-artist' ? 'mixed' :
             triggerCelebration('emoji', soundEnabled ? '🔇' : '🔊')
           }}
           variant="outline"
+          size="sm"
+          className="cute-card border-2 border-accent/30 hover:border-accent/50"
+        >
+          <WigglyIcon active={!soundEnabled}>
+            {soundEnabled ? '🔊' : '🔇'}
+          </WigglyIcon>
+        </Button>
+      </div>
+    </div>
+  )
+}
