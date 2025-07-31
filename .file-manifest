@@ -108,6 +108,7 @@ src/components/PersonalitySelection.tsx
 src/index.css
 src/main.css
 src/prd.md
+src/services/LLMService.ts
 src/services/OllamaService.ts
 src/services/SoundEffectsService.ts
 src/services/VoiceChatService.ts

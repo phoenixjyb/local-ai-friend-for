@@ -1962,3 +1962,29 @@ Use --emptyOutDir to override.
 [2025-07-31T05:37:13.940Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T05:37:35.673Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
 [2025-07-31T05:37:42.578Z] [INFO] hmr update /src/App.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-07-31T05:41:07.477Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T05:41:07.532Z] [INFO] transforming...
+[2025-07-31T05:41:13.294Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T05:41:13.410Z] [INFO] rendering chunks...
+[2025-07-31T05:41:13.574Z] [INFO] computing gzip size...
+[2025-07-31T05:41:13.593Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T05:41:13.593Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T05:41:13.593Z] [INFO] ../preview-build/assets/web-DA3Ww9i9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T05:41:13.593Z] [INFO] ../preview-build/assets/web-DKOJWLdt.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T05:41:13.594Z] [INFO] ../preview-build/assets/web-7-neQn_9.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T05:41:13.594Z] [INFO] ../preview-build/assets/web-CPVbWXuV.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T05:41:13.594Z] [INFO] ../preview-build/assets/index-CPeJyQHd.js   403.01 kB │ gzip: 122.18 kB
+[2025-07-31T05:41:13.595Z] [INFO] ✓ built in 6.10s
+[2025-07-31T05:44:45.408Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T05:44:45.468Z] [INFO] transforming...
+[2025-07-31T05:44:51.316Z] [INFO] ✓ 6192 modules transformed.
+[2025-07-31T05:44:51.439Z] [INFO] rendering chunks...
+[2025-07-31T05:44:51.581Z] [INFO] computing gzip size...
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/assets/index-BQx8Hbnq.css  436.33 kB │ gzip:  73.18 kB
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/assets/web-DA3Ww9i9.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/assets/web-DKOJWLdt.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/assets/web-7-neQn_9.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T05:44:51.596Z] [INFO] ../preview-build/assets/web-CPVbWXuV.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T05:44:51.597Z] [INFO] ../preview-build/assets/index-CPeJyQHd.js   403.01 kB │ gzip: 122.18 kB
+[2025-07-31T05:44:51.597Z] [INFO] ✓ built in 6.17s
