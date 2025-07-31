@@ -1,68 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Speech Recognition Test</title>
+    <title>Speech Recognition Language Test</title>
 </head>
 <body>
-    <h1>Speech Recognition Language Test</h1>
-    <button id="testBtn">Test Speech Recognition</button>
-    <div id="result"></div>
-    
+    <h1>Speech Recognition Test</h1>
+    <button onclick="testSpeechRecognition()">Test Speech Recognition</button>
+    <div id="results"></div>
+
     <script>
-        document.getElementById('testBtn').addEventListener('click', async () => {
-            const resultDiv = document.getElementById('result');
+        function testSpeechRecognition() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing speech recognition...</p>';
             
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                resultDiv.innerHTML = 'Speech recognition not supported';
-                return;
-            }
-            
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            
-            recognition.continuous = false;
-            recognition.interimResults = true;
-            recognition.maxAlternatives = 1;
-            
-            console.log('Navigator language:', navigator.language);
-            console.log('Navigator languages:', navigator.languages);
-            
-            // Test without setting language first
             try {
-                resultDiv.innerHTML = 'Testing without language setting...<br>';
-                recognition.start();
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    results.innerHTML = '<p>❌ Speech Recognition not available</p>';
+                    return;
+                }
+                
+                const recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = true;
+                recognition.maxAlternatives = 1;
+                
+                // DON'T set language - let browser handle it
+                console.log('Navigator language:', navigator.language);
+                console.log('Navigator languages:', navigator.languages);
                 
                 recognition.onstart = () => {
-                    resultDiv.innerHTML += 'Started successfully without language setting!<br>';
-                    recognition.stop();
+                    results.innerHTML += '<p>✅ Speech recognition started</p>';
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    results.innerHTML += `<p>✅ Heard: "${transcript}"</p>`;
                 };
                 
                 recognition.onerror = (event) => {
-                    resultDiv.innerHTML += `Error without language: ${event.error}<br>`;
-                    
-                    // Now try with browser language
-                    try {
-                        const browserLang = navigator.language || 'en-US';
-                        recognition.lang = browserLang;
-                        resultDiv.innerHTML += `Trying with browser language: ${browserLang}<br>`;
-                        recognition.start();
-                        
-                        recognition.onstart = () => {
-                            resultDiv.innerHTML += `Started successfully with ${browserLang}!<br>`;
-                            recognition.stop();
-                        };
-                        
-                        recognition.onerror = (event2) => {
-                            resultDiv.innerHTML += `Error with ${browserLang}: ${event2.error}<br>`;
-                        };
-                    } catch (langError) {
-                        resultDiv.innerHTML += `Failed to set language: ${langError}<br>`;
-                    }
+                    results.innerHTML += `<p>❌ Error: ${event.error}</p>`;
                 };
+                
+                recognition.onend = () => {
+                    results.innerHTML += '<p>🛑 Recognition ended</p>';
+                };
+                
+                recognition.start();
+                
+                setTimeout(() => {
+                    recognition.stop();
+                }, 3000);
+                
             } catch (error) {
-                resultDiv.innerHTML += `Initial error: ${error}<br>`;
+                results.innerHTML += `<p>❌ Error: ${error.message}</p>`;
             }
-        });
+        }
     </script>
 </body>
 </html>

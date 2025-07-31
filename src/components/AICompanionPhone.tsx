@@ -1127,37 +1127,31 @@ export default function AICompanionPhone() {
           break
           
         case 'language-not-supported':
-          console.error('❌ Language not supported, trying safer fallback')
-          toast.info('🎤 Language issue detected - trying alternative settings...')
+          console.error('❌ Language not supported, creating fresh recognition instance...')
+          toast.info('🎤 Language issue detected - creating fresh speech recognition...')
           if (recognitionRef.current) {
-            // Try multiple fallback languages
-            const fallbackLanguages = ['en-US', 'en', 'en-GB', 'en-AU']
-            let fallbackSet = false
-            
-            for (const lang of fallbackLanguages) {
-              try {
-                recognitionRef.current.lang = lang
-                fallbackSet = true
-                console.log(`🔄 Set fallback language to: ${lang}`)
-                toast.info(`🎤 Switched to ${lang}, retrying...`)
-                break
-              } catch (error) {
-                console.log(`Fallback language ${lang} also failed`)
-              }
-            }
-            
-            if (!fallbackSet) {
-              // Last resort - try without setting any language
-              console.log('🔄 Using browser default language as last resort')
-              toast.info('🎤 Using browser default language...')
-            }
-            
-            setTimeout(() => {
+            // Instead of trying different languages, create a completely fresh instance
+            // without any language constraints - let browser handle it
+            try {
+              const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+              recognitionRef.current = new SpeechRecognition()
+              recognitionRef.current.continuous = false
+              recognitionRef.current.interimResults = true
+              recognitionRef.current.maxAlternatives = 1
+              // Don't set any language - let browser auto-detect
+              
+              setupSpeechRecognitionHandlers()
+              console.log(`🔄 Created fresh recognition instance with auto-detection`)
+              toast.success(`🎤 Reset to browser auto-detection`)
+              
+              // Retry if we're in an active call
               if (callState === 'active' && !aiSpeaking && !isListening) {
-                console.log('🔄 Retrying with fallback language settings')
-                startListening()
+                setTimeout(() => startListening(), 1000)
               }
-            }, 2000)
+            } catch (resetError) {
+              console.error('❌ Failed to create fresh recognition:', resetError)
+              toast.error('🎤 Speech recognition not supported in this browser')
+            }
           }
           break
           
@@ -2023,23 +2017,11 @@ export default function AICompanionPhone() {
                 testRecognition.maxAlternatives = 1
                 
                 // Try to set a compatible language
-                const testLanguages = ['en-US', 'en-GB', 'en', 'en-AU', 'en-CA']
-                let langSet = false
-                
-                for (const lang of testLanguages) {
-                  try {
-                    testRecognition.lang = lang
-                    langSet = true
-                    console.log(`🎤 Microphone test using language: ${lang}`)
-                    break
-                  } catch (error) {
-                    console.log(`Language ${lang} failed in microphone test`)
-                  }
-                }
-                
-                if (!langSet) {
-                  console.log('🎤 Microphone test using browser default language')
-                }
+                // Don't set language - let browser handle auto-detection
+                // This prevents "language-not-supported" errors
+                console.log('🎤 Microphone test using browser auto-detection')
+                console.log(`🌐 Navigator language: ${navigator.language}`)
+                console.log(`🌍 Available languages: ${navigator.languages.join(', ')}`)
                 
                 testRecognition.onresult = (event) => {
                   const transcript = event.results[0][0].transcript
@@ -2299,27 +2281,12 @@ export default function AICompanionPhone() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
                 const recognition = new SpeechRecognition()
                 
-                // Try multiple language settings for compatibility
-                const testLanguages = ['en-US', 'en-GB', 'en', 'en-AU']
-                let langSet = false
-                
-                for (const lang of testLanguages) {
-                  try {
-                    recognition.lang = lang
-                    langSet = true
-                    console.log(`🗣️ Quick test using language: ${lang}`)
-                    toast.info(`🎤 Testing with ${lang} - Say "hello"...`)
-                    break
-                  } catch (error) {
-                    console.log(`Language ${lang} failed in quick test`)
-                  }
-                }
-                
-                if (!langSet) {
-                  // Use whatever the browser default is
-                  console.log(`🗣️ Quick test using browser default language`)
-                  toast.info(`🎤 Testing with browser default - Say "hello"...`)
-                }
+                // Don't set language at all - let browser handle it automatically
+                // This is the most reliable approach across different browsers
+                console.log(`🗣️ Quick test using browser default language`)
+                console.log(`🌐 Navigator language: ${navigator.language}`)
+                console.log(`🌍 Available languages: ${navigator.languages.join(', ')}`)
+                toast.info(`🎤 Testing with auto-detection - Say "hello"...`)
                 
                 recognition.continuous = false
                 recognition.interimResults = false

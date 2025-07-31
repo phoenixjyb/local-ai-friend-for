@@ -55,6 +55,20 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
     setSpeechRecognitionAvailable(hasSpeechRecognition)
     addTestResult(`🗣️ Speech Recognition: ${hasSpeechRecognition ? '✅ Available' : '❌ Not Available'}`)
     
+    // Test language auto-detection
+    if (hasSpeechRecognition) {
+      try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        const testRec = new SpeechRecognition()
+        addTestResult(`✅ Speech Recognition object created successfully`)
+        addTestResult(`🌐 Browser language: ${navigator.language}`)
+        addTestResult(`🌍 Available languages: ${navigator.languages.slice(0, 3).join(', ')}`)
+        addTestResult(`🎤 Default recognition lang: ${testRec.lang || 'auto-detect'}`)
+      } catch (error) {
+        addTestResult(`⚠️ Speech Recognition test failed: ${error}`)
+      }
+    }
+    
     // Check Speech Synthesis
     const hasSpeechSynthesis = 'speechSynthesis' in window
     setSpeechSynthesisAvailable(hasSpeechSynthesis)
@@ -166,8 +180,12 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       
       recognition.continuous = false
       recognition.interimResults = true
-      recognition.lang = 'en-GB'
       recognition.maxAlternatives = 1
+      
+      // Don't set any language - let browser handle auto-detection
+      // This is the most reliable approach across different browsers and platforms
+      addTestResult(`🌐 Using browser auto-detection (${navigator.language})`)
+      addTestResult(`🌍 Browser languages: ${navigator.languages.slice(0, 3).join(', ')}`)
       
       recognition.onstart = () => {
         addTestResult('🎤 Speech recognition started - say something!')
@@ -232,9 +250,8 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       utterance.rate = 0.9
       utterance.pitch = 1.1
       utterance.volume = 0.8
-      utterance.lang = 'en-GB'
       
-      // Try to find a British voice
+      // Try to find a British voice first, then fallback to default
       const voices = synth.getVoices()
       const britishVoice = voices.find(voice => 
         voice.lang.includes('en-GB') || 
@@ -245,9 +262,18 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       
       if (britishVoice) {
         utterance.voice = britishVoice
-        addTestResult(`🇬🇧 Using British voice: ${britishVoice.name}`)
+        utterance.lang = britishVoice.lang
+        addTestResult(`🇬🇧 Using British voice: ${britishVoice.name} (${britishVoice.lang})`)
       } else {
-        addTestResult(`🗣️ Using default voice (no British voice found)`)
+        // Use system default voice and language
+        const defaultVoice = voices.find(voice => voice.default) || voices[0]
+        if (defaultVoice) {
+          utterance.voice = defaultVoice
+          utterance.lang = defaultVoice.lang
+          addTestResult(`🗣️ Using default voice: ${defaultVoice.name} (${defaultVoice.lang})`)
+        } else {
+          addTestResult(`🗣️ Using browser default voice settings`)
+        }
       }
       
       utterance.onstart = () => {
