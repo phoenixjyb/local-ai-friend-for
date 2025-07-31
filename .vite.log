@@ -2593,3 +2593,22 @@ Caused by:
     Syntax Error
   Plugin: vite:react-swc
   File: /workspaces/spark-template/src/services/SoundEffectsService.ts
+[2025-07-31T07:26:25.129Z] [ERROR] Internal server error:   x Unexpected token `.`. Expected * for generator, private key, identifier or async
+     ,-[/workspaces/spark-template/src/services/SoundEffectsService.ts:424:1]
+ 421 |     }
+ 422 |   }
+ 423 |       
+ 424 |       source.buffer = buffer
+     :             ^
+ 425 |       source.connect(gainNode)
+ 426 |       gainNode.connect(audioContext.destination)
+ 427 |       gainNode.gain.value = Math.max(0, Math.min(1, volume))
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: vite:react-swc
+  File: /workspaces/spark-template/src/services/SoundEffectsService.ts
+  
+[2025-07-31T07:29:26.274Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css

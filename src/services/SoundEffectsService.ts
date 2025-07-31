@@ -420,17 +420,6 @@ class SoundEffectsService {
       console.warn(`Failed to play sound ${soundType}:`, error)
     }
   }
-      
-      source.buffer = buffer
-      source.connect(gainNode)
-      gainNode.connect(audioContext.destination)
-      gainNode.gain.value = Math.max(0, Math.min(1, volume))
-      
-      source.start(0)
-    } catch (error) {
-      console.warn('Failed to play sound:', soundType, error)
-    }
-  }
 
   /**
    * Play multiple sounds in sequence with delays
