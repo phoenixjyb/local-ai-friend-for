@@ -182,9 +182,10 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       recognition.interimResults = true
       recognition.maxAlternatives = 1
       
-      // Don't set any language - let browser handle auto-detection
-      // This is the most reliable approach across different browsers and platforms
-      addTestResult(`🌐 Using browser auto-detection (${navigator.language})`)
+      // Force English language instead of using auto-detection
+      // Auto-detection often defaults to system language which may not be supported
+      recognition.lang = 'en-US'
+      addTestResult(`🌐 Using forced English language: en-US`)
       addTestResult(`🌍 Browser languages: ${navigator.languages.slice(0, 3).join(', ')}`)
       
       recognition.onstart = () => {

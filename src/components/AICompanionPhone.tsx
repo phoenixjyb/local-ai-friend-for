@@ -350,12 +350,13 @@ export default function AICompanionPhone() {
             recognitionRef.current.continuous = false
             recognitionRef.current.interimResults = true
             recognitionRef.current.maxAlternatives = 1
-            // Completely avoid setting any language - let the browser handle it
+            // Force English language to prevent language-not-supported errors
+            recognitionRef.current.lang = 'en-US'
             
             // Re-attach all the event handlers
             setupSpeechRecognitionHandlers()
             
-            toast.info('🎤 Reset speech recognition to browser defaults...')
+            toast.info('🎤 Reset speech recognition to English (en-US)...')
             setTimeout(() => {
               if (callState === 'active' && !aiSpeaking && !isListening) {
                 console.log('🔄 Retrying with fresh recognition instance')
@@ -594,14 +595,15 @@ export default function AICompanionPhone() {
         recognitionRef.current.interimResults = true
         recognitionRef.current.maxAlternatives = 1
         
-        // Simplified and robust language setting - let browser handle it
-        console.log('🗣️ Using automatic language detection (browser default)')
+        // Force English language for better compatibility
+        console.log('🗣️ Setting speech recognition to English')
         console.log('🌐 Navigator language:', navigator.language)
         console.log('🌍 Available languages:', navigator.languages)
         
-        // Don't force any specific language - let the browser auto-detect
-        // This is the most compatible approach across different browsers and locales
-        let supportedLang = 'auto-detect (browser default)'
+        // Force English language instead of auto-detection
+        // Auto-detection often defaults to system language which may not be supported
+        recognitionRef.current.lang = 'en-US'
+        let supportedLang = 'en-US (forced English)'
         
         toast.success(`🗣️ Voice recognition ready (${supportedLang})`)
         
@@ -902,8 +904,8 @@ export default function AICompanionPhone() {
           
         case 'language-not-supported':
           console.error('❌ Language not supported, creating fresh recognition...')
-          toast.info('🎤 Language issue detected - creating fresh speech recognition...')
-          // Create completely fresh recognition without language constraints
+          toast.info('🎤 Language issue detected - forcing English language...')
+          // Create completely fresh recognition with English language
           setTimeout(() => {
             try {
               const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -911,7 +913,8 @@ export default function AICompanionPhone() {
               recognitionRef.current.continuous = false
               recognitionRef.current.interimResults = true
               recognitionRef.current.maxAlternatives = 1
-              // Don't set any language - let browser handle it completely
+              // Force English language to prevent language errors
+              recognitionRef.current.lang = 'en-US'
               
               setupSpeechRecognitionHandlers() // Re-setup handlers
               
@@ -1138,11 +1141,12 @@ export default function AICompanionPhone() {
               recognitionRef.current.continuous = false
               recognitionRef.current.interimResults = true
               recognitionRef.current.maxAlternatives = 1
-              // Don't set any language - let browser auto-detect
+              // Force English language to prevent language errors
+              recognitionRef.current.lang = 'en-US'
               
               setupSpeechRecognitionHandlers()
-              console.log(`🔄 Created fresh recognition instance with auto-detection`)
-              toast.success(`🎤 Reset to browser auto-detection`)
+              console.log(`🔄 Created fresh recognition instance with English (en-US)`)
+              toast.success(`🎤 Reset to English language`)
               
               // Retry if we're in an active call
               if (callState === 'active' && !aiSpeaking && !isListening) {
@@ -2281,9 +2285,9 @@ export default function AICompanionPhone() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
                 const recognition = new SpeechRecognition()
                 
-                // Don't set language at all - let browser handle it automatically
-                // This is the most reliable approach across different browsers
-                console.log(`🗣️ Quick test using browser default language`)
+                // Force English language for quick test
+                recognition.lang = 'en-US'
+                console.log(`🗣️ Quick test using English (en-US)`)
                 console.log(`🌐 Navigator language: ${navigator.language}`)
                 console.log(`🌍 Available languages: ${navigator.languages.join(', ')}`)
                 toast.info(`🎤 Testing with auto-detection - Say "hello"...`)
@@ -2308,18 +2312,19 @@ export default function AICompanionPhone() {
                 recognition.onerror = (event) => {
                   console.error('❌ Quick test error:', event.error)
                   if (event.error === 'language-not-supported') {
-                    toast.error(`❌ Language not supported. Trying browser default...`)
-                    // Try again without setting language
+                    toast.error(`❌ Language not supported. This shouldn't happen with English...`)
+                    // Try again with forced English
                     try {
                       const fallbackRecognition = new SpeechRecognition()
                       fallbackRecognition.continuous = false
                       fallbackRecognition.interimResults = false
+                      fallbackRecognition.lang = 'en-US'
                       fallbackRecognition.onresult = (event) => {
                         const transcript = event.results[0][0].transcript
                         toast.success(`✅ Fallback test heard: "${transcript}"`)
                       }
                       fallbackRecognition.onerror = (event) => {
-                        toast.error(`❌ Even fallback failed: ${event.error}`)
+                        toast.error(`❌ Even English fallback failed: ${event.error}`)
                       }
                       fallbackRecognition.start()
                       setTimeout(() => fallbackRecognition.stop(), 3000)

@@ -2924,3 +2924,10 @@ Use --emptyOutDir to override.
 [2025-07-31T14:23:09.959Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
 [2025-07-31T14:23:46.507Z] [INFO] page reload test-speech.html
 [2025-07-31T14:24:23.452Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:53:55.831Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:54:46.622Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:54:58.779Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:55:14.647Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:55:38.894Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:55:48.313Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-07-31T14:56:04.487Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
