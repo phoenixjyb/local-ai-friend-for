@@ -189,8 +189,13 @@ export class LLMService {
     }
 
     try {
-      const sparkPrompt = spark.llmPrompt`${prompt}`
-      const response = await spark.llm(sparkPrompt, this.config.cloudModel)
+      // Check if spark global is available
+      if (typeof window === 'undefined' || !window.spark || !window.spark.llm) {
+        throw new Error('Spark API not available')
+      }
+      
+      const sparkPrompt = window.spark.llmPrompt`${prompt}`
+      const response = await window.spark.llm(sparkPrompt, this.config.cloudModel)
       
       console.log('✅ Cloud LLM response received')
       return {

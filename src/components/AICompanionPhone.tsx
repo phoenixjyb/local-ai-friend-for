@@ -557,22 +557,31 @@ export default function AICompanionPhone() {
       
       // Check for speech recognition support
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-        recognitionRef.current = new SpeechRecognition()
-        
-        // Enhanced speech recognition settings for better reliability
-        recognitionRef.current.continuous = false // Single shot for better control
-        recognitionRef.current.interimResults = true // Show interim results for feedback
-        recognitionRef.current.lang = 'en-GB'
-        recognitionRef.current.maxAlternatives = 1 // Reduce to 1 for simpler processing
-        
-        console.log('✅ Speech Recognition initialized with settings:', {
-          continuous: recognitionRef.current.continuous,
-          interimResults: recognitionRef.current.interimResults,
-          lang: recognitionRef.current.lang,
-          maxAlternatives: recognitionRef.current.maxAlternatives
-        })
-        toast.success('🗣️ Voice recognition ready!')
+        try {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+          if (!SpeechRecognition) {
+            throw new Error('SpeechRecognition constructor not available')
+          }
+          
+          recognitionRef.current = new SpeechRecognition()
+          
+          // Enhanced speech recognition settings for better reliability
+          recognitionRef.current.continuous = false // Single shot for better control
+          recognitionRef.current.interimResults = true // Show interim results for feedback
+          recognitionRef.current.lang = 'en-GB'
+          recognitionRef.current.maxAlternatives = 1 // Reduce to 1 for simpler processing
+          
+          console.log('✅ Speech Recognition initialized with settings:', {
+            continuous: recognitionRef.current.continuous,
+            interimResults: recognitionRef.current.interimResults,
+            lang: recognitionRef.current.lang,
+            maxAlternatives: recognitionRef.current.maxAlternatives
+          })
+          toast.success('🗣️ Voice recognition ready!')
+        } catch (error) {
+          console.error('❌ Failed to initialize speech recognition:', error)
+          toast.error('Failed to initialize voice recognition: ' + error.message)
+        }
       } else {
         console.error('❌ Speech recognition not supported')
         toast.warning('Voice recognition not supported in this browser. Please use Chrome or Safari.')
@@ -580,44 +589,62 @@ export default function AICompanionPhone() {
       
       // Check for speech synthesis support
       if ('speechSynthesis' in window) {
-        synthRef.current = window.speechSynthesis
-        
-        // Wait for voices to load with timeout
-        const waitForVoices = () => {
-          return new Promise<void>((resolve) => {
-            const timeout = setTimeout(() => {
-              console.log('⚠️ Voice loading timeout - proceeding anyway')
-              resolve()
-            }, 3000)
-            
-            const voices = synthRef.current?.getVoices() || []
-            if (voices.length > 0) {
-              clearTimeout(timeout)
-              console.log('✅ Speech Synthesis voices loaded:', voices.length)
-              
-              // Log available British voices
-              const britishVoices = voices.filter(voice => 
-                voice.lang.includes('en-GB') || 
-                voice.name.includes('British') || 
-                voice.name.includes('Daniel') || 
-                voice.name.includes('Kate')
-              )
-              console.log('🇬🇧 British voices available:', britishVoices.map(v => v.name))
-              resolve()
-            } else {
-              synthRef.current?.addEventListener('voiceschanged', () => {
-                clearTimeout(timeout)
-                const newVoices = synthRef.current?.getVoices() || []
-                console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
+        try {
+          synthRef.current = window.speechSynthesis
+          
+          // Wait for voices to load with timeout
+          const waitForVoices = () => {
+            return new Promise<void>((resolve) => {
+              const timeout = setTimeout(() => {
+                console.log('⚠️ Voice loading timeout - proceeding anyway')
                 resolve()
-              }, { once: true })
-            }
-          })
+              }, 3000)
+              
+              try {
+                const voices = synthRef.current?.getVoices() || []
+                if (voices.length > 0) {
+                  clearTimeout(timeout)
+                  console.log('✅ Speech Synthesis voices loaded:', voices.length)
+                  
+                  // Log available British voices
+                  const britishVoices = voices.filter(voice => 
+                    voice.lang.includes('en-GB') || 
+                    voice.name.includes('British') || 
+                    voice.name.includes('Daniel') || 
+                    voice.name.includes('Kate')
+                  )
+                  console.log('🇬🇧 British voices available:', britishVoices.map(v => v.name))
+                  resolve()
+                } else {
+                  const voicesChangedHandler = () => {
+                    clearTimeout(timeout)
+                    try {
+                      const newVoices = synthRef.current?.getVoices() || []
+                      console.log('✅ Speech Synthesis voices loaded:', newVoices.length)
+                      resolve()
+                    } catch (error) {
+                      console.warn('Error getting voices after voiceschanged event:', error)
+                      resolve()
+                    }
+                  }
+                  
+                  synthRef.current?.addEventListener('voiceschanged', voicesChangedHandler, { once: true })
+                }
+              } catch (error) {
+                console.warn('Error accessing speech synthesis voices:', error)
+                clearTimeout(timeout)
+                resolve()
+              }
+            })
+          }
+          
+          await waitForVoices()
+          console.log('✅ Speech Synthesis initialized')
+          toast.success('🗣️ Text-to-speech ready!')
+        } catch (error) {
+          console.error('❌ Failed to initialize speech synthesis:', error)
+          toast.error('Failed to initialize text-to-speech: ' + error.message)
         }
-        
-        await waitForVoices()
-        console.log('✅ Speech Synthesis initialized')
-        toast.success('🗣️ Text-to-speech ready!')
       } else {
         console.error('❌ Text-to-speech not supported')
         toast.warning('Text-to-speech not supported in this browser')
