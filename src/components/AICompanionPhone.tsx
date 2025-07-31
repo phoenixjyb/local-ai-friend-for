@@ -134,36 +134,23 @@ export default function AICompanionPhone() {
     initializeNativeServices()
   }, [])
 
-  // Generate AI response using Local LLM (Ollama), Spark LLM, or fallback  
+  // Generate AI response using Web LLM only (Local LLM temporarily disabled for testing)
   const generateAIResponse = useCallback(async (userInput: string) => {
     try {
       // Use personality-specific prompt template
       const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
       const personalizedPrompt = promptTemplate.replace('{input}', userInput)
 
-      // Try local LLM first (Ollama with enhanced service)
-      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
-        try {
-          console.log('🤖 Using local Ollama for response generation...')
-          const localResponse = await ollamaService.generatePersonalizedResponse(
-            userInput, 
-            selectedPersonality.id
-          )
-          if (localResponse && localResponse.trim().length > 0) {
-            console.log('✅ Local AI response generated successfully')
-            return localResponse
-          }
-        } catch (localError) {
-          console.error('❌ Local Ollama failed:', localError)
-          toast.warning('Local AI temporarily unavailable - using cloud backup')
-        }
-      }
+      // TEMPORARILY DISABLED: Local LLM (Ollama) - Force web-only for testing
+      // This allows us to test voice recognition and web LLM integration
+      console.log('🌐 LOCAL LLM DISABLED - Using web LLM only for testing...')
 
-      // If local LLM fails and online, use cloud LLM
+      // Use cloud LLM if online
       if (isOnline) {
         console.log('☁️ Using cloud LLM for response generation...')
         const prompt = spark.llmPrompt`${personalizedPrompt}`
         const response = await spark.llm(prompt, 'gpt-4o-mini')
+        console.log('✅ Web LLM response received:', response.substring(0, 50) + '...')
         return response
       } else {
         // Personality-specific offline fallback responses
@@ -172,10 +159,11 @@ export default function AICompanionPhone() {
         return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
       }
     } catch (error) {
-      console.error('Error generating AI response:', error)
+      console.error('❌ Error generating AI response:', error)
+      toast.error('AI response failed. Please try again.')
       return "I'm sorry, I didn't quite catch that. Could you say that again?"
     }
-  }, [isOnline, selectedPersonality, localLLMAvailable])
+  }, [isOnline, selectedPersonality])
 
   // Handle speech recognition (unified for web and native) - Define this first
   const startListening = useCallback(async () => {
@@ -344,53 +332,18 @@ export default function AICompanionPhone() {
     }
   }, [selectedPersonality, isNativeApp, playSound, triggerCelebration, callState, isListening, startListening])
 
-  // Check for local LLM availability and auto-connect
+  // TEMPORARILY DISABLED: Check for local LLM availability 
+  // This forces web-only LLM for testing voice recognition and web integration
   useEffect(() => {
-    const initializeOllama = async () => {
-      console.log('🔄 Checking for local Ollama + Gemma3 setup...')
-      
-      const isInitialized = await ollamaService.initialize()
-      setLocalLLMAvailable(isInitialized)
-      
-      if (isInitialized) {
-        const modelName = ollamaService.getModelDisplayName()
-        toast.success(`🤖 ${modelName} AI connected! Ready for offline chats.`)
-        
-        // Auto-greet the user when first connected (with delay for better UX)
-        setTimeout(() => {
-          const greeting = `Hello there! I'm your ${selectedPersonality.name} and I'm running right here on your Samsung Galaxy S24 Ultra with ${modelName}! ` +
-                          `No internet needed - we can chat anytime you want. What would you like to talk about today?`
-          speakResponse(greeting)
-        }, 3000) // 3 second delay to let the user see the UI first
-      } else {
-        // Provide helpful setup guidance
-        setTimeout(() => {
-          toast.info('💡 To enable offline AI: Run "ollama pull gemma2:2b" in Termux, then restart the app!')
-        }, 2000)
-      }
-    }
+    console.log('🌐 LOCAL LLM TEMPORARILY DISABLED FOR TESTING')
+    console.log('🔄 All AI responses will use web-based LLM only')
     
-    // Initial check with delay for app startup
-    setTimeout(initializeOllama, 1500)
+    // Force local LLM to be unavailable for testing
+    setLocalLLMAvailable(false)
     
-    // Periodic connection check
-    const interval = setInterval(async () => {
-      const isConnected = await ollamaService.checkConnection()
-      if (isConnected !== localLLMAvailable) {
-        if (isConnected) {
-          const isInitialized = await ollamaService.initialize()
-          setLocalLLMAvailable(isInitialized)
-          if (isInitialized) {
-            toast.success('🔄 Local AI reconnected!')
-          }
-        } else {
-          setLocalLLMAvailable(false)
-          toast.warning('⚠️ Local AI disconnected - using cloud backup')
-        }
-      }
-    }, 15000) // Check every 15 seconds
-    
-    return () => clearInterval(interval)
+    setTimeout(() => {
+      toast.info('🌐 Using web-based AI for testing - Local LLM disabled')
+    }, 2000)
   }, [selectedPersonality, speakResponse])
 
   // Monitor online/offline status
@@ -574,88 +527,121 @@ export default function AICompanionPhone() {
     if (!recognitionRef.current) return
 
     recognitionRef.current.onresult = async (event) => {
-      console.log('🎤 Speech recognition result received')
+      console.log('🎤 Speech recognition result received, total results:', event.results.length)
       const result = event.results[event.results.length - 1]
+      const transcript = result[0].transcript.trim()
+      
+      console.log('📝 Transcript:', transcript, 'isFinal:', result.isFinal, 'confidence:', result[0].confidence)
+      
       if (result.isFinal) {
-        const transcript = result[0].transcript.trim()
-        console.log('📝 Final transcript:', transcript)
+        console.log('✅ Final transcript received:', transcript)
         if (transcript && transcript.length > 2) {
           setIsListening(false)
           playSound('success-chime', 0.6)
           triggerCelebration('emoji', '👂')
           toast.success(`Heard: "${transcript}"`)
           
-          console.log('🤖 Generating AI response...')
-          const aiResponse = await generateAIResponse(transcript)
-          console.log('💬 AI response ready:', aiResponse.substring(0, 50) + '...')
-          await speakResponse(aiResponse)
+          console.log('🤖 Generating AI response for:', transcript)
+          try {
+            const aiResponse = await generateAIResponse(transcript)
+            console.log('💬 AI response ready:', aiResponse.substring(0, 50) + '...')
+            await speakResponse(aiResponse)
+          } catch (error) {
+            console.error('❌ Error in AI response generation:', error)
+            toast.error('AI response failed. Please try again.')
+            setIsListening(false)
+            setAiSpeaking(false)
+          }
         } else {
           console.log('⚠️ Transcript too short, continuing to listen...')
+          toast.info('Transcript too short, please speak more clearly')
           // Continue listening if transcript is too short
           setTimeout(() => {
             if (callState === 'active' && !aiSpeaking) {
               startListening()
             }
-          }, 500)
+          }, 1000)
         }
       } else {
-        // Show interim results
+        // Show interim results for better user feedback
         const interimTranscript = result[0].transcript
-        if (interimTranscript.length > 5) {
+        if (interimTranscript.length > 3) {
           console.log('🔄 Interim transcript:', interimTranscript)
+          // You could show this in the UI as "Hearing: ..."
         }
       }
     }
 
     recognitionRef.current.onerror = (event) => {
-      console.error('❌ Speech recognition error:', event.error)
+      console.error('❌ Speech recognition error:', event.error, 'event:', event)
       setIsListening(false)
       playSound('error-boop')
       triggerCelebration('emoji', '🤔')
       
-      // Different error handling
-      if (event.error === 'no-speech') {
-        toast.info('No speech detected. Trying again...')
-        // Restart listening after a short delay
-        setTimeout(() => {
-          if (callState === 'active' && !aiSpeaking) {
-            startListening()
-          }
-        }, 1500)
-      } else if (event.error === 'audio-capture') {
-        toast.error('Microphone access denied. Please allow microphone access.')
-      } else if (event.error === 'not-allowed') {
-        toast.error('Microphone permission needed. Please allow and refresh.')
-      } else {
-        toast.error(`Voice recognition error: ${event.error}. Trying again...`)
-        // Restart listening after error
-        setTimeout(() => {
-          if (callState === 'active' && !aiSpeaking) {
-            startListening()
-          }
-        }, 2000)
+      // Different error handling with detailed logging
+      switch (event.error) {
+        case 'no-speech':
+          console.log('👂 No speech detected, will retry...')
+          toast.info('No speech detected. Speak a bit louder and try again!')
+          // Restart listening after a short delay
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              console.log('🔄 Restarting after no-speech...')
+              startListening()
+            }
+          }, 2000)
+          break
+        case 'audio-capture':
+          console.log('🎤 Microphone access issue')
+          toast.error('Microphone access denied. Please allow microphone access and refresh.')
+          break
+        case 'not-allowed':
+          console.log('🚫 Microphone permission denied')
+          toast.error('Microphone permission needed. Please allow and refresh the page.')
+          break
+        case 'network':
+          console.log('🌐 Network error in speech recognition')
+          toast.error('Network error. Check your connection and try again.')
+          break
+        case 'aborted':
+          console.log('⏹️ Speech recognition aborted')
+          toast.info('Voice recognition stopped.')
+          break
+        default:
+          console.log('❓ Unknown speech recognition error:', event.error)
+          toast.error(`Voice error: ${event.error}. Trying again...`)
+          // Restart listening after most errors
+          setTimeout(() => {
+            if (callState === 'active' && !aiSpeaking) {
+              console.log('🔄 Restarting after error:', event.error)
+              startListening()
+            }
+          }, 2500)
+          break
       }
     }
 
     recognitionRef.current.onstart = () => {
-      console.log('🎤 Speech recognition started')
+      console.log('✅ Speech recognition started successfully')
       setIsListening(true)
       playSound('pop', 0.4)
       triggerCelebration('sparkles')
-      toast.info('🎤 Listening...')
+      toast.info('🎤 Listening... Speak now!')
     }
 
     recognitionRef.current.onend = () => {
-      console.log('🛑 Speech recognition ended')
+      console.log('🛑 Speech recognition ended, callState:', callState, 'aiSpeaking:', aiSpeaking, 'isListening:', isListening)
       if (callState === 'active' && !aiSpeaking && isListening) {
         // Restart listening if call is still active and we were listening
-        console.log('🔄 Restarting speech recognition...')
+        console.log('🔄 Auto-restarting speech recognition...')
         setTimeout(() => {
           if (callState === 'active' && !aiSpeaking) {
+            console.log('🎤 Restarting listening now...')
             startListening()
           }
-        }, 1000)
+        }, 1500)
       } else {
+        console.log('❌ Not restarting speech recognition - conditions not met')
         setIsListening(false)
       }
     }
@@ -700,7 +686,7 @@ export default function AICompanionPhone() {
     }, 1500)
   }
 
-  // Handle sharing drawings with AI
+  // Handle sharing drawings with AI - TESTING MODE: Web LLM only
   const handleDrawingShare = useCallback(async (imageData: string) => {
     try {
       // Create a prompt for the AI to respond to the drawing
@@ -708,26 +694,19 @@ export default function AICompanionPhone() {
       
       let aiResponse
       
-      // Try local LLM first with enhanced drawing response
-      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
-        try {
-          aiResponse = await ollamaService.generatePersonalizedResponse(
-            "I just drew a beautiful picture and want to show it to you!", 
-            selectedPersonality.id
-          )
-        } catch (localError) {
-          console.log('Local LLM unavailable for drawing response:', localError)
-        }
-      }
+      // TESTING MODE: Skip local LLM, use web LLM only
+      console.log('🌐 TESTING MODE: Using web LLM for drawing response...')
       
-      // Fallback to cloud LLM if available
-      if (!aiResponse && isOnline) {
+      // Use cloud LLM if available
+      if (isOnline) {
         const prompt = spark.llmPrompt`${basePrompt}`
         aiResponse = await spark.llm(prompt, 'gpt-4o-mini')
+        console.log('✅ Web LLM drawing response received')
       }
       
       // Final fallback to personality-specific responses
       if (!aiResponse) {
+        console.log('📱 Using fallback drawing responses')
         const drawingResponses = getDrawingFallbackResponses(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
@@ -740,13 +719,13 @@ export default function AICompanionPhone() {
       setIsDrawingOpen(false)
       
     } catch (error) {
-      console.error('Error processing drawing:', error)
+      console.error('❌ Error processing drawing:', error)
       playSound('error-boop')
       triggerCelebration('emoji', '😅')
       speakResponse("What a wonderful drawing! You're such a talented artist!")
       setIsDrawingOpen(false)
     }
-  }, [selectedPersonality, localLLMAvailable, isOnline, speakResponse])
+  }, [selectedPersonality, isOnline, speakResponse])
 
   // Get personality-specific drawing responses
   const getDrawingFallbackResponses = (personality: AIPersonality) => {
@@ -855,8 +834,8 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* Local LLM Status Indicator */}
-      {localLLMAvailable && (
+      {/* LOCAL LLM DISABLED FOR TESTING */}
+      {false && localLLMAvailable && (
         <div className="fixed top-4 left-4 z-50">
           <Card className="cute-card p-3 border-primary/30">
             <div className="flex items-center gap-2 text-sm text-primary">
@@ -872,13 +851,28 @@ export default function AICompanionPhone() {
         </div>
       )}
 
-      {/* Offline Indicator */}
-      {!isOnline && !localLLMAvailable && (
-        <div className="fixed top-4 left-4 right-4 z-50">
-          <Card className="cute-card p-3 border-muted-foreground/20">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+      {/* Web LLM Testing Mode Indicator */}
+      <div className="fixed top-4 left-4 z-50">
+        <Card className="cute-card p-3 border-blue-300 bg-blue-50">
+          <div className="flex items-center gap-2 text-sm text-blue-700">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <div className="flex flex-col">
+              <span className="font-medium">Web LLM Testing Mode</span>
+              <span className="text-xs text-blue-600">
+                Local AI temporarily disabled
+              </span>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* TESTING MODE: No offline indicator since we're testing web LLM */}
+      {!isOnline && (
+        <div className="fixed top-16 left-4 right-4 z-50">
+          <Card className="cute-card p-3 border-orange-300 bg-orange-50">
+            <div className="flex items-center justify-center gap-2 text-sm text-orange-700">
               <WifiX size={16} />
-              <span>Offline Mode - Limited AI features</span>
+              <span>Offline - Web AI not available in testing mode</span>
             </div>
           </Card>
         </div>
@@ -904,19 +898,10 @@ export default function AICompanionPhone() {
             {selectedPersonality.conversationStyle.responseStyle}
           </Badge>
         </div>
-        {localLLMAvailable ? (
-          <p className="text-sm text-primary font-medium">
-            ✓ {ollamaService.getModelDisplayName()} AI running locally - No internet required!
-          </p>
-        ) : !isOnline ? (
-          <p className="text-sm text-muted-foreground">
-            Basic conversation available offline
-          </p>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Cloud AI available
-          </p>
-        )}
+        {/* Force web LLM display since local is disabled */}
+        <p className="text-sm text-blue-600 font-medium">
+          🌐 Using web-based AI for testing - Local LLM temporarily disabled
+        </p>
       </div>
 
       {/* Adorable AI Avatar with cute styling and particle effects */}
@@ -1036,26 +1021,33 @@ export default function AICompanionPhone() {
             Call Duration: {formatDuration(callDuration)}
           </p>
           
-          {/* Enhanced status indicators */}
-          <div className="flex flex-col items-center gap-2">
+          {/* Enhanced status indicators with better visual feedback */}
+          <div className="flex flex-col items-center gap-3">
             {isListening && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse">
-                <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
-                <span className="text-blue-700 font-medium">🎤 Listening for your voice...</span>
+              <div className="flex items-center gap-3 px-6 py-3 bg-blue-100 border-2 border-blue-300 rounded-full animate-pulse shadow-md">
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                <span className="text-blue-700 font-medium text-lg">🎤 Listening for your voice...</span>
+                <div className="flex gap-1">
+                  <div className="w-2 h-6 bg-blue-400 rounded animate-pulse" style={{animationDelay: '0s'}}></div>
+                  <div className="w-2 h-8 bg-blue-500 rounded animate-pulse" style={{animationDelay: '0.1s'}}></div>
+                  <div className="w-2 h-6 bg-blue-400 rounded animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-8 bg-blue-500 rounded animate-pulse" style={{animationDelay: '0.3s'}}></div>
+                </div>
               </div>
             )}
             
             {aiSpeaking && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-green-100 border-2 border-green-300 rounded-full animate-pulse">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
-                <span className="text-green-700 font-medium">🤖 {selectedPersonality.name} is speaking...</span>
+              <div className="flex items-center gap-3 px-6 py-3 bg-green-100 border-2 border-green-300 rounded-full animate-pulse shadow-md">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                <span className="text-green-700 font-medium text-lg">🤖 {selectedPersonality.name} is speaking...</span>
+                <Volume2 size={20} className="text-green-600 animate-bounce" />
               </div>
             )}
             
-            {!isListening && !aiSpeaking && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-orange-100 border-2 border-orange-300 rounded-full">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-orange-700 font-medium">⏳ Ready to listen...</span>
+            {!isListening && !aiSpeaking && callState === 'active' && (
+              <div className="flex items-center gap-3 px-6 py-3 bg-orange-100 border-2 border-orange-300 rounded-full shadow-md">
+                <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+                <span className="text-orange-700 font-medium text-lg">⏳ Ready to listen... (speak anytime)</span>
               </div>
             )}
           </div>
