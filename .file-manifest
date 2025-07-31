@@ -105,6 +105,7 @@ src/components/DrawingCanvas.tsx
 src/components/PWAInstallPrompt.tsx
 src/components/ParticleEffects.tsx
 src/components/PersonalitySelection.tsx
+src/components/VoiceDebugger.tsx
 src/index.css
 src/main.css
 src/prd.md
