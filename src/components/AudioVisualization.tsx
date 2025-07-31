@@ -43,18 +43,22 @@ export default function AudioVisualization({
         const rgbValue = Math.round(lightness * 255)
         const chromaBoost = Math.round(chroma * 100)
         
+        // Ensure values are within 0-255 range and convert to proper hex
+        const clamp = (val: number) => Math.max(0, Math.min(255, val))
+        const toHex = (val: number) => clamp(val).toString(16).padStart(2, '0')
+        
         if (hue >= 0 && hue < 60) {
           // Red-orange range
-          return `#${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}`
+          return `#${toHex(rgbValue + chromaBoost)}${toHex(rgbValue - chromaBoost / 2)}${toHex(rgbValue - chromaBoost)}`
         } else if (hue >= 60 && hue < 180) {
           // Yellow-green range
-          return `#${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}`
+          return `#${toHex(rgbValue - chromaBoost / 2)}${toHex(rgbValue + chromaBoost)}${toHex(rgbValue - chromaBoost)}`
         } else if (hue >= 180 && hue < 300) {
           // Blue-purple range
-          return `#${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost / 2).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost).toString(16).padStart(2, '0')}`
+          return `#${toHex(rgbValue - chromaBoost)}${toHex(rgbValue - chromaBoost / 2)}${toHex(rgbValue + chromaBoost)}`
         } else {
           // Purple-red range
-          return `#${Math.min(255, rgbValue + chromaBoost / 2).toString(16).padStart(2, '0')}${Math.max(0, rgbValue - chromaBoost).toString(16).padStart(2, '0')}${Math.min(255, rgbValue + chromaBoost / 2).toString(16).padStart(2, '0')}`
+          return `#${toHex(rgbValue + chromaBoost / 2)}${toHex(rgbValue - chromaBoost)}${toHex(rgbValue + chromaBoost / 2)}`
         }
       }
     }
@@ -218,14 +222,23 @@ export default function AudioVisualization({
   }, [audioData, isListening, canvasColor, type, config, volumeLevel])
 
   const drawIdleState = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string) => {
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
 
@@ -265,14 +278,23 @@ export default function AudioVisualization({
     lineWidth: number,
     volume: number
   ) => {
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
 
@@ -328,14 +350,23 @@ export default function AudioVisualization({
     color: string,
     volume: number
   ) => {
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
 
@@ -418,14 +449,23 @@ export default function AudioVisualization({
     ctx.beginPath()
     ctx.arc(centerX, centerY, pulseRadius, 0, Math.PI * 2)
     
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
     
@@ -444,14 +484,23 @@ export default function AudioVisualization({
     const centerY = height / 2
     const maxRadius = Math.min(width, height) / 2 - 10
     
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
     
@@ -490,14 +539,23 @@ export default function AudioVisualization({
     volume: number, 
     color: string
   ) => {
-    // Convert color to rgba for transparency
+    // Convert color to rgba for transparency - improved error handling
     const getColorWithAlpha = (baseColor: string, alpha: number) => {
-      if (baseColor.startsWith('#')) {
-        const r = parseInt(baseColor.slice(1, 3), 16)
-        const g = parseInt(baseColor.slice(3, 5), 16)
-        const b = parseInt(baseColor.slice(5, 7), 16)
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`
+      try {
+        if (baseColor.startsWith('#') && baseColor.length === 7) {
+          const r = parseInt(baseColor.slice(1, 3), 16)
+          const g = parseInt(baseColor.slice(3, 5), 16)
+          const b = parseInt(baseColor.slice(5, 7), 16)
+          
+          // Validate RGB values
+          if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid color format:', baseColor, error)
       }
+      // Safe fallback
       return `rgba(59, 130, 246, ${alpha})` // fallback blue
     }
 

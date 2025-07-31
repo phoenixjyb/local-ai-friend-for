@@ -2795,3 +2795,662 @@ Use --emptyOutDir to override.
 [2025-07-31T10:39:22.362Z] [INFO] ../preview-build/assets/web-4r6SYjSt.js       2.44 kB │ gzip:   1.09 kB
 [2025-07-31T10:39:22.362Z] [INFO] ../preview-build/assets/index-DvTDJRxv.js   430.93 kB │ gzip: 128.91 kB
 [2025-07-31T10:39:22.362Z] [INFO] ✓ built in 5.62s
+[2025-07-31T11:09:30.829Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T11:09:30.831Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-31T11:09:30.887Z] [INFO] transforming...
+[2025-07-31T11:09:35.605Z] [INFO] ✓ 4626 modules transformed.
+[2025-07-31T11:09:35.720Z] [INFO] rendering chunks...
+[2025-07-31T11:09:35.875Z] [INFO] computing gzip size...
+[2025-07-31T11:09:35.891Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T11:09:35.891Z] [INFO] ../../tmp/spark-preview-dist/assets/index-C4VPUZQZ.css  442.91 kB │ gzip:  74.46 kB
+[2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-DGGdT9h-.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-BpE6tXZr.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-Bfgh_Psc.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/spark-B4mVDrCx.js     2.42 kB │ gzip:   0.98 kB
+[2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CFD65SnK.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T11:09:35.893Z] [INFO] ../../tmp/spark-preview-dist/assets/index-CT-Jknkv.js   434.43 kB │ gzip: 129.69 kB
+[2025-07-31T11:09:35.893Z] [INFO] ✓ built in 5.04s
+[2025-07-31T11:30:07.572Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-31T11:30:07.572Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T11:30:07.644Z] [INFO] 
+  VITE v6.3.5  ready in 4916 ms
+
+[2025-07-31T11:30:07.645Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-31T11:30:07.645Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T11:30:15.108Z] [ERROR] Pre-transform error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+[2025-07-31T11:30:19.995Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:30:21.451Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:30:53.779Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:30:54.659Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:31:31.228Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:31:32.135Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:31:57.646Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:31:58.710Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:32:53.570Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:32:54.670Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:35:07.159Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:35:08.095Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:37:05.588Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:37:06.524Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:40:26.078Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:40:27.099Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:13.678Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:46:15.085Z] [ERROR] Pre-transform error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+[2025-07-31T11:46:17.169Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:17.994Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:23.894Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:46:25.240Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:26.162Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:34.501Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:46:35.505Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:36.417Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:43.110Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:46:44.430Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:46:45.383Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:05.380Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:47:06.508Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:07.435Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:15.524Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:47:16.465Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:17.535Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:29.666Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:47:30.978Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:31.888Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:42.880Z] [INFO] page reload src/components/AudioVisualization.tsx
+[2025-07-31T11:47:44.191Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
+[2025-07-31T11:47:45.121Z] [ERROR] Internal server error: Missing catch or finally clause. (578:6)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:578:6
+  576|        
+  577|        // Initialize speech recognition with language fallback
+  578|        try {
+     |        ^
+  579|          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+  580|          recognitionRef.current = new SpeechRecognition()
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.parseTryStatement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33697:13)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33278:22)
+      at V8IntrinsicMixin.parseStatementContent (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30174:19)
+      at V8IntrinsicMixin.parseStatementLike (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33241:18)
+      at V8IntrinsicMixin.parseStatementListItem (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33221:18)
+      at V8IntrinsicMixin.parseBlockOrModuleBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33789:62)
+      at V8IntrinsicMixin.parseBlockBody (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33782:11)
+      at V8IntrinsicMixin.parseBlock (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:33770:11)
