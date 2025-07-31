@@ -1,4 +1,13 @@
+.devcontainer/devcontainer.json
+.devcontainer/onCreate.sh
+.devcontainer/postStartCommand.sh
+.devcontainer/refreshTools.sh
+.devcontainer/spark.conf
+.file-manifest
+.gitignore
 .spark-initial-sha
+.spark-workbench-id
+.vite.log
 ANDROID_CONFIG_UPDATE.md
 ANDROID_READINESS_CHECKLIST.md
 ANDROID_SETUP.md
@@ -6,8 +15,10 @@ APK_BUILD_GUIDE.md
 BUILD_SUCCESS_SUMMARY.md
 FINAL_APK_BUILD_INSTRUCTIONS.md
 GALAXY_S24_OPTIMIZATION.md
+GIT_SETUP_INSTRUCTIONS.md
 PRD.md
 PWA_INSTALL_GUIDE.md
+README.md
 VOICE_CHAT_GUIDE.md
 android/.gitignore
 android/app/.gitignore
@@ -68,9 +79,11 @@ build-apk.sh
 build-s24-apk.sh
 capacitor.config.ts
 check-android-ready.sh
+git-setup.sh
 index.html
 package-lock.json
 package.json
+packages/spark-tools/package.json
 public/icons/icon-128x128.png
 public/icons/icon-144x144.png
 public/icons/icon-152x152.png

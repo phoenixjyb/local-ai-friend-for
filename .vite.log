@@ -1787,3 +1787,169 @@ Use --emptyOutDir to override.
 [2025-07-31T03:39:34.552Z] [INFO] ../preview-build/assets/index-BhVCgc21.js   385.91 kB │ gzip: 118.89 kB
 [2025-07-31T03:39:34.553Z] [INFO] ✓ built in 6.04s
 [2025-07-31T03:41:06.357Z] [INFO] page reload README.md
+[2025-07-31T03:58:47.775Z] [INFO] page reload check-android-ready.sh
+[2025-07-31T03:58:47.777Z] [INFO] page reload setup-android.sh
+[2025-07-31T04:16:44.654Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T04:16:44.656Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-31T04:16:44.726Z] [INFO] transforming...
+[2025-07-31T04:16:50.472Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T04:16:50.594Z] [INFO] rendering chunks...
+[2025-07-31T04:16:50.741Z] [INFO] computing gzip size...
+[2025-07-31T04:16:50.757Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T04:16:50.757Z] [INFO] ../../tmp/spark-preview-dist/assets/index-4pRCIUfV.css  432.45 kB │ gzip:  72.47 kB
+[2025-07-31T04:16:50.757Z] [INFO] ../../tmp/spark-preview-dist/assets/web-p_zZTM9N.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T04:16:50.758Z] [INFO] ../../tmp/spark-preview-dist/assets/web-B6sw3jip.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T04:16:50.758Z] [INFO] ../../tmp/spark-preview-dist/assets/web-Cwo5VT6f.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T04:16:50.758Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CNmE55jM.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T04:16:50.758Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DZyTRYEx.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T04:16:50.759Z] [INFO] ✓ built in 6.08s
+[2025-07-31T04:19:38.955Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-31T04:19:38.958Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T04:19:39.045Z] [INFO] 
+  VITE v6.3.5  ready in 1703 ms
+
+[2025-07-31T04:19:39.045Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-31T04:19:39.045Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T04:19:42.617Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-31T04:19:49.611Z] [INFO] [32m✓[39m 6191 modules transformed.
+[2025-07-31T04:19:49.887Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2025-07-31T04:19:49.887Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-4pRCIUfV.css  [39m[1m[2m432.45 kB[22m[1m[22m[2m │ gzip:  72.47 kB[22m
+[2025-07-31T04:19:49.887Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-p_zZTM9N.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-31T04:19:49.887Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-B6sw3jip.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2025-07-31T04:19:49.887Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Cwo5VT6f.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-31T04:19:49.888Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CNmE55jM.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-31T04:19:49.888Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DZyTRYEx.js   [39m[1m[2m385.91 kB[22m[1m[22m[2m │ gzip: 118.89 kB[22m
+[2025-07-31T04:19:49.888Z] [INFO] [32m✓ built in 7.24s[39m
+[2025-07-31T05:05:36.770Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T05:05:36.771Z] [WARN] 
+(!) outDir /tmp/spark-preview-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+[2025-07-31T05:05:36.828Z] [INFO] transforming...
+[2025-07-31T05:05:42.604Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T05:05:42.727Z] [INFO] rendering chunks...
+[2025-07-31T05:05:42.876Z] [INFO] computing gzip size...
+[2025-07-31T05:05:42.892Z] [INFO] ../../tmp/spark-preview-dist/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T05:05:42.892Z] [INFO] ../../tmp/spark-preview-dist/assets/index-4pRCIUfV.css  432.45 kB │ gzip:  72.47 kB
+[2025-07-31T05:05:42.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-p_zZTM9N.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T05:05:42.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-B6sw3jip.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T05:05:42.893Z] [INFO] ../../tmp/spark-preview-dist/assets/web-Cwo5VT6f.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T05:05:42.893Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CNmE55jM.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T05:05:42.893Z] [INFO] ../../tmp/spark-preview-dist/assets/index-DZyTRYEx.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T05:05:42.893Z] [INFO] ✓ built in 6.10s
+[2025-07-31T05:28:51.449Z] [INFO]   ➜  Local:   http://localhost:4173/
+[2025-07-31T05:28:51.486Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T05:28:51.534Z] [INFO] 
+  VITE v6.3.5  ready in 1107 ms
+
+[2025-07-31T05:28:51.535Z] [INFO]   ➜  Local:   http://localhost:5000/
+[2025-07-31T05:28:51.535Z] [INFO]   ➜  Network: use --host to expose
+[2025-07-31T05:28:53.023Z] [INFO] page reload src/components/ui/scroll-area.tsx
+[2025-07-31T05:28:53.058Z] [INFO] page reload src/components/ui/checkbox.tsx
+[2025-07-31T05:28:53.059Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-07-31T05:28:53.059Z] [INFO] page reload GALAXY_S24_OPTIMIZATION.md
+[2025-07-31T05:28:53.061Z] [INFO] hmr update /src/ErrorFallback.tsx, /src/index.css
+[2025-07-31T05:28:53.062Z] [INFO] page reload src/components/ui/menubar.tsx
+[2025-07-31T05:28:53.063Z] [INFO] hmr update /src/components/ui/sonner.tsx, /src/index.css
+[2025-07-31T05:28:53.064Z] [INFO] page reload src/components/ui/aspect-ratio.tsx
+[2025-07-31T05:28:53.065Z] [INFO] page reload setup-android.sh
+[2025-07-31T05:28:53.066Z] [INFO] page reload index.html
+[2025-07-31T05:28:53.066Z] [INFO] page reload src/components/ui/toggle-group.tsx
+[2025-07-31T05:28:53.067Z] [INFO] page reload src/main.tsx
+[2025-07-31T05:28:53.068Z] [INFO] page reload src/components/ui/resizable.tsx
+[2025-07-31T05:28:53.070Z] [INFO] page reload src/components/ui/form.tsx
+[2025-07-31T05:28:53.071Z] [INFO] page reload src/components/ui/select.tsx
+[2025-07-31T05:28:53.073Z] [INFO] page reload src/components/ui/breadcrumb.tsx
+[2025-07-31T05:28:53.075Z] [INFO] page reload src/components/ui/input.tsx
+[2025-07-31T05:28:53.075Z] [INFO] page reload src/components/ui/separator.tsx
+[2025-07-31T05:28:53.076Z] [INFO] page reload src/components/ui/textarea.tsx
+[2025-07-31T05:28:53.077Z] [INFO] page reload src/components/ui/context-menu.tsx
+[2025-07-31T05:28:53.080Z] [INFO] page reload src/components/ui/input-otp.tsx
+[2025-07-31T05:28:53.081Z] [INFO] page reload src/components/ui/dropdown-menu.tsx
+[2025-07-31T05:28:53.084Z] [INFO] page reload src/components/ui/command.tsx
+[2025-07-31T05:28:53.084Z] [INFO] page reload FINAL_APK_BUILD_INSTRUCTIONS.md
+[2025-07-31T05:28:53.086Z] [INFO] page reload capacitor.config.ts
+[2025-07-31T05:28:53.132Z] [INFO] page reload src/components/ui/accordion.tsx
+[2025-07-31T05:28:53.133Z] [INFO] page reload src/components/ui/sidebar.tsx
+[2025-07-31T05:28:53.134Z] [INFO] page reload src/components/ui/label.tsx
+[2025-07-31T05:28:53.134Z] [INFO] page reload src/components/ui/tooltip.tsx
+[2025-07-31T05:28:53.136Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/components/PersonalitySelection.tsx
+[2025-07-31T05:28:53.137Z] [INFO] page reload GIT_SETUP_INSTRUCTIONS.md
+[2025-07-31T05:28:53.149Z] [INFO] hmr update /src/App.tsx, /src/index.css
+[2025-07-31T05:28:53.151Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css
+[2025-07-31T05:28:53.154Z] [INFO] page reload src/android-development-guide.md
+[2025-07-31T05:28:53.156Z] [INFO] page reload src/components/ui/sheet.tsx
+[2025-07-31T05:28:53.157Z] [INFO] page reload src/components/ui/dialog.tsx
+[2025-07-31T05:28:53.158Z] [INFO] page reload ANDROID_SETUP.md
+[2025-07-31T05:28:53.159Z] [INFO] page reload build-s24-apk.sh
+[2025-07-31T05:28:53.160Z] [INFO] hmr update /src/components/ui/alert.tsx, /src/index.css
+[2025-07-31T05:28:53.161Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css
+[2025-07-31T05:28:53.163Z] [INFO] page reload src/components/ui/calendar.tsx
+[2025-07-31T05:28:53.164Z] [INFO] hmr update /src/index.css
+[2025-07-31T05:28:53.165Z] [INFO] page reload src/components/ui/carousel.tsx
+[2025-07-31T05:28:53.167Z] [INFO] page reload src/components/ui/switch.tsx
+[2025-07-31T05:28:53.168Z] [INFO] page reload check-android-ready.sh
+[2025-07-31T05:28:53.169Z] [INFO] page reload src/components/ui/tabs.tsx
+[2025-07-31T05:28:53.288Z] [INFO] page reload src/components/ui/popover.tsx
+[2025-07-31T05:28:53.289Z] [INFO] page reload ANDROID_READINESS_CHECKLIST.md
+[2025-07-31T05:28:53.289Z] [INFO] page reload src/components/ui/slider.tsx
+[2025-07-31T05:28:53.290Z] [INFO] page reload APK_BUILD_GUIDE.md
+[2025-07-31T05:28:53.291Z] [INFO] page reload build-apk.sh
+[2025-07-31T05:28:53.291Z] [INFO] page reload SECURITY.md
+[2025-07-31T05:28:53.292Z] [INFO] page reload src/components/ui/chart.tsx
+[2025-07-31T05:28:53.293Z] [INFO] page reload src/components/ui/navigation-menu.tsx
+[2025-07-31T05:28:53.294Z] [INFO] page reload src/components/ui/table.tsx
+[2025-07-31T05:28:53.294Z] [INFO] hmr update /src/components/ParticleEffects.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.296Z] [INFO] page reload src/components/ui/progress.tsx
+[2025-07-31T05:28:53.299Z] [INFO] page reload PWA_INSTALL_GUIDE.md
+[2025-07-31T05:28:53.301Z] [INFO] page reload src/components/ui/radio-group.tsx
+[2025-07-31T05:28:53.302Z] [INFO] page reload ANDROID_CONFIG_UPDATE.md
+[2025-07-31T05:28:53.304Z] [INFO] page reload src/components/ui/hover-card.tsx
+[2025-07-31T05:28:53.305Z] [INFO] page reload src/components/ui/collapsible.tsx
+[2025-07-31T05:28:53.306Z] [INFO] page reload src/hooks/use-mobile.ts
+[2025-07-31T05:28:53.306Z] [INFO] hmr update /src/components/PWAInstallPrompt.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.307Z] [INFO] page reload PRD.md
+[2025-07-31T05:28:53.308Z] [INFO] hmr update /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.310Z] [INFO] page reload BUILD_SUCCESS_SUMMARY.md
+[2025-07-31T05:28:53.311Z] [INFO] page reload public/manifest.json
+[2025-07-31T05:28:53.312Z] [INFO] page reload src/components/ui/skeleton.tsx
+[2025-07-31T05:28:53.312Z] [INFO] hmr update /src/components/ui/card.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.313Z] [INFO] page reload VOICE_CHAT_GUIDE.md
+[2025-07-31T05:28:53.314Z] [INFO] hmr update /src/components/PersonalitySelection.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.315Z] [INFO] page reload src/components/ui/drawer.tsx
+[2025-07-31T05:28:53.315Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.317Z] [INFO] hmr update /src/components/ui/button.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.319Z] [INFO] page reload src/components/ui/toggle.tsx
+[2025-07-31T05:28:53.319Z] [INFO] page reload public/sw.js
+[2025-07-31T05:28:53.320Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.321Z] [INFO] page reload git-setup.sh
+[2025-07-31T05:28:53.321Z] [INFO] page reload src/components/ui/pagination.tsx
+[2025-07-31T05:28:53.322Z] [INFO] hmr update /src/components/ui/badge.tsx, /src/index.css, /src/styles/theme.css
+[2025-07-31T05:28:53.324Z] [INFO] hmr update /src/styles/theme.css
+[2025-07-31T05:28:53.335Z] [INFO] page reload src/components/ui/alert-dialog.tsx
+[2025-07-31T05:29:04.678Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-07-31T05:29:11.203Z] [INFO] [32m✓[39m 6191 modules transformed.
+[2025-07-31T05:29:11.473Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2025-07-31T05:29:11.473Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-4pRCIUfV.css  [39m[1m[2m432.45 kB[22m[1m[22m[2m │ gzip:  72.47 kB[22m
+[2025-07-31T05:29:11.473Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-p_zZTM9N.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-07-31T05:29:11.474Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-B6sw3jip.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2025-07-31T05:29:11.474Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Cwo5VT6f.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-07-31T05:29:11.474Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CNmE55jM.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-07-31T05:29:11.474Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DZyTRYEx.js   [39m[1m[2m385.91 kB[22m[1m[22m[2m │ gzip: 118.89 kB[22m
+[2025-07-31T05:29:11.474Z] [INFO] [32m✓ built in 6.75s[39m
+[2025-07-31T05:33:24.833Z] [INFO] vite v6.3.5 building for production...
+[2025-07-31T05:33:24.892Z] [INFO] transforming...
+[2025-07-31T05:33:30.646Z] [INFO] ✓ 6191 modules transformed.
+[2025-07-31T05:33:30.759Z] [INFO] rendering chunks...
+[2025-07-31T05:33:30.902Z] [INFO] computing gzip size...
+[2025-07-31T05:33:30.916Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
+[2025-07-31T05:33:30.916Z] [INFO] ../preview-build/assets/index-4pRCIUfV.css  432.45 kB │ gzip:  72.47 kB
+[2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/web-p_zZTM9N.js       0.80 kB │ gzip:   0.24 kB
+[2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/web-B6sw3jip.js       0.94 kB │ gzip:   0.47 kB
+[2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/web-Cwo5VT6f.js       1.65 kB │ gzip:   0.68 kB
+[2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/web-CNmE55jM.js       2.44 kB │ gzip:   1.09 kB
+[2025-07-31T05:33:30.917Z] [INFO] ../preview-build/assets/index-DZyTRYEx.js   385.91 kB │ gzip: 118.89 kB
+[2025-07-31T05:33:30.917Z] [INFO] ✓ built in 6.07s
