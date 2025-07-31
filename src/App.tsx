@@ -7,7 +7,7 @@ function App() {
         <>
             {/* Debug indicator to confirm changes are loading */}
             <div className="fixed top-0 right-0 z-50 bg-green-500 text-white p-2 text-xs rounded-bl-lg shadow-lg">
-                ✓ Updated UI v2.0 - Warm Colors & Particles Active
+                ✓ Voice System Fixed v3.0 - Enhanced Recognition & Status
             </div>
             <AICompanionPhone />
             <PWAInstallPrompt />
