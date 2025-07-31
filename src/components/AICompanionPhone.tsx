@@ -2129,44 +2129,46 @@ export default function AICompanionPhone() {
           </div>
         </div>
         
-                {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
-          <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
-          <div className="space-y-1 text-xs text-muted-foreground">
-            <code className="text-xs bg-muted p-2 rounded block">
-              # In Termux, install Ollama and download model:
-            </code>
-            <code className="text-xs bg-muted p-2 rounded block">
-              ollama pull gemma2:2b
-            </code>
-            <code className="text-xs bg-muted p-2 rounded block">
-              # Start Ollama server:
-            </code>
-          <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
-          <div className="space-y-1 text-xs text-muted-foreground">
-            </code>
-          </div>
-          <div className="mt-3 p-3 bg-muted/50 rounded-md">
-            <p className="text-xs font-medium mb-1">Local AI Status:</p>
-            <p className="text-xs text-muted-foreground">
-              Connection: {llmStatus.localAvailable ? '✅ Connected' : '❌ Not detected'}
-            </p>
-            {llmStatus.localAvailable && (
-              <>
-                <p className="text-xs text-muted-foreground">
-                  Model: {ollamaService.getModelDisplayName()} ({ollamaService.getCurrentModel()})
-            </code>
-                <p className="text-xs text-green-600 font-medium mt-1">
-                  🚀 Running locally on your Samsung S24 Ultra - No internet required!
-                </p>
-              </>
-            )}
-            {!llmStatus.localAvailable && (
-              <p className="text-xs text-orange-600 mt-1">
-                💡 Start Ollama in Termux to enable offline AI conversations
+        {llmStatus.currentLLM === 'local' && (
+          <div className="mt-4 p-4 cute-card border-2 border-green-300/50">
+            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <code className="text-xs bg-muted p-2 rounded block">
+                # In Termux, install Ollama and download model:
+              </code>
+              <code className="text-xs bg-muted p-2 rounded block">
+                ollama pull gemma2:2b
+              </code>
+              <code className="text-xs bg-muted p-2 rounded block">
+                # Start Ollama server:
+              </code>
+              <code className="text-xs bg-muted p-2 rounded block">
+                ollama serve
+              </code>
+            </div>
+            <div className="mt-3 p-3 bg-muted/50 rounded-md">
+              <p className="text-xs font-medium mb-1">Local AI Status:</p>
+              <p className="text-xs text-muted-foreground">
+                Connection: {llmStatus.localAvailable ? '✅ Connected' : '❌ Not detected'}
               </p>
-            )}
+              {llmStatus.localAvailable && (
+                <>
+                  <p className="text-xs text-muted-foreground">
+                    Model: {ollamaService.getModelDisplayName()} ({ollamaService.getCurrentModel()})
+                  </p>
+                  <p className="text-xs text-green-600 font-medium mt-1">
+                    🚀 Running locally on your Samsung S24 Ultra - No internet required!
+                  </p>
+                </>
+              )}
+              {!llmStatus.localAvailable && (
+                <p className="text-xs text-orange-600 mt-1">
+                  💡 Start Ollama in Termux to enable offline AI conversations
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </Card>
 
       <Card className="cute-card p-6">

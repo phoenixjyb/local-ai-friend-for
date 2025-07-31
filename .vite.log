@@ -3674,3 +3674,50 @@ Use --emptyOutDir to override.
       at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
       at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
       at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:54:20.246Z] [ERROR] Pre-transform error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+[2025-07-31T11:54:24.301Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
+[2025-07-31T11:54:25.236Z] [ERROR] Internal server error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (2134:10)
+  Plugin: tag-source
+  File: /workspaces/spark-template/src/components/AICompanionPhone.tsx:2134:10
+  2132|                  {llmStatus.currentLLM === 'cloud' ? '☁️ Cloud' : 
+  2133|            <p className="text-sm font-medium mb-2">For your Samsung S24 Ultra:</p>
+  2134|            <div className="space-y-1 text-xs text-muted-foreground">
+     |            ^
+  2135|              <code className="text-xs bg-muted p-2 rounded block">
+  2136|                # In Termux, install Ollama and download model:
+      at constructor (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:21169:20)
+      at V8IntrinsicMixin.raise (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:24147:20)
+      at V8IntrinsicMixin.jsxParseElementAt (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27737:19)
+      at V8IntrinsicMixin.jsxParseElement (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27744:18)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:27754:20)
+      at V8IntrinsicMixin.parseExprAtom (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31147:46)
+      at V8IntrinsicMixin.parseExprSubscripts (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31594:24)
+      at V8IntrinsicMixin.parseUpdate (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31579:22)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:31559:24)
+      at V8IntrinsicMixin.parseMaybeUnary (file:///workspaces/spark-template/packages/spark-tools/dist/designerPlugin.js:30499:19)
