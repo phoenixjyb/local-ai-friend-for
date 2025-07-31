@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Palette, Eraser, RotateCcw, Share, Sparkles, X } from '@phosphor-icons/react'
+import { Palette, Eraser, ArrowCounterClockwise, Share, Star, X } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 interface DrawingCanvasProps {
@@ -193,7 +193,7 @@ export default function DrawingCanvas({ isOpen, onClose, onShareDrawing, persona
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles size={24} className="text-primary magic-sparkle" />
+              <Star size={24} className="text-primary magic-sparkle" />
               <h2 className="text-xl font-bold cute-bounce">Art Studio</h2>
             </div>
             <Button
@@ -301,7 +301,7 @@ export default function DrawingCanvas({ isOpen, onClose, onShareDrawing, persona
               variant="outline"
               className="cute-card border-destructive/30 hover:border-destructive/50 text-destructive"
             >
-              <RotateCcw size={16} className="mr-2" />
+              <ArrowCounterClockwise size={16} className="mr-2" />
               Clear
             </Button>
           </div>
@@ -328,7 +328,7 @@ export default function DrawingCanvas({ isOpen, onClose, onShareDrawing, persona
 
             {hasDrawing && (
               <Badge variant="secondary" className="w-full justify-center cute-card border-0">
-                <Sparkles size={14} className="mr-1" />
+                <Star size={14} className="mr-1" />
                 What a beautiful creation!
               </Badge>
             )}

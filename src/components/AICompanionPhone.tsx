@@ -4,8 +4,31 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { useKV } from '@github/spark/hooks'
 import { toast } from 'sonner'
+
+// Simple localStorage-based hook to replace useKV
+function useKV<T>(key: string, defaultValue: T): [T, (value: T) => void] {
+  const [state, setState] = useState<T>(() => {
+    try {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : defaultValue
+    } catch {
+      return defaultValue
+    }
+  })
+
+  const setValue = useCallback((value: T) => {
+    setState(value)
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+    } catch (error) {
+      console.warn('Failed to save to localStorage:', error)
+    }
+  }, [key])
+
+  return [state, setValue]
+}
+
 import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
