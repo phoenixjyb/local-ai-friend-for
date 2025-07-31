@@ -780,33 +780,8 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* LLM Mode Toggle and Status */}
-      <div className="fixed top-4 left-4 z-50 space-y-2">
-        {/* LLM Mode Toggle Button */}
-        <Button
-          id="llm-toggle"
-          onClick={handleLlmModeChange}
-          variant="outline"
-          size="sm"
-          className="cute-card border-2 hover:shadow-lg transition-all"
-          style={{
-            borderColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
-                        llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8',
-            backgroundColor: llmStatus.currentLLM === 'cloud' ? '#eff6ff' : 
-                           llmStatus.currentLLM === 'local' ? '#ecfdf5' : '#f1f5f9'
-          }}
-        >
-          <div className="flex items-center gap-2">
-            {llmMode === 'cloud' && <CloudArrowUp size={16} className="text-blue-600" />}
-            {llmMode === 'local' && <DeviceMobile size={16} className="text-green-600" />}
-            {llmMode === 'auto' && <Robot size={16} className="text-purple-600" />}
-            <span className="text-xs font-medium">
-              {llmMode === 'cloud' ? 'Cloud' : llmMode === 'local' ? 'Local' : 'Auto'}
-            </span>
-          </div>
-        </Button>
-
-        {/* LLM Status Card */}
+      {/* LLM Status Card - moved to top-left only */}
+      <div className="fixed top-4 left-4 z-50">
         <Card className="cute-card p-3 max-w-xs">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
@@ -1034,25 +1009,56 @@ export default function AICompanionPhone() {
 
       <div className="space-y-4">
         {callState === 'idle' && (
-          <PulsingGlow active={true} color="primary">
+          <div className="flex flex-col items-center gap-3">
+            <PulsingGlow active={true} color="primary">
+              <Button
+                id="call-button"
+                onClick={startCall}
+                size="lg"
+                className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
+                style={{ 
+                  background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
+                  border: '3px solid white'
+                }}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <Phone size={24} />
+                  </div>
+                  <span>Call {selectedPersonality.name}</span>
+                </div>
+              </Button>
+            </PulsingGlow>
+            
+            {/* LLM Mode Toggle Button - positioned below call button */}
             <Button
-              id="call-button"
-              onClick={startCall}
+              id="llm-toggle"
+              onClick={handleLlmModeChange}
+              variant="outline"
               size="lg"
-              className="button-text h-20 w-56 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cute-pulse"
-              style={{ 
-                background: `linear-gradient(135deg, ${selectedPersonality.color} 0%, ${selectedPersonality.color}cc 100%)`,
-                border: '3px solid white'
+              className="cute-card border-2 hover:shadow-lg transition-all button-text h-12 w-56 rounded-full"
+              style={{
+                borderColor: llmStatus.currentLLM === 'cloud' ? '#3b82f6' : 
+                            llmStatus.currentLLM === 'local' ? '#10b981' : '#94a3b8',
+                backgroundColor: llmStatus.currentLLM === 'cloud' ? '#eff6ff' : 
+                               llmStatus.currentLLM === 'local' ? '#ecfdf5' : '#f1f5f9'
               }}
             >
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <Phone size={24} />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{
+                  backgroundColor: llmStatus.currentLLM === 'cloud' ? '#3b82f640' : 
+                                 llmStatus.currentLLM === 'local' ? '#10b98140' : '#94a3b840'
+                }}>
+                  {llmMode === 'cloud' && <CloudArrowUp size={20} className="text-blue-600" />}
+                  {llmMode === 'local' && <DeviceMobile size={20} className="text-green-600" />}
+                  {llmMode === 'auto' && <Robot size={20} className="text-purple-600" />}
                 </div>
-                <span>Call {selectedPersonality.name}</span>
+                <span className="font-medium">
+                  {llmMode === 'cloud' ? 'Cloud AI' : llmMode === 'local' ? 'Local AI' : 'Auto AI'}
+                </span>
               </div>
             </Button>
-          </PulsingGlow>
+          </div>
         )}
 
         {callState === 'connecting' && (
