@@ -2813,133 +2813,125 @@ Use --emptyOutDir to override.
 [2025-07-31T11:09:35.892Z] [INFO] ../../tmp/spark-preview-dist/assets/web-CFD65SnK.js       2.44 kB │ gzip:   1.09 kB
 [2025-07-31T11:09:35.893Z] [INFO] ../../tmp/spark-preview-dist/assets/index-CT-Jknkv.js   434.43 kB │ gzip: 129.69 kB
 [2025-07-31T11:09:35.893Z] [INFO] ✓ built in 5.04s
-[2025-07-31T14:15:30.815Z] [INFO] page reload src/components/ui/breadcrumb.tsx
-[2025-07-31T14:15:30.817Z] [INFO] page reload ANDROID_SETUP.md
-[2025-07-31T14:15:30.818Z] [INFO] page reload src/main.tsx
-[2025-07-31T14:15:30.819Z] [INFO] page reload FINAL_APK_BUILD_INSTRUCTIONS.md
-[2025-07-31T14:15:30.820Z] [INFO] hmr update /src/components/CuteAnimations.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:30.822Z] [INFO] page reload src/components/ui/separator.tsx
-[2025-07-31T14:15:30.828Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-build-apk.sh
-[2025-07-31T14:15:30.829Z] [INFO] page reload src/.azDownload-6223fad7-e431-f245-59af-800af8762767-ErrorFallback.tsx
-[2025-07-31T14:15:30.829Z] [INFO] page reload src/lib/.azDownload-6223fad7-e431-f245-59af-800af8762767-utils.ts
-[2025-07-31T14:15:30.830Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-card.tsx
-[2025-07-31T14:15:30.830Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-chart.tsx
-[2025-07-31T14:15:30.831Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-scroll-area.tsx
-[2025-07-31T14:15:30.831Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-tooltip.tsx
-[2025-07-31T14:15:30.831Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-checkbox.tsx
-[2025-07-31T14:15:30.832Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-README.md
-[2025-07-31T14:15:30.832Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-button.tsx
-[2025-07-31T14:15:30.832Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-index.html
-[2025-07-31T14:15:30.832Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-setup-android.sh
-[2025-07-31T14:15:30.833Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-tabs.tsx
-[2025-07-31T14:15:30.833Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-input.tsx
-[2025-07-31T14:15:30.833Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-.gitignore
-[2025-07-31T14:15:30.833Z] [INFO] page reload src/components/.azDownload-6223fad7-e431-f245-59af-800af8762767-PWAInstallPrompt.tsx
-[2025-07-31T14:15:30.834Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-BUILD_SUCCESS_SUMMARY.md
-[2025-07-31T14:15:30.836Z] [INFO] page reload .devcontainer/.azDownload-6223fad7-e431-f245-59af-800af8762767-postStartCommand.sh
-[2025-07-31T14:15:30.836Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-dropdown-menu.tsx
-[2025-07-31T14:15:30.837Z] [INFO] page reload src/components/ui/command.tsx
-[2025-07-31T14:15:30.840Z] [INFO] hmr update /src/components/ui/alert.tsx, /src/index.css, /src/main.css, /src/styles/theme.css, /src/components/ui/button.tsx, /src/components/ui/card.tsx, /src/components/ui/avatar.tsx, /src/components/ui/badge.tsx
-[2025-07-31T14:15:30.949Z] [INFO] page reload build-apk.sh
-[2025-07-31T14:15:30.951Z] [INFO] hmr update /src/components/ui/card.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:30.956Z] [INFO] page reload src/components/ui/chart.tsx
-[2025-07-31T14:15:30.960Z] [INFO] page reload src/components/ui/scroll-area.tsx
-[2025-07-31T14:15:30.961Z] [INFO] hmr update /src/ErrorFallback.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:30.963Z] [INFO] page reload src/components/ui/tooltip.tsx
-[2025-07-31T14:15:30.975Z] [INFO] page reload src/components/ui/checkbox.tsx
-[2025-07-31T14:15:30.976Z] [INFO] page reload README.md
-[2025-07-31T14:15:30.977Z] [INFO] hmr update /src/components/ui/button.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:30.978Z] [INFO] page reload index.html
-[2025-07-31T14:15:30.979Z] [INFO] page reload setup-android.sh
-[2025-07-31T14:15:30.980Z] [INFO] page reload src/components/ui/tabs.tsx
-[2025-07-31T14:15:30.983Z] [INFO] page reload packages/spark-tools/dist/designerHost.js
-[2025-07-31T14:15:30.987Z] [INFO] page reload src/components/ui/input.tsx
-[2025-07-31T14:15:31.008Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-ANDROID_CONFIG_UPDATE.md
-[2025-07-31T14:15:31.009Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-PWA_INSTALL_GUIDE.md
-[2025-07-31T14:15:31.009Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-build-s24-apk.sh
-[2025-07-31T14:15:31.009Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-check-android-ready.sh
-[2025-07-31T14:15:31.009Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-components.json
-[2025-07-31T14:15:31.009Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-git-setup.sh
-[2025-07-31T14:15:31.010Z] [INFO] page reload .azDownload-6223fad7-e431-f245-59af-800af8762767-package.json
-[2025-07-31T14:15:31.010Z] [INFO] page reload src/components/.azDownload-6223fad7-e431-f245-59af-800af8762767-VoiceDebugger.tsx
-[2025-07-31T14:15:31.010Z] [INFO] page reload .devcontainer/.azDownload-6223fad7-e431-f245-59af-800af8762767-devcontainer.json
-[2025-07-31T14:15:31.048Z] [INFO] hmr update /src/components/PWAInstallPrompt.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:31.050Z] [INFO] page reload BUILD_SUCCESS_SUMMARY.md
-[2025-07-31T14:15:31.056Z] [INFO] page reload .devcontainer/postStartCommand.sh
-[2025-07-31T14:15:31.057Z] [INFO] page reload src/components/ui/dropdown-menu.tsx
-[2025-07-31T14:15:31.081Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-alert.tsx
-[2025-07-31T14:15:31.081Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-select.tsx
-[2025-07-31T14:15:31.081Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-sidebar.tsx
-[2025-07-31T14:15:31.081Z] [INFO] page reload src/components/ui/.azDownload-6223fad7-e431-f245-59af-800af8762767-switch.tsx
-[2025-07-31T14:15:31.082Z] [INFO] page reload src/services/.azDownload-6223fad7-e431-f245-59af-800af8762767-LLMService.ts
-[2025-07-31T14:15:31.084Z] [INFO] page reload src/types/.azDownload-6223fad7-e431-f245-59af-800af8762767-personality.ts
-[2025-07-31T14:15:31.085Z] [INFO] page reload src/services/.azDownload-6223fad7-e431-f245-59af-800af8762767-SoundEffectsService.ts
-[2025-07-31T14:15:31.267Z] [INFO] page reload git-setup.sh
-[2025-07-31T14:15:31.271Z] [INFO] page reload src/components/ui/sidebar.tsx
-[2025-07-31T14:15:31.274Z] [INFO] page reload src/components/ui/switch.tsx
-[2025-07-31T14:15:31.276Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:31.277Z] [INFO] page reload package.json
-[2025-07-31T14:15:31.279Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/styles/theme.css, /src/components/PersonalitySelection.tsx
-[2025-07-31T14:15:31.281Z] [INFO] page reload src/components/ui/select.tsx
-[2025-07-31T14:15:31.282Z] [INFO] page reload check-android-ready.sh
-[2025-07-31T14:15:31.284Z] [INFO] page reload .devcontainer/devcontainer.json
-[2025-07-31T14:15:31.285Z] [INFO] page reload ANDROID_CONFIG_UPDATE.md
-[2025-07-31T14:15:31.286Z] [INFO] page reload build-s24-apk.sh
-[2025-07-31T14:15:31.287Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:31.288Z] [INFO] page reload components.json
-[2025-07-31T14:15:31.289Z] [INFO] page reload PWA_INSTALL_GUIDE.md
-[2025-07-31T14:15:31.293Z] [INFO] hmr update /src/components/ui/alert.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:31.295Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/index.css, /src/main.css, /src/styles/theme.css
-[2025-07-31T14:15:33.610Z] [INFO] server restarted.
-[2025-07-31T14:15:51.008Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
-[2025-07-31T14:16:01.563Z] [INFO] [32m✓[39m 4626 modules transformed.
-[2025-07-31T14:16:01.861Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
-[2025-07-31T14:16:01.861Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-DfoXsczC.css  [39m[1m[2m443.17 kB[22m[1m[22m[2m │ gzip:  74.34 kB[22m
-[2025-07-31T14:16:01.861Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Du0-1KUz.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
-[2025-07-31T14:16:01.861Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-CNezf0oM.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
-[2025-07-31T14:16:01.862Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-DnC5lLyW.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
-[2025-07-31T14:16:01.862Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mspark-C1CgSK_m.js   [39m[1m[2m  2.42 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m
-[2025-07-31T14:16:01.862Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-DdCwBe3m.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
-[2025-07-31T14:16:01.862Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-mXk6uCvM.js   [39m[1m[2m440.78 kB[22m[1m[22m[2m │ gzip: 130.83 kB[22m
-[2025-07-31T14:16:01.863Z] [INFO] [32m✓ built in 10.76s[39m
-[2025-07-31T14:16:43.713Z] [INFO] vite v6.3.5 building for production...
-[2025-07-31T14:16:43.773Z] [INFO] transforming...
-[2025-07-31T14:16:48.596Z] [INFO] ✓ 4626 modules transformed.
-[2025-07-31T14:16:48.725Z] [INFO] rendering chunks...
-[2025-07-31T14:16:48.876Z] [INFO] computing gzip size...
-[2025-07-31T14:16:48.893Z] [INFO] ../preview-build/index.html                   3.30 kB │ gzip:   1.23 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/index-DfoXsczC.css  443.17 kB │ gzip:  74.34 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/web-Du0-1KUz.js       0.80 kB │ gzip:   0.24 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/web-CNezf0oM.js       0.94 kB │ gzip:   0.47 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/web-DnC5lLyW.js       1.65 kB │ gzip:   0.68 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/spark-C1CgSK_m.js     2.42 kB │ gzip:   0.98 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/web-DdCwBe3m.js       2.44 kB │ gzip:   1.09 kB
-[2025-07-31T14:16:48.894Z] [INFO] ../preview-build/assets/index-mXk6uCvM.js   440.78 kB │ gzip: 130.83 kB
-[2025-07-31T14:16:48.895Z] [INFO] ✓ built in 5.16s
-[2025-07-31T14:21:03.270Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:21:32.118Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:21:44.685Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:22:03.808Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:22:21.070Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:23:09.959Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:23:46.507Z] [INFO] page reload test-speech.html
-[2025-07-31T14:24:23.452Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:53:55.831Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:54:46.622Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:54:58.779Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:55:14.647Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:55:38.894Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:55:48.313Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:56:04.487Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T14:59:42.957Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:00:25.281Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:00:30.708Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:00:35.423Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:00:41.966Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:00:57.001Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:01:11.439Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:01:27.122Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:01:41.459Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:01:56.552Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:02:53.535Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
-[2025-07-31T15:03:22.800Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css, /src/main.css, /src/main.css?direct, /src/index.css
+[2025-08-01T07:35:08.759Z] [INFO] hmr update /src/App.tsx
+[2025-08-01T07:35:09.029Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-test-speech.html
+[2025-08-01T07:35:09.031Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-theme.json
+[2025-08-01T07:35:09.329Z] [ERROR] Pre-transform error: ENOENT: no such file or directory, open '/workspaces/spark-template/public/icons/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-icon.svg'
+  Plugin: vite:css-analysis
+  File: /workspaces/spark-template/src/index.css
+[2025-08-01T07:35:09.341Z] [INFO] page reload src/components/ui/sidebar.tsx
+[2025-08-01T07:35:09.342Z] [INFO] page reload GALAXY_S24_OPTIMIZATION.md
+[2025-08-01T07:35:09.344Z] [INFO] page reload .devcontainer/refreshTools.sh
+[2025-08-01T07:35:09.344Z] [INFO] page reload src/components/ui/menubar.tsx
+[2025-08-01T07:35:09.345Z] [INFO] page reload PWA_INSTALL_GUIDE.md
+[2025-08-01T07:35:09.347Z] [INFO] page reload packages/spark-tools/package.json
+[2025-08-01T07:35:09.348Z] [INFO] page reload src/components/ui/drawer.tsx
+[2025-08-01T07:35:09.349Z] [INFO] page reload src/components/ui/chart.tsx
+[2025-08-01T07:35:09.350Z] [INFO] page reload .devcontainer/onCreate.sh
+[2025-08-01T07:35:09.350Z] [INFO] page reload test-speech.html
+[2025-08-01T07:35:09.352Z] [INFO] page reload SECURITY.md
+[2025-08-01T07:35:09.354Z] [INFO] page reload src/components/ui/form.tsx
+[2025-08-01T07:35:09.355Z] [INFO] page reload src/components/ui/select.tsx
+[2025-08-01T07:35:09.356Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.357Z] [INFO] hmr update /src/components/ui/alert.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.360Z] [INFO] page reload src/components/ui/carousel.tsx
+[2025-08-01T07:35:09.360Z] [INFO] page reload public/manifest.json
+[2025-08-01T07:35:09.362Z] [INFO] page reload src/components/ui/dialog.tsx
+[2025-08-01T07:35:09.363Z] [INFO] page reload src/components/ui/slider.tsx
+[2025-08-01T07:35:09.365Z] [INFO] page reload src/components/ui/input-otp.tsx
+[2025-08-01T07:35:09.366Z] [INFO] page reload src/components/ui/input.tsx
+[2025-08-01T07:35:09.366Z] [INFO] hmr update /src/styles/theme.css
+[2025-08-01T07:35:09.367Z] [INFO] page reload src/components/ui/breadcrumb.tsx
+[2025-08-01T07:35:09.368Z] [INFO] page reload src/components/ui/hover-card.tsx
+[2025-08-01T07:35:09.368Z] [INFO] page reload public/sw.js
+[2025-08-01T07:35:09.369Z] [INFO] page reload src/components/ui/checkbox.tsx
+[2025-08-01T07:35:09.370Z] [INFO] page reload src/components/ui/tabs.tsx
+[2025-08-01T07:35:09.371Z] [INFO] page reload src/components/ui/popover.tsx
+[2025-08-01T07:35:09.372Z] [INFO] page reload src/components/ui/toggle.tsx
+[2025-08-01T07:35:09.375Z] [INFO] page reload .github/dependabot.yml
+[2025-08-01T07:35:09.377Z] [INFO] hmr update /packages/spark-tools/dist/designer-styles.css
+[2025-08-01T07:35:09.378Z] [INFO] page reload capacitor.config.ts
+[2025-08-01T07:35:09.378Z] [INFO] hmr update /src/styles/theme.css
+[2025-08-01T07:35:09.379Z] [INFO] page reload src/components/ui/resizable.tsx
+[2025-08-01T07:35:09.379Z] [INFO] page reload src/android-development-guide.md
+[2025-08-01T07:35:09.380Z] [INFO] page reload src/components/ui/context-menu.tsx
+[2025-08-01T07:35:09.381Z] [INFO] page reload src/components/ui/command.tsx
+[2025-08-01T07:35:09.382Z] [INFO] page reload src/components/ui/switch.tsx
+[2025-08-01T07:35:09.383Z] [INFO] page reload src/components/ui/label.tsx
+[2025-08-01T07:35:09.388Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-toggle-group.tsx
+[2025-08-01T07:35:09.388Z] [INFO] page reload src/services/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-SoundEffectsService.ts
+[2025-08-01T07:35:09.419Z] [INFO] hmr update /src/components/ui/alert.tsx, /src/styles/theme.css, /src/components/ui/button.tsx, /src/components/ui/card.tsx, /src/components/ui/avatar.tsx, /src/components/ui/badge.tsx
+[2025-08-01T07:35:09.420Z] [INFO] hmr update /src/ErrorFallback.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.421Z] [INFO] page reload PRD.md
+[2025-08-01T07:35:09.422Z] [INFO] page reload theme.json
+[2025-08-01T07:35:09.422Z] [INFO] page reload src/components/ui/radio-group.tsx
+[2025-08-01T07:35:09.423Z] [INFO] page reload src/components/ui/aspect-ratio.tsx
+[2025-08-01T07:35:09.424Z] [INFO] hmr update /src/components/PersonalitySelection.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.457Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-progress.tsx
+[2025-08-01T07:35:09.457Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-package.json
+[2025-08-01T07:35:09.457Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-sheet.tsx
+[2025-08-01T07:35:09.457Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-sonner.tsx
+[2025-08-01T07:35:09.457Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-dropdown-menu.tsx
+[2025-08-01T07:35:09.458Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-skeleton.tsx
+[2025-08-01T07:35:09.458Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-vite.config.ts
+[2025-08-01T07:35:09.458Z] [INFO] page reload src/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-main.tsx
+[2025-08-01T07:35:09.458Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-button.tsx
+[2025-08-01T07:35:09.458Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-calendar.tsx
+[2025-08-01T07:35:09.458Z] [INFO] page reload .devcontainer/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-postStartCommand.sh
+[2025-08-01T07:35:09.458Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-components.json
+[2025-08-01T07:35:09.459Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-test-syntax.js
+[2025-08-01T07:35:09.459Z] [INFO] page reload .azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-tsconfig.json
+[2025-08-01T07:35:09.459Z] [INFO] page reload src/components/ui/.azDownload-73dda60a-bc17-7748-608c-a3951a0aedef-accordion.tsx
+[2025-08-01T07:35:09.619Z] [INFO] page reload src/components/ui/progress.tsx
+[2025-08-01T07:35:09.620Z] [INFO] page reload package.json
+[2025-08-01T07:35:09.621Z] [INFO] hmr update /src/components/ui/sonner.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.622Z] [INFO] page reload src/components/ui/dropdown-menu.tsx
+[2025-08-01T07:35:09.622Z] [INFO] page reload src/components/ui/skeleton.tsx
+[2025-08-01T07:35:09.623Z] [INFO] page reload src/main.tsx
+[2025-08-01T07:35:09.624Z] [INFO] vite.config.ts changed, restarting server...
+[2025-08-01T07:35:09.625Z] [INFO] hmr update /src/components/ui/button.tsx, /src/styles/theme.css
+[2025-08-01T07:35:09.626Z] [INFO] page reload src/components/ui/calendar.tsx
+[2025-08-01T07:35:09.627Z] [INFO] page reload .devcontainer/postStartCommand.sh
+[2025-08-01T07:35:09.628Z] [INFO] page reload components.json
+[2025-08-01T07:35:09.628Z] [INFO] page reload test-syntax.js
+[2025-08-01T07:35:09.629Z] [INFO] changed tsconfig file detected: /workspaces/spark-template/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2025-08-01T07:35:09.630Z] [INFO] page reload tsconfig.json
+[2025-08-01T07:35:09.630Z] [INFO] page reload src/components/ui/sheet.tsx
+[2025-08-01T07:35:09.631Z] [INFO] page reload src/components/ui/accordion.tsx
+[2025-08-01T07:35:09.632Z] [INFO] page reload APK_BUILD_GUIDE.md
+[2025-08-01T07:35:09.633Z] [INFO] page reload src/components/ui/toggle-group.tsx
+[2025-08-01T07:35:09.633Z] [INFO] hmr update /src/components/AICompanionPhone.tsx, /src/styles/theme.css
+[2025-08-01T07:35:10.990Z] [INFO] server restarted.
+[2025-08-01T07:35:22.783Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-08-01T07:35:29.185Z] [INFO] [32m✓[39m 4626 modules transformed.
+[2025-08-01T07:35:29.611Z] [INFO] [2m../preview-build/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.22 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[35mindex-DfoXsczC.css  [39m[1m[2m443.17 kB[22m[1m[22m[2m │ gzip:  74.34 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-DsUCY3nB.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Ci6zbp2M.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Btgp8lMr.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mspark-BLEJ0Tr2.js   [39m[1m[2m  2.42 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m
+[2025-08-01T07:35:29.612Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mweb-Bk-gpwg6.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-08-01T07:35:29.613Z] [INFO] [2m../preview-build/[22m[2massets/[22m[36mindex-DjpR8WKU.js   [39m[1m[2m441.71 kB[22m[1m[22m[2m │ gzip: 131.02 kB[22m
+[2025-08-01T07:35:29.613Z] [INFO] [32m✓ built in 6.79s[39m
+[2025-08-01T08:09:51.660Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:10:51.491Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:11:15.221Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:11:30.465Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:14:29.881Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:15:07.015Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:21:38.367Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:27:34.634Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css
+[2025-08-01T08:38:52.097Z] [INFO] [36mvite v6.3.5 [32mbuilding for production...[36m[39m
+[2025-08-01T08:38:57.393Z] [INFO] [32m✓[39m 4626 modules transformed.
+[2025-08-01T08:38:57.683Z] [INFO] [2mdist/[22m[32mindex.html                 [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2025-08-01T08:38:57.683Z] [INFO] [2mdist/[22m[2massets/[22m[35mindex-DfoXsczC.css  [39m[1m[2m443.17 kB[22m[1m[22m[2m │ gzip:  74.34 kB[22m
+[2025-08-01T08:38:57.683Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-kkk26-iv.js     [39m[1m[2m  0.80 kB[22m[1m[22m[2m │ gzip:   0.24 kB[22m
+[2025-08-01T08:38:57.684Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-BSm-wgYU.js     [39m[1m[2m  0.94 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2025-08-01T08:38:57.684Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-BBsEH7Rh.js     [39m[1m[2m  1.65 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2025-08-01T08:38:57.684Z] [INFO] [2mdist/[22m[2massets/[22m[36mspark-C8u-O3Ml.js   [39m[1m[2m  2.42 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m
+[2025-08-01T08:38:57.684Z] [INFO] [2mdist/[22m[2massets/[22m[36mweb-JWPpI0Z1.js     [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2025-08-01T08:38:57.684Z] [INFO] [2mdist/[22m[2massets/[22m[36mindex-CF2ZmvIq.js   [39m[1m[2m441.83 kB[22m[1m[22m[2m │ gzip: 131.06 kB[22m
+[2025-08-01T08:38:57.685Z] [INFO] [32m✓ built in 5.57s[39m
+[2025-08-01T08:40:24.828Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-08-01T08:40:39.288Z] [INFO] page reload android/app/src/main/assets/public/index.html
+[2025-08-01T08:42:25.975Z] [INFO] hmr update /src/components/VoiceDebugger.tsx, /src/index.css, /src/main.css, /src/main.css?direct, /src/styles/theme.css

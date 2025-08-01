@@ -21,7 +21,7 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
   
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number>(0)
 
   useEffect(() => {
     if (!isOpen) return
@@ -58,7 +58,7 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
     // Test language auto-detection
     if (hasSpeechRecognition) {
       try {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
         const testRec = new SpeechRecognition()
         addTestResult(`✅ Speech Recognition object created successfully`)
         addTestResult(`🌐 Browser language: ${navigator.language}`)
@@ -111,23 +111,31 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
       setMicPermission('granted')
       
       // Test audio levels
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
-      analyserRef.current = audioContextRef.current.createAnalyser()
-      const microphone = audioContextRef.current.createMediaStreamSource(stream)
-      microphone.connect(analyserRef.current)
-      
-      analyserRef.current.fftSize = 256
-      const bufferLength = analyserRef.current.frequencyBinCount
-      const dataArray = new Uint8Array(bufferLength)
+      audioContextRef.current = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
+      if (audioContextRef.current) {
+        analyserRef.current = audioContextRef.current.createAnalyser()
+        const microphone = audioContextRef.current.createMediaStreamSource(stream)
+        microphone.connect(analyserRef.current)
+        
+        analyserRef.current.fftSize = 256
+        const bufferLength = analyserRef.current.frequencyBinCount
+        const dataArray = new Uint8Array(bufferLength)
+      }
       
       addTestResult('🔊 Monitoring audio levels for 5 seconds...')
       toast.info('🎤 Speak into your microphone for 5 seconds')
       
       let maxLevel = 0
       const startTime = Date.now()
+      let dataArray: Uint8Array | null = null
+      
+      if (analyserRef.current) {
+        const bufferLength = analyserRef.current.frequencyBinCount
+        dataArray = new Uint8Array(bufferLength)
+      }
       
       const checkAudio = () => {
-        if (!analyserRef.current) return
+        if (!analyserRef.current || !dataArray) return
         
         analyserRef.current.getByteFrequencyData(dataArray)
         const sum = dataArray.reduce((a, b) => a + b, 0)
@@ -175,7 +183,7 @@ export default function VoiceDebugger({ isOpen, onClose }: VoiceDebuggerProps) {
     addTestResult('🗣️ Testing speech recognition...')
     
     try {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
       const recognition = new SpeechRecognition()
       
       recognition.continuous = false
