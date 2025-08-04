@@ -1,4 +1,6 @@
 import { toast } from 'sonner'
+import { Capacitor } from '@capacitor/core'
+import { loggingService } from './LoggingService'
 
 export interface OllamaModel {
   name: string
@@ -29,29 +31,184 @@ export interface OllamaResponse {
 
 export class OllamaService {
   private baseUrl = 'http://localhost:11434'
+  private androidBaseUrls = [
+    'http://localhost:11434',
+    'http://127.0.0.1:11434',
+    'http://10.0.2.2:11434',  // Android emulator host
+    'http://192.168.1.100:11434', // Common local network
+    'http://0.0.0.0:11434',
+    // Samsung S24 Ultra specific addresses (from ifconfig)
+    'http://172.16.31.157:11434',  // Your WiFi IP address
+    'http://10.100.187.139:11434', // Your mobile data IP
+    // Termux specific addresses
+    'http://172.17.0.1:11434',  // Docker bridge network (common in Termux)
+    'http://10.0.3.2:11434',    // Alternative Android network
+    'http://192.168.0.1:11434', // Router gateway alternative
+    'http://192.168.1.1:11434', // Router gateway
+    'http://10.1.1.1:11434',    // Alternative gateway
+    // Try different ports that Termux might use
+    'http://127.0.0.1:8080',    // Alternative port
+    'http://localhost:8080',    // Alternative port
+    'http://0.0.0.0:8080',      // Alternative port
+    'http://172.16.31.157:8080', // Your WiFi IP on port 8080
+  ]
   private preferredModel = 'gemma2:2b'
   private fallbackModels = ['gemma2:2b', 'gemma:2b', 'gemma:7b', 'llama3.2:1b', 'llama3.2:3b']
   private isConnected = false
   private availableModel: string | null = null
+  private workingUrl: string | null = null
+
+  constructor() {
+    loggingService.logLLM('🚀 Initializing OllamaService')
+    loggingService.logLLM('📱 Platform detection', { 
+      isNative: Capacitor.isNativePlatform(),
+      platform: Capacitor.getPlatform()
+    })
+    loggingService.logLLM('🎯 Preferred model', { model: this.preferredModel })
+    loggingService.logLLM('🌐 URLs to test', { 
+      urlCount: Capacitor.isNativePlatform() ? this.androidBaseUrls.length : 1,
+      urls: Capacitor.isNativePlatform() ? this.androidBaseUrls : [this.baseUrl]
+    })
+  }
 
   async checkConnection(): Promise<boolean> {
+    const platform = Capacitor.isNativePlatform() ? 'Android/Native' : 'Web'
+    loggingService.logLLM('🚀 Starting connection check', { platform })
+    
     try {
-      const response = await fetch(`${this.baseUrl}/api/version`, {
+      // Try different URLs for Android compatibility
+      const urlsToTry = Capacitor.isNativePlatform() ? this.androidBaseUrls : [this.baseUrl]
+      loggingService.logLLM('📡 Testing URLs', { 
+        count: urlsToTry.length,
+        urls: urlsToTry
+      })
+      
+      for (let i = 0; i < urlsToTry.length; i++) {
+        const url = urlsToTry[i]
+        try {
+          loggingService.logLLM(`🔍 Testing connection ${i + 1}/${urlsToTry.length}`, { url })
+          
+          const startTime = Date.now()
+          const response = await fetch(`${url}/api/version`, {
+            method: 'GET',
+            signal: AbortSignal.timeout(2000),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          })
+          const responseTime = Date.now() - startTime
+          
+          loggingService.logLLM('📊 Response received', { 
+            url,
+            status: response.status,
+            responseTime: `${responseTime}ms`
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            loggingService.logLLM('✅ SUCCESS! Ollama connected', { 
+              url,
+              version: data.version || 'unknown'
+            })
+            loggingService.logLLM('🎯 Setting working URL', { workingUrl: url })
+            
+            this.workingUrl = url
+            this.baseUrl = url
+            this.isConnected = true
+            
+            // Test if our preferred model is available
+            loggingService.logLLM('🔍 Now checking available models...')
+            await this.checkAvailableModels()
+            return true
+          } else {
+            loggingService.logLLM('❌ HTTP Error', { 
+              url,
+              status: response.status,
+              statusText: response.statusText
+            })
+          }
+        } catch (urlError) {
+          loggingService.logLLM('💥 Connection failed', { 
+            url,
+            error: urlError.message,
+            errorName: urlError.name
+          })
+          continue
+        }
+      }
+      
+      loggingService.logLLM('❌ FAILURE: All connection attempts failed', { 
+        urlCount: urlsToTry.length 
+      })
+      this.isConnected = false
+      this.workingUrl = null
+      return false
+    } catch (error) {
+      loggingService.logLLM('💥 Unexpected error during connection check', {
+        error: error.message,
+        errorName: error.name
+      })
+      this.isConnected = false
+      this.workingUrl = null
+      return false
+    }
+  }
+
+  private async checkAvailableModels(): Promise<void> {
+    console.log(`🔍 [OllamaService] Checking available models at ${this.baseUrl}`)
+    
+    try {
+      const startTime = Date.now()
+      const response = await fetch(`${this.baseUrl}/api/tags`, {
         method: 'GET',
         signal: AbortSignal.timeout(3000)
       })
+      const responseTime = Date.now() - startTime
+      
+      console.log(`📊 [OllamaService] Models API response: status=${response.status}, time=${responseTime}ms`)
       
       if (response.ok) {
-        this.isConnected = true
-        return true
+        const data = await response.json()
+        const models = data.models || []
+        console.log(`📋 [OllamaService] Found ${models.length} available models:`, models.map(m => m.name))
+        
+        // Check if our preferred model exists
+        console.log(`🎯 [OllamaService] Looking for preferred model: ${this.preferredModel}`)
+        const preferredExists = models.find(m => m.name.includes(this.preferredModel))
+        if (preferredExists) {
+          this.availableModel = preferredExists.name
+          console.log(`✅ [OllamaService] SUCCESS! Preferred model found: ${this.availableModel}`)
+          return
+        }
+        
+        console.log(`⚠️ [OllamaService] Preferred model not found, trying fallbacks:`, this.fallbackModels)
+        // Try fallback models
+        for (const fallback of this.fallbackModels) {
+          console.log(`🔍 [OllamaService] Checking fallback: ${fallback}`)
+          const fallbackExists = models.find(m => m.name.includes(fallback))
+          if (fallbackExists) {
+            this.availableModel = fallbackExists.name
+            console.log(`✅ [OllamaService] Fallback model found: ${this.availableModel}`)
+            return
+          }
+        }
+        
+        if (!this.availableModel && models.length > 0) {
+          this.availableModel = models[0].name
+          console.log(`⚠️ [OllamaService] No preferred/fallback models found, using first available: ${this.availableModel}`)
+        } else if (models.length === 0) {
+          console.log(`❌ [OllamaService] No models available on this Ollama instance`)
+        }
+      } else {
+        console.log(`❌ [OllamaService] Failed to fetch models: ${response.status} ${response.statusText}`)
       }
-      
-      this.isConnected = false
-      return false
     } catch (error) {
-      console.log('Ollama connection check failed:', error)
-      this.isConnected = false
-      return false
+      console.log('💥 [OllamaService] Error checking available models:', {
+        name: error.name,
+        message: error.message,
+        url: this.baseUrl
+      })
     }
   }
 
@@ -142,7 +299,11 @@ export class OllamaService {
       stream?: boolean
     } = {}
   ): Promise<string> {
+    console.log(`🎤 [OllamaService] Generate request received`)
+    console.log(`🔗 [OllamaService] Connected: ${this.isConnected}, Model: ${this.availableModel}, URL: ${this.workingUrl}`)
+    
     if (!this.isConnected || !this.availableModel) {
+      console.log(`❌ [OllamaService] Cannot generate - not connected or no model available`)
       throw new Error('Ollama not connected or no model available')
     }
 
@@ -160,7 +321,15 @@ export class OllamaService {
       }
     }
 
+    console.log(`📤 [OllamaService] Sending request to ${this.baseUrl}/api/generate`)
+    console.log(`📊 [OllamaService] Request body:`, {
+      model: requestBody.model,
+      promptLength: prompt.length,
+      options: requestBody.options
+    })
+
     try {
+      const startTime = Date.now()
       const response = await fetch(`${this.baseUrl}/api/generate`, {
         method: 'POST',
         headers: {
@@ -169,14 +338,20 @@ export class OllamaService {
         body: JSON.stringify(requestBody),
         signal: AbortSignal.timeout(30000) // 30 second timeout for generation
       })
+      const responseTime = Date.now() - startTime
+
+      console.log(`📥 [OllamaService] Response received: status=${response.status}, time=${responseTime}ms`)
 
       if (!response.ok) {
+        console.log(`❌ [OllamaService] API Error: ${response.status} ${response.statusText}`)
         throw new Error(`Ollama API error: ${response.status} ${response.statusText}`)
       }
 
       const data: OllamaResponse = await response.json()
+      console.log(`✅ [OllamaService] Generation successful, response length: ${data.response?.length || 0} chars`)
       
       if (!data.response) {
+        console.log(`❌ [OllamaService] Empty response from model`)
         throw new Error('Empty response from Ollama')
       }
 
@@ -191,10 +366,15 @@ export class OllamaService {
         cleanResponse = cleanResponse.substring(0, 300) + '...'
       }
 
+      console.log(`📝 [OllamaService] Cleaned response length: ${cleanResponse.length} chars`)
       return cleanResponse
     } catch (error) {
-      console.error('Ollama generation error:', error)
-      throw new Error(`Failed to generate response: ${error.message}`)
+      console.log(`💥 [OllamaService] Generation failed:`, {
+        name: error.name,
+        message: error.message,
+        url: this.baseUrl
+      })
+      throw error
     }
   }
 
@@ -244,6 +424,102 @@ export class OllamaService {
     if (this.availableModel.includes('gemma')) return 'Gemma (Google)'
     if (this.availableModel.includes('llama')) return 'Llama (Meta)'
     return this.availableModel.split(':')[0]
+  }
+
+  // Diagnostic methods for debugging connection issues
+  async getConnectionDiagnostics(): Promise<{
+    platform: string
+    isNative: boolean
+    testedUrls: { url: string; status: string; error?: string }[]
+    workingUrl: string | null
+    modelsFound: string[]
+    preferredModelAvailable: boolean
+  }> {
+    const results = {
+      platform: Capacitor.getPlatform(),
+      isNative: Capacitor.isNativePlatform(),
+      testedUrls: [] as { url: string; status: string; error?: string }[],
+      workingUrl: this.workingUrl,
+      modelsFound: [] as string[],
+      preferredModelAvailable: false
+    }
+
+    // Test all possible URLs
+    const urlsToTry = Capacitor.isNativePlatform() ? this.androidBaseUrls : [this.baseUrl]
+    
+    for (const url of urlsToTry) {
+      try {
+        const response = await fetch(`${url}/api/version`, {
+          method: 'GET',
+          signal: AbortSignal.timeout(2000),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          results.testedUrls.push({ 
+            url, 
+            status: `✅ Connected (v${data.version || 'unknown'})` 
+          })
+          
+          // Also check models if this URL works
+          try {
+            const modelsResponse = await fetch(`${url}/api/tags`, {
+              method: 'GET',
+              signal: AbortSignal.timeout(3000)
+            })
+            
+            if (modelsResponse.ok) {
+              const modelsData = await modelsResponse.json()
+              const models = modelsData.models || []
+              results.modelsFound = models.map(m => m.name)
+              results.preferredModelAvailable = models.some(m => m.name.includes(this.preferredModel))
+            }
+          } catch (modelsError) {
+            // Ignore model checking errors
+          }
+        } else {
+          results.testedUrls.push({ 
+            url, 
+            status: `❌ HTTP ${response.status}`,
+            error: response.statusText
+          })
+        }
+      } catch (error) {
+        results.testedUrls.push({ 
+          url, 
+          status: '❌ Connection failed',
+          error: error.message
+        })
+      }
+    }
+
+    return results
+  }
+
+  // Force reconnection attempt
+  async forceReconnect(): Promise<boolean> {
+    console.log('🔄 [OllamaService] Force reconnection initiated')
+    console.log('🧹 [OllamaService] Clearing previous connection state')
+    
+    this.isConnected = false
+    this.workingUrl = null
+    this.availableModel = null
+    
+    console.log('🔍 [OllamaService] Starting fresh connection attempt')
+    const result = await this.checkConnection()
+    
+    if (result) {
+      console.log('✅ [OllamaService] Reconnection successful, reinitializing...')
+      await this.initialize()
+    } else {
+      console.log('❌ [OllamaService] Reconnection failed')
+    }
+    
+    return result
   }
 }
 

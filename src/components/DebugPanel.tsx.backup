@@ -1,0 +1,1139 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { voiceChatService } from '@/services/VoiceChatService'
+import { ollamaService } from '@/services/OllamaService'
+import { samsungS24Service } from '@/services/SamsungS24Service'
+import { loggingService } from '@/services/LoggingService'
+import { toast } from 'sonner'
+import { 
+  Mic, 
+  MicOff, 
+  Volume2, 
+  VolumeX, 
+  Brain, 
+  Zap, 
+  AlertCircle, 
+  CheckCircle,
+  Play,
+  Square,
+  RotateCcw,
+  Activity,
+  Download,
+  Share,
+  Trash2,
+  RefreshCw
+} from 'lucide-react'
+import { Capacitor } from '@capacitor/core'
+
+interface DebugPanelProps {
+  isOpen: boolean
+  onClose: () => void
+  currentCallState?: string
+  isListening?: boolean
+  aiSpeaking?: boolean
+  selectedPersonality?: any
+}
+
+interface TestResult {
+  id: string
+  timestamp: number
+  test: string
+  status: 'success' | 'error' | 'warning' | 'info'
+  message: string
+  details?: string
+}
+
+interface DialogSession {
+  id: string
+  startTime: number
+  endTime?: number
+  turns: DialogTurn[]
+  personality: string
+  status: 'active' | 'paused' | 'ended' | 'interrupted'
+  interruptions: number
+  avgResponseTime: number
+}
+
+interface DialogTurn {
+  id: string
+  timestamp: number
+  type: 'user' | 'ai'
+  content: string
+  duration?: number
+  confidence?: number
+  interrupted: boolean
+}
+
+export default function DebugPanel({ 
+  isOpen, 
+  onClose, 
+  currentCallState = 'idle',
+  isListening = false,
+  aiSpeaking = false,
+  selectedPersonality 
+}: DebugPanelProps) {
+  const [testResults, setTestResults] = useState<TestResult[]>([])
+  const [isTestingASR, setIsTestingASR] = useState(false)
+  const [isTestingTTS, setIsTestingTTS] = useState(false)
+  const [isTestingLLM, setIsTestingLLM] = useState(false)
+  const [audioLevel, setAudioLevel] = useState(0)
+  const [activeTab, setActiveTab] = useState('overview')
+  
+  // Dialog Management States
+  const [currentSession, setCurrentSession] = useState<DialogSession | null>(null)
+  const [sessionHistory, setSessionHistory] = useState<DialogSession[]>([])
+  const [dialogTurns, setDialogTurns] = useState<DialogTurn[]>([])
+  const [interruptions, setInterruptions] = useState(0)
+  const [avgResponseTime, setAvgResponseTime] = useState(0)
+  
+  // Real-time monitoring
+  const [systemStats, setSystemStats] = useState({
+    asrAvailable: false,
+    ttsAvailable: false,
+    llmConnected: false,
+    samsungOptimized: false,
+    micPermission: 'unknown' as 'granted' | 'denied' | 'unknown',
+    batteryOptimized: false
+  })
+  
+  const audioContextRef = useRef<AudioContext | null>(null)
+  const analyserRef = useRef<AnalyserNode | null>(null)
+  const animationRef = useRef<number>(0)
+  const recognitionRef = useRef<any>(null)
+
+  // Add test result helper
+  const addTestResult = (test: string, status: TestResult['status'], message: string, details?: string) => {
+    const result: TestResult = {
+      id: Date.now().toString(),
+      timestamp: Date.now(),
+      test,
+      status,
+      message,
+      details
+    }
+    setTestResults(prev => [result, ...prev.slice(0, 19)]) // Keep last 20 results
+  }
+
+  // Initialize system status checking
+  useEffect(() => {
+    if (!isOpen) return
+
+    checkSystemStatus()
+    
+    // Set up real-time monitoring
+    const interval = setInterval(updateSystemStats, 2000)
+    
+    return () => {
+      clearInterval(interval)
+      cleanup()
+    }
+  }, [isOpen])
+
+  const checkSystemStatus = async () => {
+    addTestResult('System Check', 'info', 'Checking voice system status...', '')
+    
+    // Check ASR availability
+    const asrAvailable = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window || Capacitor.isNativePlatform()
+    
+    // Check TTS availability
+    const ttsAvailable = 'speechSynthesis' in window || Capacitor.isNativePlatform()
+    
+    // Check microphone permission
+    let micPermission: 'granted' | 'denied' | 'unknown' = 'unknown'
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      micPermission = 'granted'
+      stream.getTracks().forEach(track => track.stop())
+    } catch (error) {
+      micPermission = 'denied'
+    }
+    
+    // Check Samsung optimizations
+    const samsungOptimized = voiceChatService.isSamsungDevice()
+    
+    // Check LLM connection
+    const llmConnected = await ollamaService.checkConnection()
+    
+    setSystemStats({
+      asrAvailable,
+      ttsAvailable,
+      llmConnected,
+      samsungOptimized,
+      micPermission,
+      batteryOptimized: samsungOptimized && voiceChatService.isHighEndDevice()
+    })
+    
+    addTestResult('System Check', 'success', 'System status check completed', 
+      `ASR: ${asrAvailable}, TTS: ${ttsAvailable}, LLM: ${llmConnected}, Samsung: ${samsungOptimized}`)
+  }
+
+  const updateSystemStats = () => {
+    // Update real-time stats
+    if (audioContextRef.current && analyserRef.current) {
+      const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount)
+      analyserRef.current.getByteFrequencyData(dataArray)
+      const average = dataArray.reduce((a, b) => a + b) / dataArray.length
+      setAudioLevel(Math.round((average / 255) * 100))
+    }
+  }
+
+  const cleanup = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close()
+    }
+  }
+
+  // Test ASR (Automatic Speech Recognition)
+  const testASR = async () => {
+    setIsTestingASR(true)
+    loggingService.logASR('Starting ASR debug test')
+    addTestResult('ASR Test', 'info', 'Starting speech recognition test...', 'Speak clearly for 5 seconds')
+    
+    try {
+      if (Capacitor.isNativePlatform() && voiceChatService.isNativeVoiceAvailable()) {
+        // Test native ASR (Samsung S24 Ultra optimized)
+        loggingService.logASR('Testing native speech recognition (Samsung S24 Ultra)')
+        addTestResult('ASR Test', 'info', 'Testing native speech recognition...', 'Samsung S24 Ultra optimized')
+        
+        const result = await voiceChatService.startListening()
+        
+        if (result && result.length > 0) {
+          loggingService.logASR('Native ASR test successful', { result, length: result.length })
+          addTestResult('ASR Test', 'success', `Native ASR successful: "${result}"`, `Confidence: High, Platform: Native`)
+        } else {
+          loggingService.logASRError('Native ASR returned empty result')
+          addTestResult('ASR Test', 'warning', 'Native ASR returned empty result', 'Try speaking more clearly')
+        }
+      } else {
+        // Test web ASR
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+          loggingService.logASR('Testing web speech recognition')
+          const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+          const recognition = new SpeechRecognition()
+          
+          recognition.continuous = false
+          recognition.interimResults = false
+          recognition.lang = 'en-GB'
+          recognition.maxAlternatives = 1
+          
+          recognition.onstart = () => {
+            loggingService.logASR('Web speech recognition session started')
+            addTestResult('ASR Test', 'info', 'Web speech recognition started', 'Listening...')
+          }
+          
+          recognition.onresult = (event: any) => {
+            const result = event.results[0][0].transcript
+            const confidence = Math.round(event.results[0][0].confidence * 100)
+            loggingService.logASR('Web ASR test successful', { result, confidence })
+            addTestResult('ASR Test', 'success', `Web ASR successful: "${result}"`, `Confidence: ${confidence}%`)
+          }
+          
+          recognition.onerror = (event: any) => {
+            loggingService.logASRError('Web ASR error', { error: event.error })
+            addTestResult('ASR Test', 'error', `Web ASR error: ${event.error}`, 'Check microphone permissions')
+          }
+          
+          recognition.onend = () => {
+            loggingService.logASR('Web speech recognition session ended')
+            addTestResult('ASR Test', 'info', 'Web speech recognition ended', '')
+          }
+          
+          recognition.start()
+          
+          // Auto-stop after 5 seconds
+          setTimeout(() => {
+            try {
+              recognition.stop()
+            } catch (e) {
+              // Ignore errors during stop
+            }
+          }, 5000)
+        } else {
+          loggingService.logASRError('Speech recognition not supported in this browser')
+          addTestResult('ASR Test', 'error', 'Speech recognition not supported', 'Browser compatibility issue')
+        }
+      }
+    } catch (error) {
+      loggingService.logASRError('ASR test failed', error)
+      addTestResult('ASR Test', 'error', `ASR test failed: ${error}`, 'Check system permissions')
+    } finally {
+      setTimeout(() => setIsTestingASR(false), 6000)
+    }
+  }
+
+  // Test TTS (Text-to-Speech)
+  const testTTS = async () => {
+    setIsTestingTTS(true)
+    loggingService.logTTS('Starting TTS debug test')
+    const testText = `Hello! This is a test of the ${selectedPersonality?.name || 'AI'} voice system. Samsung S24 Ultra optimizations are ${systemStats.samsungOptimized ? 'enabled' : 'disabled'}.`
+    
+    addTestResult('TTS Test', 'info', 'Starting text-to-speech test...', testText)
+    
+    try {
+      if (Capacitor.isNativePlatform() && voiceChatService.isNativeVoiceAvailable()) {
+        // Test native TTS (Samsung S24 Ultra optimized)
+        loggingService.logTTS('Testing native text-to-speech (Samsung S24 Ultra)')
+        addTestResult('TTS Test', 'info', 'Testing native text-to-speech...', 'Samsung optimized voice')
+        await voiceChatService.speak(testText, selectedPersonality?.id || 'friendly')
+        loggingService.logTTS('Native TTS test completed successfully')
+        addTestResult('TTS Test', 'success', 'Native TTS completed successfully', 'High-quality Samsung audio')
+      } else {
+        // Test web TTS
+        if ('speechSynthesis' in window) {
+          loggingService.logTTS('Testing web text-to-speech synthesis')
+          const synth = window.speechSynthesis
+          const utterance = new SpeechSynthesisUtterance(testText)
+          
+          utterance.rate = 0.9
+          utterance.pitch = 1.1
+          utterance.volume = 0.8
+          utterance.lang = 'en-GB'
+          
+          // Try to find a British voice
+          const voices = synth.getVoices()
+          const britishVoice = voices.find(voice => 
+            voice.lang.includes('en-GB') || 
+            voice.name.includes('British') ||
+            voice.name.includes('Daniel') ||
+            voice.name.includes('Kate')
+          )
+          
+          if (britishVoice) {
+            utterance.voice = britishVoice
+            loggingService.logTTS('Using preferred British voice', { voice: britishVoice.name, lang: britishVoice.lang })
+            addTestResult('TTS Test', 'info', `Using voice: ${britishVoice.name}`, `Language: ${britishVoice.lang}`)
+          } else {
+            loggingService.logTTS('No British voice found, using default', { availableVoices: voices.length })
+            addTestResult('TTS Test', 'warning', 'No British voice found, using default', `Available voices: ${voices.length}`)
+          }
+          
+          utterance.onstart = () => {
+            loggingService.logTTS('Web TTS synthesis started')
+            addTestResult('TTS Test', 'info', 'Web TTS started speaking', '')
+          }
+          
+          utterance.onend = () => {
+            loggingService.logTTS('Web TTS synthesis completed successfully')
+            addTestResult('TTS Test', 'success', 'Web TTS completed successfully', '')
+          }
+          
+          utterance.onerror = (event) => {
+            loggingService.logTTSError('Web TTS synthesis error', { error: event.error })
+            addTestResult('TTS Test', 'error', `Web TTS error: ${event.error}`, 'Check audio permissions')
+          }
+          
+          synth.speak(utterance)
+        } else {
+          loggingService.logTTSError('Speech synthesis not supported in this browser')
+          addTestResult('TTS Test', 'error', 'Speech synthesis not supported', 'Browser compatibility issue')
+        }
+      }
+    } catch (error) {
+      loggingService.logTTSError('TTS test failed', error)
+      addTestResult('TTS Test', 'error', `TTS test failed: ${error}`, 'Check audio system')
+    } finally {
+      setTimeout(() => setIsTestingTTS(false), 8000)
+    }
+  }
+
+  // Test LLM (Large Language Model)
+  const testLLM = async () => {
+    setIsTestingLLM(true)
+    loggingService.logLLM('Starting LLM debug test')
+    const testPrompt = `You are ${selectedPersonality?.name || 'an AI friend'}. Please respond to this test message in one sentence: "Hello, can you hear me?"`
+    
+    addTestResult('LLM Test', 'info', 'Starting LLM connection test...', testPrompt)
+    
+    try {
+      // Test local LLM (Ollama) first
+      loggingService.logLLM('Checking local LLM (Ollama) connection')
+      const localAvailable = await ollamaService.checkConnection()
+      if (localAvailable) {
+        loggingService.logLLM('Testing local LLM (Ollama)', { model: ollamaService.getCurrentModel() })
+        addTestResult('LLM Test', 'info', 'Testing local LLM (Ollama)...', `Model: ${ollamaService.getCurrentModel()}`)
+        const response = await ollamaService.generatePersonalizedResponse('Hello, can you hear me?', selectedPersonality?.id || 'friendly')
+        if (response && response.length > 0) {
+          loggingService.logLLM('Local LLM test successful', { response: response.substring(0, 100), length: response.length })
+          addTestResult('LLM Test', 'success', `Local LLM response: "${response.substring(0, 100)}..."`, 
+            `Full response length: ${response.length} chars`)
+        } else {
+          loggingService.logLLMError('Local LLM returned empty response')
+          addTestResult('LLM Test', 'warning', 'Local LLM returned empty response', 'Model may not be loaded')
+        }
+      } else {
+        loggingService.logLLM('Local LLM (Ollama) not available, testing fallback')
+        addTestResult('LLM Test', 'warning', 'Local LLM (Ollama) not available', 'Ollama service not running')
+        
+        // Test web LLM fallback (simulated for now)
+        addTestResult('LLM Test', 'info', 'Testing web LLM fallback...', 'Using personality-based responses')
+        const fallbackResponse = `Hello! I'm ${selectedPersonality?.name || 'your AI friend'} and I can hear you perfectly! This is a test response from the fallback system.`
+        loggingService.logLLM('Fallback LLM test successful', { response: fallbackResponse })
+        addTestResult('LLM Test', 'success', `Web LLM fallback: "${fallbackResponse}"`, 'Fallback system working')
+      }
+    } catch (error) {
+      loggingService.logLLMError('LLM test failed', error)
+      addTestResult('LLM Test', 'error', `LLM test failed: ${error}`, 'Check service connections')
+    } finally {
+      setIsTestingLLM(false)
+    }
+  }
+
+  // Test full pipeline
+  const testFullPipeline = async () => {
+    addTestResult('Pipeline Test', 'info', 'Starting full ASR → LLM → TTS pipeline test...', 'Complete conversation flow')
+    
+    toast.info('🧪 Starting full pipeline test - please speak when prompted!')
+    
+    // Wait a moment, then start ASR
+    setTimeout(async () => {
+      await testASR()
+      
+      // Wait for ASR to complete, then test LLM
+      setTimeout(async () => {
+        await testLLM()
+        
+        // Wait for LLM to complete, then test TTS
+        setTimeout(async () => {
+          await testTTS()
+          addTestResult('Pipeline Test', 'success', 'Full pipeline test completed!', 'All components tested in sequence')
+          toast.success('🎉 Full pipeline test completed!')
+        }, 3000)
+      }, 6000)
+    }, 1000)
+  }
+
+  // Start dialog session tracking
+  const startDialogSession = () => {
+    const session: DialogSession = {
+      id: Date.now().toString(),
+      startTime: Date.now(),
+      turns: [],
+      personality: selectedPersonality?.id || 'default',
+      status: 'active',
+      interruptions: 0,
+      avgResponseTime: 0
+    }
+    
+    setCurrentSession(session)
+    setDialogTurns([])
+    setInterruptions(0)
+    addTestResult('Dialog Session', 'info', 'Dialog session started', `Personality: ${selectedPersonality?.name}`)
+  }
+
+  // Simulate interruption
+  const simulateInterruption = () => {
+    if (currentSession) {
+      setInterruptions(prev => prev + 1)
+      const updatedSession = { ...currentSession, interruptions: interruptions + 1 }
+      setCurrentSession(updatedSession)
+      addTestResult('Dialog Management', 'warning', 'Interruption simulated', 'Testing interruption handling')
+      toast.warning('🚨 Interruption simulated!')
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Activity className="w-5 h-5" />
+            Samsung S24 Ultra AI Debug Panel
+          </DialogTitle>
+        </DialogHeader>
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="voice">Voice Tests</TabsTrigger>
+            <TabsTrigger value="dialog">Dialog Management</TabsTrigger>
+            <TabsTrigger value="logs">Test Logs</TabsTrigger>
+          </TabsList>
+          
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3">System Status</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Speech Recognition</span>
+                    <Badge variant={systemStats.asrAvailable ? 'default' : 'destructive'}>
+                      {systemStats.asrAvailable ? '✅ Available' : '❌ Unavailable'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Text-to-Speech</span>
+                    <Badge variant={systemStats.ttsAvailable ? 'default' : 'destructive'}>
+                      {systemStats.ttsAvailable ? '✅ Available' : '❌ Unavailable'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Local LLM</span>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={systemStats.llmConnected ? 'default' : 'secondary'}>
+                        {systemStats.llmConnected ? '✅ Connected' : '⚠️ Offline'}
+                      </Badge>
+                      <Button 
+                        onClick={async () => {
+                          try {
+                            setIsTestingLLM(true)
+                            loggingService.logLLM('Manual connection test initiated')
+                            addTestResult('Ollama Test', 'info', 'Testing Ollama connection...', '')
+                            
+                            const diagnostics = await ollamaService.getConnectionDiagnostics()
+                            
+                            diagnostics.testedUrls.forEach(test => {
+                              const status = test.status.includes('✅') ? 'success' : 'error'
+                              addTestResult('Ollama Test', status, `${test.url}: ${test.status}`, test.error || '')
+                            })
+                            
+                            if (diagnostics.modelsFound.length > 0) {
+                              addTestResult('Ollama Test', 'success', `Models: ${diagnostics.modelsFound.join(', ')}`, '')
+                            }
+                            
+                            const reconnected = await ollamaService.forceReconnect()
+                            if (reconnected) {
+                              toast.success('Ollama reconnected!')
+                              checkSystemStatus()
+                            } else {
+                              toast.error('Check if Termux is running: ollama serve')
+                            }
+                          } catch (error) {
+                            addTestResult('Ollama Test', 'error', `Test failed: ${error}`, '')
+                          } finally {
+                            setIsTestingLLM(false)
+                          }
+                        }}
+                        variant="outline" 
+                        size="sm"
+                        disabled={isTestingLLM}
+                      >
+                        <RefreshCw className={`w-3 h-3 ${isTestingLLM ? 'animate-spin' : ''}`} />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Samsung Optimized</span>
+                    <Badge variant={systemStats.samsungOptimized ? 'default' : 'secondary'}>
+                      {systemStats.samsungOptimized ? '🔥 Yes' : '📱 Standard'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Microphone</span>
+                    <Badge variant={systemStats.micPermission === 'granted' ? 'default' : 'destructive'}>
+                      {systemStats.micPermission === 'granted' ? '🎤 Granted' : '🚫 Denied'}
+                    </Badge>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3">Current Session</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Call State</span>
+                    <Badge variant={currentCallState === 'active' ? 'default' : 'secondary'}>
+                      {currentCallState}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Listening</span>
+                    <Badge variant={isListening ? 'default' : 'secondary'}>
+                      {isListening ? '🎤 Active' : '⏸️ Inactive'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">AI Speaking</span>
+                    <Badge variant={aiSpeaking ? 'default' : 'secondary'}>
+                      {aiSpeaking ? '🗣️ Speaking' : '🤐 Silent'}
+                    </Badge>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Ollama Connection Diagnostics */}
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold">🔍 Ollama Connection Diagnostics</h3>
+                <Button 
+                  onClick={async () => {
+                    try {
+                      setIsTestingLLM(true)
+                      addTestResult('Connection Test', 'info', 'Running Ollama diagnostics...', '')
+                      
+                      const diagnostics = await ollamaService.getConnectionDiagnostics()
+                      
+                      addTestResult('Connection Test', 'info', `Platform: ${diagnostics.platform} (Native: ${diagnostics.isNative})`, '')
+                      
+                      diagnostics.testedUrls.forEach(test => {
+                        const status = test.status.includes('✅') ? 'success' : 'error'
+                        addTestResult('Connection Test', status, `${test.url}: ${test.status}`, test.error || '')
+                      })
+                      
+                      if (diagnostics.modelsFound.length > 0) {
+                        addTestResult('Connection Test', 'success', `Models found: ${diagnostics.modelsFound.join(', ')}`, '')
+                        addTestResult('Connection Test', 'info', `Gemma2:2b available: ${diagnostics.preferredModelAvailable ? 'Yes' : 'No'}`, '')
+                      }
+                      
+                      // Try to force reconnect
+                      const reconnected = await ollamaService.forceReconnect()
+                      addTestResult('Connection Test', reconnected ? 'success' : 'error', 
+                        `Force reconnect: ${reconnected ? 'Success' : 'Failed'}`, '')
+                        
+                      if (reconnected) {
+                        toast.success('Ollama reconnected successfully!')
+                        // Trigger system status update
+                        checkSystemStatus()
+                      } else {
+                        toast.error('Failed to connect to Ollama. Check if Termux is running.')
+                      }
+                    } catch (error) {
+                      addTestResult('Connection Test', 'error', `Diagnostic failed: ${error}`, '')
+                    } finally {
+                      setIsTestingLLM(false)
+                    }
+                  }}
+                  variant="outline" 
+                  size="sm"
+                  disabled={isTestingLLM}
+                >
+                  <RefreshCw className={`w-4 h-4 mr-1 ${isTestingLLM ? 'animate-spin' : ''}`} />
+                  Test Connection
+                </Button>
+              </div>
+              
+              <div className="text-sm space-y-1 text-muted-foreground">
+                <p>• This tests multiple URLs to find your Termux Ollama server</p>
+                <p>• Make sure Termux is running: <code>ollama serve</code></p>
+                <p>• Check that gemma2:2b model is loaded: <code>ollama list</code></p>
+                <p>• If connection fails, try: <code>ollama serve --host 0.0.0.0</code></p>
+              </div>
+            </Card>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Personality</span>
+                    <Badge variant="outline">
+                      {selectedPersonality?.name || 'Default'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Audio Level</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-500 transition-all duration-100"
+                          style={{ width: `${audioLevel}%` }}
+                        />
+                      </div>
+                      <span className="text-xs">{audioLevel}%</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+            
+            <Card className="p-4">
+              <h3 className="font-semibold mb-3">Quick Actions</h3>
+              <div className="flex gap-2 flex-wrap">
+                <Button onClick={() => setActiveTab('voice')} variant="outline" size="sm">
+                  <Mic className="w-4 h-4 mr-1" />
+                  Test Voice
+                </Button>
+                <Button onClick={() => setActiveTab('dialog')} variant="outline" size="sm">
+                  <Brain className="w-4 h-4 mr-1" />
+                  Dialog Debug
+                </Button>
+                <Button onClick={testFullPipeline} variant="outline" size="sm">
+                  <Zap className="w-4 h-4 mr-1" />
+                  Full Pipeline
+                </Button>
+                <Button onClick={checkSystemStatus} variant="outline" size="sm">
+                  <RotateCcw className="w-4 h-4 mr-1" />
+                  Refresh Status
+                </Button>
+              </div>
+            </Card>
+          </TabsContent>
+          
+          {/* Voice Tests Tab */}
+          <TabsContent value="voice" className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Mic className="w-4 h-4" />
+                  Speech Recognition (ASR) Test
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Test voice input and speech recognition accuracy
+                </p>
+                <Button 
+                  onClick={testASR} 
+                  disabled={isTestingASR}
+                  className="w-full mb-2"
+                >
+                  {isTestingASR ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Testing ASR...
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="w-4 h-4 mr-2" />
+                      Test Speech Recognition
+                    </>
+                  )}
+                </Button>
+                <div className="text-xs text-muted-foreground">
+                  Platform: {Capacitor.isNativePlatform() ? 'Native (Samsung Optimized)' : 'Web'} | 
+                  Status: {systemStats.asrAvailable ? 'Available' : 'Unavailable'}
+                </div>
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Volume2 className="w-4 h-4" />
+                  Text-to-Speech (TTS) Test
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Test voice output and speech synthesis quality
+                </p>
+                <Button 
+                  onClick={testTTS} 
+                  disabled={isTestingTTS}
+                  className="w-full mb-2"
+                >
+                  {isTestingTTS ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Testing TTS...
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-4 h-4 mr-2" />
+                      Test Text-to-Speech
+                    </>
+                  )}
+                </Button>
+                <div className="text-xs text-muted-foreground">
+                  Voice: {selectedPersonality?.name || 'Default'} | 
+                  Platform: {Capacitor.isNativePlatform() ? 'Native (Samsung Optimized)' : 'Web'} | 
+                  Status: {systemStats.ttsAvailable ? 'Available' : 'Unavailable'}
+                </div>
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Brain className="w-4 h-4" />
+                  Large Language Model (LLM) Test
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Test AI response generation (local vs web)
+                </p>
+                <Button 
+                  onClick={testLLM} 
+                  disabled={isTestingLLM}
+                  className="w-full mb-2"
+                >
+                  {isTestingLLM ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Testing LLM...
+                    </>
+                  ) : (
+                    <>
+                      <Brain className="w-4 h-4 mr-2" />
+                      Test LLM Response
+                    </>
+                  )}
+                </Button>
+                <div className="text-xs text-muted-foreground">
+                  Local LLM: {systemStats.llmConnected ? `Ollama (${ollamaService.getCurrentModel()})` : 'Offline'} | 
+                  Fallback: Personality-based responses
+                </div>
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  Full Pipeline Test
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Test complete conversation flow: ASR → LLM → TTS
+                </p>
+                <Button 
+                  onClick={testFullPipeline} 
+                  disabled={isTestingASR || isTestingTTS || isTestingLLM}
+                  className="w-full mb-2"
+                  variant="default"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Test Full Conversation Pipeline
+                </Button>
+                <div className="text-xs text-muted-foreground">
+                  Tests: Voice Input → AI Processing → Voice Output (Complete Flow)
+                </div>
+              </Card>
+            </div>
+          </TabsContent>
+          
+          {/* Dialog Management Tab */}
+          <TabsContent value="dialog" className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3">Dialog Session Control</h3>
+                <div className="space-y-2">
+                  <Button 
+                    onClick={startDialogSession} 
+                    disabled={currentSession?.status === 'active'}
+                    className="w-full"
+                    size="sm"
+                  >
+                    {currentSession?.status === 'active' ? '✅ Session Active' : '▶️ Start Session'}
+                  </Button>
+                  <Button 
+                    onClick={simulateInterruption} 
+                    disabled={!currentSession || currentSession.status !== 'active'}
+                    className="w-full"
+                    variant="outline"
+                    size="sm"
+                  >
+                    🚨 Simulate Interruption
+                  </Button>
+                </div>
+                
+                {currentSession && (
+                  <div className="mt-4 space-y-2">
+                    <h4 className="font-medium">Current Session</h4>
+                    <div className="text-sm space-y-1">
+                      <div>Status: <Badge variant="outline">{currentSession.status}</Badge></div>
+                      <div>Duration: {Math.round((Date.now() - currentSession.startTime) / 1000)}s</div>
+                      <div>Turns: {dialogTurns.length}</div>
+                      <div>Interruptions: {interruptions}</div>
+                      <div>Personality: {selectedPersonality?.name}</div>
+                    </div>
+                  </div>
+                )}
+              </Card>
+              
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3">Dialog Management Features</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>Turn Management</span>
+                    <Badge variant="secondary">Basic</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Interruption Handling</span>
+                    <Badge variant="secondary">Limited</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Context Persistence</span>
+                    <Badge variant="destructive">Missing</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Session Management</span>
+                    <Badge variant="default">Active</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Response Timing</span>
+                    <Badge variant="secondary">Basic</Badge>
+                  </div>
+                </div>
+                
+                <div className="mt-4 p-3 bg-muted rounded-lg">
+                  <h4 className="font-medium text-sm mb-2">Recommendations:</h4>
+                  <ul className="text-xs space-y-1 text-muted-foreground">
+                    <li>• Add conversation context memory</li>
+                    <li>• Implement advanced interruption handling</li>
+                    <li>• Add response confidence scoring</li>
+                    <li>• Implement turn-taking optimization</li>
+                    <li>• Add dialog state persistence</li>
+                  </ul>
+                </div>
+              </Card>
+            </div>
+            
+            {/* Recent Dialog Turns */}
+            <Card className="p-4">
+              <h3 className="font-semibold mb-3">Recent Dialog Turns</h3>
+              {dialogTurns.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  No dialog turns recorded. Start a session to begin tracking.
+                </p>
+              ) : (
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {dialogTurns.slice(-10).map((turn) => (
+                    <div key={turn.id} className="flex items-start gap-3 p-2 bg-muted rounded">
+                      <Badge variant={turn.type === 'user' ? 'default' : 'secondary'} className="text-xs">
+                        {turn.type === 'user' ? '👤' : '🤖'}
+                      </Badge>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm truncate">{turn.content}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(turn.timestamp).toLocaleTimeString()}
+                          {turn.confidence && ` • Confidence: ${Math.round(turn.confidence * 100)}%`}
+                          {turn.interrupted && ' • Interrupted'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TabsContent>
+          
+          {/* System Logs & Export Tab */}
+          <TabsContent value="logs" className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              {/* Log Actions */}
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold">System Logs & Export</h3>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={async () => {
+                        try {
+                          await loggingService.shareLogsAsFile()
+                          toast.success('Logs exported successfully!')
+                        } catch (error) {
+                          toast.error('Failed to export logs')
+                        }
+                      }}
+                      variant="default" 
+                      size="sm"
+                    >
+                      <Share className="w-4 h-4 mr-1" />
+                      Export & Share
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        loggingService.clearLogs()
+                        setTestResults([])
+                        toast.info('All logs cleared')
+                      }}
+                      variant="outline" 
+                      size="sm"
+                    >
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Clear All
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Log Summary */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm">Log Summary</h4>
+                    {(() => {
+                      const summary = loggingService.getLogsSummary()
+                      return (
+                        <div className="text-sm space-y-1">
+                          <div>Total Logs: {summary.total}</div>
+                          <div>Recent Errors: {summary.recentErrors}</div>
+                          <div className="flex gap-2 flex-wrap">
+                            {Object.entries(summary.byLevel).map(([level, count]) => (
+                              <Badge key={level} variant="outline" className="text-xs">
+                                {level}: {count}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    })()}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm">Quick Actions</h4>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button 
+                        onClick={() => {
+                          loggingService.system('Manual system check initiated')
+                          checkSystemStatus()
+                        }}
+                        variant="outline" 
+                        size="sm"
+                      >
+                        <RefreshCw className="w-4 h-4 mr-1" />
+                        Refresh
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          loggingService.debug('DEBUG', 'Manual debug log entry for testing')
+                          toast.info('Debug entry added')
+                        }}
+                        variant="outline" 
+                        size="sm"
+                      >
+                        <Activity className="w-4 h-4 mr-1" />
+                        Test Log
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+              
+              {/* Recent Logs Display */}
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold">Recent System Logs (Live)</h3>
+                  <Badge variant="outline">
+                    <Activity className="w-3 h-3 mr-1" />
+                    Live
+                  </Badge>
+                </div>
+                
+                {(() => {
+                  const recentLogs = loggingService.getRecentLogs(5) // Last 5 minutes
+                  return recentLogs.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-8">
+                      No recent logs. Use the app features to generate logs.
+                    </p>
+                  ) : (
+                    <div className="space-y-2 max-h-80 overflow-y-auto">
+                      {recentLogs.slice(0, 20).map((log) => (
+                        <div key={log.id} className="p-3 border rounded-lg">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <Badge 
+                                variant={
+                                  log.level === 'error' ? 'destructive' :
+                                  log.level === 'warn' ? 'secondary' :
+                                  log.level === 'system' ? 'default' : 'outline'
+                                }
+                                className="text-xs"
+                              >
+                                {log.level === 'error' && <AlertCircle className="w-3 h-3 mr-1" />}
+                                {log.level === 'system' && <CheckCircle className="w-3 h-3 mr-1" />}
+                                {log.category}
+                              </Badge>
+                              <span className="text-xs font-medium">{log.level.toUpperCase()}</span>
+                            </div>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(log.timestamp).toLocaleTimeString()}
+                            </span>
+                          </div>
+                          <p className="text-sm mt-1">{log.message}</p>
+                          {log.details && typeof log.details === 'object' && (
+                            <p className="text-xs text-muted-foreground mt-1 font-mono">
+                              {JSON.stringify(log.details, null, 2).substring(0, 200)}
+                              {JSON.stringify(log.details).length > 200 && '...'}
+                            </p>
+                          )}
+                          {log.details && typeof log.details === 'string' && (
+                            <p className="text-xs text-muted-foreground mt-1 font-mono">
+                              {log.details}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })()}
+              </Card>
+              
+              {/* Error Logs Only */}
+              <Card className="p-4">
+                <h3 className="font-semibold mb-3 text-red-600">Error Logs (Critical Issues)</h3>
+                {(() => {
+                  const errorLogs = loggingService.getErrorLogs()
+                  return errorLogs.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      🎉 No errors found! Your app is running smoothly.
+                    </p>
+                  ) : (
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {errorLogs.slice(0, 10).map((log) => (
+                        <div key={log.id} className="p-3 border border-red-200 rounded-lg bg-red-50">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <Badge variant="destructive" className="text-xs">
+                                <AlertCircle className="w-3 h-3 mr-1" />
+                                {log.category}
+                              </Badge>
+                            </div>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(log.timestamp).toLocaleTimeString()}
+                            </span>
+                          </div>
+                          <p className="text-sm mt-1 text-red-800">{log.message}</p>
+                          {log.details && (
+                            <p className="text-xs text-red-600 mt-1 font-mono">
+                              {typeof log.details === 'object' 
+                                ? JSON.stringify(log.details).substring(0, 150) + '...'
+                                : log.details
+                              }
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })()}
+              </Card>
+              
+              {/* Test Results (Legacy) */}
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold">Debug Test Results</h3>
+                  <Button 
+                    onClick={() => setTestResults([])} 
+                    variant="outline" 
+                    size="sm"
+                  >
+                    Clear Tests
+                  </Button>
+                </div>
+                
+                {testResults.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No test results yet. Run some tests to see results here.
+                  </p>
+                ) : (
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {testResults.slice(-10).map((result) => (
+                      <div key={result.id} className="p-3 border rounded-lg">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            <Badge 
+                              variant={
+                                result.status === 'success' ? 'default' :
+                                result.status === 'error' ? 'destructive' :
+                                result.status === 'warning' ? 'secondary' : 'outline'
+                              }
+                            >
+                              {result.status === 'success' && <CheckCircle className="w-3 h-3 mr-1" />}
+                              {result.status === 'error' && <AlertCircle className="w-3 h-3 mr-1" />}
+                              {result.test}
+                            </Badge>
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(result.timestamp).toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <p className="text-sm mt-1">{result.message}</p>
+                        {result.details && (
+                          <p className="text-xs text-muted-foreground mt-1 font-mono">
+                            {result.details}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
+}

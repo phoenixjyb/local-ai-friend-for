@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
+import { loggingService } from '@/services/LoggingService'
 
 // Simple localStorage-based hook to replace useKV
 function useKV<T>(key: string, defaultValue: T): [T, (value: T) => void] {
@@ -32,10 +33,13 @@ import PersonalitySelection from '@/components/PersonalitySelection'
 import ParticleEffects from '@/components/ParticleEffects'
 import DrawingCanvas from '@/components/DrawingCanvas'
 import AudioVisualization from '@/components/AudioVisualization'
+import SamsungAIPanel from '@/components/SamsungAIPanel'
 import { AIPersonality, AI_PERSONALITIES } from '@/types/personality'
 import { voiceChatService } from '@/services/VoiceChatService'
 import { ollamaService } from '@/services/OllamaService'
 import { soundEffectsService } from '@/services/SoundEffectsService'
+import { samsungS24Service } from '@/services/SamsungS24Service'
+import DebugPanel from '@/components/DebugPanel'
 import { 
   FloatingHearts, 
   TwinklingStars, 
@@ -72,6 +76,7 @@ export default function AICompanionPhone() {
   const [selectedPersonality, setSelectedPersonality] = useKV<AIPersonality>('selected-personality', AI_PERSONALITIES[0])
   const [isDrawingOpen, setIsDrawingOpen] = useState(false)
   const [isNativeApp, setIsNativeApp] = useState(false)
+  const [isDebugOpen, setIsDebugOpen] = useState(false)
   
   // Animation and sound effect states
   const [showHearts, setShowHearts] = useState(false)
@@ -84,7 +89,7 @@ export default function AICompanionPhone() {
   const [soundEnabled, setSoundEnabled] = useKV('sound-enabled', true)
   
   const callTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null) // Using any for web speech recognition compatibility
   const synthRef = useRef<SpeechSynthesis | null>(null)
 
   // Helper functions for cute animations and sounds
@@ -149,76 +154,118 @@ export default function AICompanionPhone() {
     const initializeNativeServices = async () => {
       if (Capacitor.isNativePlatform()) {
         setIsNativeApp(true)
+        
+        // Initialize voice services
         await voiceChatService.initializeVoiceServices()
         toast.success('Native voice services initialized!')
+        
+        // Initialize Samsung S24 Ultra specific features
+        try {
+          const samsungInitialized = await samsungS24Service.initialize()
+          if (samsungInitialized && samsungS24Service.isS24Ultra()) {
+            toast.success('🔥 Samsung S24 Ultra optimizations activated!')
+            await samsungS24Service.playHapticFeedback('success')
+          }
+        } catch (error) {
+          console.warn('Samsung S24 service initialization failed:', error)
+        }
       }
     }
     
     initializeNativeServices()
   }, [])
 
-  // Generate AI response using Web LLM only (Local LLM temporarily disabled for testing)
+  // Generate AI response with proper LLM integration (Local Ollama + Samsung S24 Ultra optimizations)
   const generateAIResponse = useCallback(async (userInput: string) => {
     try {
       // Use personality-specific prompt template
       const promptTemplate = selectedPersonality.conversationStyle.promptTemplate
       const personalizedPrompt = promptTemplate.replace('{input}', userInput)
 
-      // TEMPORARILY DISABLED: Local LLM (Ollama) - Force web-only for testing
-      // This allows us to test voice recognition and web LLM integration
-      console.log('🌐 LOCAL LLM DISABLED - Using web LLM only for testing...')
-
-      // Use cloud LLM if online
-      if (isOnline) {
-        console.log('☁️ Using cloud LLM for response generation...')
-        // TODO: Replace with actual cloud LLM service
-        // const prompt = `${personalizedPrompt}`
-        // const response = await cloudLLMService.generateResponse(prompt, 'gpt-4o-mini')
-        console.log('⚠️ Cloud LLM temporarily disabled - using offline fallback')
-        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
-        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
-      } else {
-        // Personality-specific offline fallback responses
-        console.log('📱 Using offline fallback responses')
-        const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
-        return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
+      // Try local LLM first (Ollama on Samsung S24 Ultra via Termux)
+      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
+        try {
+          console.log('🤖 Using local LLM (Ollama) for Samsung S24 Ultra...')
+          const response = await ollamaService.generatePersonalizedResponse(userInput, selectedPersonality.id)
+          if (response && response.length > 0) {
+            console.log('✅ Local LLM response generated')
+            return response
+          }
+        } catch (error) {
+          console.error('❌ Local LLM failed:', error)
+          toast.warning('Local AI failed, using fallback responses')
+        }
       }
+
+      // Use cloud LLM if online and local LLM not available
+      if (isOnline) {
+        console.log('☁️ Attempting cloud LLM for response generation...')
+        // TODO: Integrate actual cloud LLM service (currently disabled for Samsung S24 focus)
+        console.log('⚠️ Cloud LLM not implemented - using personality-based fallback')
+      }
+
+      // Fallback to personality-specific responses
+      console.log('📱 Using personality-based fallback responses')
+      const personalityResponses = getPersonalityFallbackResponses(selectedPersonality)
+      return personalityResponses[Math.floor(Math.random() * personalityResponses.length)]
+
     } catch (error) {
       console.error('❌ Error generating AI response:', error)
       toast.error('AI response failed. Please try again.')
       return "I'm sorry, I didn't quite catch that. Could you say that again?"
     }
-  }, [isOnline, selectedPersonality])
+  }, [isOnline, selectedPersonality, localLLMAvailable])
 
   // Handle speech recognition (unified for web and native) - Define this first
   const startListening = useCallback(async () => {
-    console.log('🎤 Starting to listen...')
+    loggingService.logASR('Starting voice recognition...', { 
+      isNativeApp, 
+      callState, 
+      aiSpeaking,
+      isListening: isListening
+    })
     
     if (isNativeApp && voiceChatService.isNativeVoiceAvailable()) {
-      // Use native speech recognition
+      // Use native speech recognition (Samsung S24 Ultra optimized)
       setIsListening(true)
       try {
+        loggingService.logASR('Using native speech recognition (Samsung S24 Ultra)')
         const transcript = await voiceChatService.startListening()
-        if (transcript.trim()) {
+        
+        loggingService.logASR('Native ASR result', { transcript, length: transcript?.length })
+        
+        if (transcript && transcript.trim()) {
           setIsListening(false)
+          loggingService.logASR('Processing transcript', { transcript })
+          
           const aiResponse = await generateAIResponse(transcript)
           await speakResponse(aiResponse)
           
           // Save to conversation
           if (currentConversationId) {
             const timestamp = Date.now()
-            // Add conversation logic here
+            loggingService.info('UI', 'Conversation turn completed', {
+              conversationId: currentConversationId,
+              userInput: transcript,
+              aiResponse,
+              timestamp
+            })
           }
+        } else {
+          loggingService.logASRError('Empty transcript received from native ASR')
+          setIsListening(false)
+          toast.warning('No speech detected. Please try again.')
         }
         setIsListening(false)
       } catch (error) {
-        console.error('Native speech recognition error:', error)
+        loggingService.logASRError('Native speech recognition failed', error)
         setIsListening(false)
         toast.error('Voice recognition failed. Please try again.')
       }
     } else {
       // Use web speech recognition with improved error handling
       if (!recognitionRef.current) {
+        loggingService.logASRError('Web speech recognition not available')
         toast.error('Voice recognition not available')
         return
       }
@@ -226,20 +273,22 @@ export default function AICompanionPhone() {
       try {
         // Stop any existing recognition first
         if (isListening) {
+          loggingService.logASR('Stopping existing recognition session')
           recognitionRef.current.stop()
           await new Promise(resolve => setTimeout(resolve, 100))
         }
         
-        console.log('🔄 Starting web speech recognition...')
+        loggingService.logASR('Starting web speech recognition...')
         setIsListening(true)
         recognitionRef.current.start()
         
       } catch (error) {
-        console.error('❌ Web speech recognition start error:', error)
+        loggingService.logASRError('Web speech recognition start error', error)
         setIsListening(false)
         
         // Handle specific errors
         if (error.name === 'InvalidStateError') {
+          loggingService.logASR('Retrying after InvalidStateError')
           toast.info('Restarting voice recognition...')
           // Wait a bit and try again
           setTimeout(() => {
@@ -248,6 +297,7 @@ export default function AICompanionPhone() {
             }
           }, 1000)
         } else if (error.name === 'NotAllowedError') {
+          loggingService.logASRError('Microphone permission denied')
           toast.error('Microphone permission denied. Please allow microphone access.')
         } else {
           toast.error('Voice recognition failed. Please try again.')
@@ -357,18 +407,49 @@ export default function AICompanionPhone() {
     }
   }, [selectedPersonality, isNativeApp, playSound, triggerCelebration, callState, isListening, startListening])
 
-  // TEMPORARILY DISABLED: Check for local LLM availability 
-  // This forces web-only LLM for testing voice recognition and web integration
+  // Check for local LLM availability and enable Samsung S24 Ultra optimizations
   useEffect(() => {
-    console.log('🌐 LOCAL LLM TEMPORARILY DISABLED FOR TESTING')
-    console.log('🔄 All AI responses will use web-based LLM only')
+    const checkLocalLLM = async () => {
+      loggingService.logLLM('Starting local LLM availability check...')
+      
+      try {
+        // Check if Ollama is available on Samsung S24 Ultra via Termux
+        loggingService.logLLM('Platform detection', { 
+          isNative: Capacitor.isNativePlatform(),
+          platform: Capacitor.getPlatform(),
+          userAgent: navigator.userAgent 
+        })
+        loggingService.logLLM('Checking Ollama connection (multiple URLs for Android)')
+        const available = await ollamaService.checkConnection()
+        
+        loggingService.logLLM('Ollama connection check result', { available })
+        
+        if (available) {
+          loggingService.logLLM('Ollama connected! Initializing...')
+          const initialized = await ollamaService.initialize()
+          setLocalLLMAvailable(initialized)
+          
+          loggingService.logLLM('Ollama initialization result', { initialized })
+          
+          if (initialized && samsungS24Service.isS24Ultra()) {
+            loggingService.system('Samsung S24 Ultra + Local AI fully ready!')
+            toast.success('🔥 Samsung S24 Ultra + Local AI ready!')
+          } else if (initialized) {
+            loggingService.system('Local AI ready!')
+            toast.success('🤖 Local AI ready!')
+          }
+        } else {
+          loggingService.logLLM('Local LLM not available - using fallback responses')
+          setLocalLLMAvailable(false)
+          toast.info('💡 Install Ollama in Termux for local AI conversations')
+        }
+      } catch (error) {
+        console.error('❌ Error checking local LLM:', error)
+        setLocalLLMAvailable(false)
+      }
+    }
     
-    // Force local LLM to be unavailable for testing
-    setLocalLLMAvailable(false)
-    
-    setTimeout(() => {
-      toast.info('🌐 Using web-based AI for testing - Local LLM disabled')
-    }, 2000)
+    checkLocalLLM()
   }, [])
 
   // Monitor online/offline status
@@ -397,7 +478,7 @@ export default function AICompanionPhone() {
     const initializeSpeechApis = async () => {
       // Check for speech recognition support
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
         recognitionRef.current = new SpeechRecognition()
         recognitionRef.current.continuous = true
         recognitionRef.current.interimResults = true
@@ -665,7 +746,7 @@ export default function AICompanionPhone() {
     }, 1500)
   }
 
-  // Handle sharing drawings with AI - TESTING MODE: Web LLM only
+  // Handle sharing drawings with AI (Local Ollama + Cloud fallback)
   const handleDrawingShare = useCallback(async (imageData: string) => {
     try {
       // Create a prompt for the AI to respond to the drawing
@@ -673,18 +754,29 @@ export default function AICompanionPhone() {
       
       let aiResponse
       
-      // TESTING MODE: Skip local LLM, use web LLM only
-      console.log('🌐 TESTING MODE: Using web LLM for drawing response...')
+      // Try local LLM first (Samsung S24 Ultra Ollama)
+      if (localLLMAvailable && ollamaService.getConnectionStatus()) {
+        try {
+          console.log('🤖 Using local LLM (Ollama) for drawing response...')
+          aiResponse = await ollamaService.generatePersonalizedResponse(basePrompt, selectedPersonality.id)
+        } catch (error) {
+          console.error('❌ Local LLM failed for drawing response:', error)
+          aiResponse = null
+        }
+      }
       
-      if (isOnline) {
+      // Fallback to cloud LLM if online and local LLM not available
+      if (!aiResponse && isOnline) {
+        console.log('☁️ Using cloud LLM for drawing response...')
         // TODO: Replace with actual cloud LLM service
-        // const prompt = `${basePrompt}`
-        // aiResponse = await cloudLLMService.generateResponse(prompt, 'gpt-4o-mini')
         console.log('⚠️ Cloud LLM temporarily disabled for drawing - using fallback')
         const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
-      } else {
-        // Final fallback to personality-specific responses
+      }
+      
+      // Final fallback to personality-specific responses
+      if (!aiResponse) {
+        console.log('📱 Using personality-based drawing fallback')
         const drawingResponses = getDrawingResponsesByPersonality(selectedPersonality)
         aiResponse = drawingResponses[Math.floor(Math.random() * drawingResponses.length)]
       }
@@ -781,7 +873,8 @@ export default function AICompanionPhone() {
         personalityId: selectedPersonality.id
       }
       
-      setConversations(prev => [newConversation, ...prev.slice(0, 9)]) // Keep last 10
+      const updatedConversations = [newConversation, ...conversations.slice(0, 9)]
+      setConversations(updatedConversations) // Keep last 10
       playSound('success-chime', 0.5)
     }
     
@@ -795,28 +888,40 @@ export default function AICompanionPhone() {
 
   const renderPhoneView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
-      {/* Web LLM Testing Mode Indicator */}
+      {/* Local LLM Status Indicator */}
       <div className="fixed top-4 left-4 z-50">
-        <Card className="cute-card p-3 border-blue-300 bg-blue-50">
-          <div className="flex items-center gap-2 text-sm text-blue-700">
-            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+        <Card className={`cute-card p-3 ${localLLMAvailable 
+          ? 'border-green-300 bg-green-50' 
+          : 'border-orange-300 bg-orange-50'}`}>
+          <div className={`flex items-center gap-2 text-sm ${localLLMAvailable 
+            ? 'text-green-700' 
+            : 'text-orange-700'}`}>
+            <div className={`w-4 h-4 rounded-full ${localLLMAvailable 
+              ? 'bg-green-500 animate-pulse' 
+              : 'bg-orange-500'}`}></div>
             <div className="flex flex-col">
-              <span className="font-medium">Web LLM Testing Mode</span>
-              <span className="text-xs text-blue-600">
-                🌐 Using web-based AI for testing - Local LLM temporarily disabled
+              <span className="font-medium">
+                {localLLMAvailable ? 'Local AI Connected' : 'Local AI Offline'}
+              </span>
+              <span className={`text-xs ${localLLMAvailable 
+                ? 'text-green-600' 
+                : 'text-orange-600'}`}>
+                {localLLMAvailable 
+                  ? '🤖 Samsung S24 Ultra Ollama Ready' 
+                  : '⚠️ Termux Ollama Not Available'}
               </span>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* TESTING MODE: No offline indicator since we're testing web LLM */}
+      {/* Network Status Indicator */}
       {!isOnline && (
         <div className="fixed top-16 left-4 right-4 z-50">
           <Card className="cute-card p-3 border-orange-300 bg-orange-50">
             <div className="flex items-center gap-2 text-sm text-orange-700">
               <WifiSlash size={16} />
-              <span>Offline - Web AI not available in testing mode</span>
+              <span>Offline - {localLLMAvailable ? 'Using Local AI' : 'Limited Functionality'}</span>
             </div>
           </Card>
         </div>
@@ -879,9 +984,7 @@ export default function AICompanionPhone() {
         
         <div className="relative">
           <PulsingGlow 
-            active={aiSpeaking || callState === 'connecting'} 
-            intensity={aiSpeaking ? 'high' : 'medium'} 
-            color={selectedPersonality.color}
+            active={aiSpeaking || callState === 'connecting'}
           >
             <Avatar 
               className="w-40 h-40 border-8 transition-all duration-300 hover:scale-105 cursor-pointer"
@@ -1203,6 +1306,23 @@ export default function AICompanionPhone() {
           <Gear size={20} className="mr-2" />
           Settings
         </Button>
+
+        {/* Debug Panel Button */}
+        <Button
+          id="debug-button"
+          onClick={() => {
+            handleButtonPress('debug-button', 'magic-sparkle')
+            setIsDebugOpen(true)
+          }}
+          variant="outline"
+          size="lg"
+          className="button-text h-16 cute-card border-2 border-orange-300 hover:border-orange-400 transition-all text-orange-600 hover:text-orange-700"
+        >
+          <WigglyIcon active={lastButtonPressed === 'debug-button'}>
+            🧪
+          </WigglyIcon>
+          Debug
+        </Button>
       </div>
     </div>
   )
@@ -1384,6 +1504,9 @@ export default function AICompanionPhone() {
           personality maintains the same privacy standards.
         </p>
       </Card>
+
+      {/* Samsung S24 Ultra AI Configuration Panel */}
+      <SamsungAIPanel />
     </div>
   )
 
@@ -1446,6 +1569,12 @@ export default function AICompanionPhone() {
           </WigglyIcon>
         </Button>
       </div>
+
+      {/* Debug Panel */}
+      <DebugPanel
+        isOpen={isDebugOpen}
+        onOpenChange={setIsDebugOpen}
+      />
     </div>
   )
 }

@@ -30,9 +30,13 @@ echo "   - Storage: High-speed UFS 4.0"
 echo "🧹 Cleaning previous builds..."
 rm -rf dist/ android/app/build/
 
-# Install dependencies
+# Install dependencies with cross-platform compatibility
 echo "📦 Installing dependencies..."
-npm ci --prefer-offline --no-audit
+if [ -f "package-lock.json" ]; then
+    npm ci --legacy-peer-deps --prefer-offline --no-audit
+else
+    npm install --legacy-peer-deps --prefer-offline --no-audit
+fi
 
 # Build the web app with production optimizations
 echo "🔨 Building optimized web app..."

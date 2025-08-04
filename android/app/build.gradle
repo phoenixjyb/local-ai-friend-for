@@ -12,7 +12,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         
         // Samsung S24 Ultra specific optimizations
-        resConfigs "en", "en-GB" // British English support
+        resConfigs "en" // English support only for compatibility
         vectorDrawables.useSupportLibrary = true
         
         // Voice and audio configuration

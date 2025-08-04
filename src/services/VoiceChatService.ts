@@ -4,11 +4,20 @@ import { Capacitor } from '@capacitor/core';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Device } from '@capacitor/device';
 
+export interface VoiceOptimizations {
+  isSamsungS24Ultra: boolean;
+  hasAdvancedHaptics: boolean;
+  supportsBixbyASR: boolean;
+  memoryCapacity: number;
+  processorType: string;
+}
+
 export class VoiceChatService {
   private isListening = false;
   private isSpeaking = false;
   private isInitialized = false;
   private deviceInfo: any = null;
+  private voiceOptimizations: VoiceOptimizations | null = null;
 
   async initializeVoiceServices() {
     if (this.isInitialized || !Capacitor.isNativePlatform()) return;
@@ -16,30 +25,17 @@ export class VoiceChatService {
     try {
       // Get device info for optimization
       this.deviceInfo = await Device.getInfo();
-      console.log('Device info:', this.deviceInfo);
+      console.log('🔍 Detecting device capabilities:', this.deviceInfo);
+      
+      // Analyze device for Samsung S24 Ultra optimizations
+      this.voiceOptimizations = this.analyzeDeviceCapabilities(this.deviceInfo);
       
       // Request permissions for speech recognition
       const permissions = await SpeechRecognition.requestPermissions();
-      console.log('Speech permissions:', permissions);
+      console.log('🎤 Speech permissions:', permissions);
       
-      // Samsung S24 Ultra specific optimizations
-      const isSamsung = this.deviceInfo.manufacturer?.toLowerCase().includes('samsung');
-      const isHighEnd = this.deviceInfo.memUsed ? parseInt(this.deviceInfo.memUsed) > 8000000000 : false; // >8GB RAM
-      
-      // Optimize TTS for Samsung devices
-      const ttsSettings = isSamsung && isHighEnd ? {
-        lang: 'en-GB',
-        rate: 0.85, // Slightly faster for powerful device
-        pitch: 1.3,  // Higher pitch for child-friendly voice
-        volume: 0.05, // Very quiet test
-        category: 'ambient'
-      } : {
-        lang: 'en-GB',
-        rate: 0.8,
-        pitch: 1.2,
-        volume: 0.05,
-        category: 'ambient'
-      };
+      // Configure TTS with device-specific optimizations
+      const ttsSettings = this.getOptimizedTTSSettings();
       
       // Test TTS initialization with optimized settings
       await TextToSpeech.speak({
@@ -47,18 +43,91 @@ export class VoiceChatService {
         ...ttsSettings
       });
       
-      // Initialize haptics for premium feel (S24 Ultra has excellent haptics)
-      if (isSamsung) {
+      // Initialize haptics with device-specific settings
+      if (this.voiceOptimizations.hasAdvancedHaptics) {
+        console.log('🎮 Advanced haptics available (S24 Ultra detected)')
         await Haptics.impact({ style: ImpactStyle.Light });
       }
       
+      console.log('✅ Voice services optimized for:', this.voiceOptimizations);
       this.isInitialized = true;
-      console.log('Voice services initialized successfully for', this.deviceInfo.model);
+      
     } catch (error) {
-      console.error('Error initializing voice services:', error);
+      console.error('❌ Voice service initialization failed:', error);
+      throw error;
     }
   }
 
+  private analyzeDeviceCapabilities(deviceInfo: any): VoiceOptimizations {
+    const manufacturer = deviceInfo.manufacturer?.toLowerCase() || '';
+    const model = deviceInfo.model?.toLowerCase() || '';
+    const memUsed = deviceInfo.memUsed ? parseInt(deviceInfo.memUsed) : 0;
+    
+    // Detect Samsung S24 Ultra specifically
+    const isSamsungS24Ultra = manufacturer.includes('samsung') && 
+                             (model.includes('s24') || model.includes('sm-s928'));
+    
+    // Advanced capabilities detection
+    const hasAdvancedHaptics = isSamsungS24Ultra || memUsed > 8000000000; // >8GB RAM
+    const supportsBixbyASR = manufacturer.includes('samsung');
+    const memoryCapacity = isSamsungS24Ultra ? 12 : Math.floor(memUsed / 1000000000); // GB
+    const processorType = isSamsungS24Ultra ? 'Snapdragon 8 Gen 3' : 'Standard';
+    
+    return {
+      isSamsungS24Ultra,
+      hasAdvancedHaptics,
+      supportsBixbyASR,
+      memoryCapacity,
+      processorType
+    };
+  }
+
+  private getOptimizedTTSSettings() {
+    if (!this.voiceOptimizations) {
+      // Fallback settings
+      return {
+        lang: 'en-GB',
+        rate: 0.8,
+        pitch: 1.2,
+        volume: 0.05,
+        category: 'ambient'
+      };
+    }
+
+    if (this.voiceOptimizations.isSamsungS24Ultra) {
+      // Samsung S24 Ultra optimized settings
+      return {
+        lang: 'en-GB',
+        rate: 0.85,        // Slightly faster for powerful device
+        pitch: 1.3,        // Higher pitch for child-friendly voice
+        volume: 0.05,      // Test volume
+        category: 'ambient'
+        // Note: Samsung TTS voice selection handled separately
+      };
+    }
+
+    // High-end device settings
+    if (this.voiceOptimizations.memoryCapacity >= 8) {
+      return {
+        lang: 'en-GB',
+        rate: 0.83,
+        pitch: 1.25,
+        volume: 0.05,
+        category: 'ambient'
+      };
+    }
+
+    // Standard device settings
+    return {
+      lang: 'en-GB',
+      rate: 0.8,
+      pitch: 1.2,
+      volume: 0.05,
+      category: 'ambient'
+    };
+  }
+  
+  // Enhanced listening method with Samsung S24 Ultra optimizations
   async startListening(): Promise<string> {
     if (!Capacitor.isNativePlatform()) {
       console.log('Not on native platform, skipping voice recognition');
