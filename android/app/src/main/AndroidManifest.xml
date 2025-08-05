@@ -35,6 +35,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <!-- WebView 138.0+ compatibility metadata -->
+        <meta-data
+            android:name="android.webkit.WebView.EnableSafeBrowsing"
+            android:value="false" />
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
+        <!-- Capacitor WebView compatibility for newer versions -->
+        <meta-data
+            android:name="capacitor.webview.legacy_support"
+            android:value="true" />
     </application>
 
     <!-- Permissions -->

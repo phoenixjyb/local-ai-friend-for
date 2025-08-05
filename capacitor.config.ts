@@ -8,13 +8,13 @@ const config: CapacitorConfig = {
     androidScheme: 'https'
   },
   android: {
-    // Samsung Galaxy S24 Ultra optimizations
+    // Samsung Galaxy S24 Ultra optimizations with WebView 138.0+ compatibility
     buildOptions: {
       keystorePath: undefined,
       keystoreAlias: undefined,
       signingType: 'jarsigner'
     },
-    // Optimize for high-end devices like S24 Ultra
+    // WebView 138.0+ compatibility settings
     webContentsDebuggingEnabled: false, // Disable for production
     allowMixedContent: false,
     captureInput: true,
@@ -23,7 +23,11 @@ const config: CapacitorConfig = {
     // Enable S Pen support for drawing features
     allowBackup: true,
     // Audio optimizations
-    useLegacyBridge: false
+    useLegacyBridge: false,
+    // WebView 138.0+ specific compatibility
+    clearTextTrafficPermitted: true, // Required for HTTP Ollama connections
+    webViewLoaderForAndroid11: false, // Use default WebView loader
+    mixedContentMode: 'MIXED_CONTENT_COMPATIBILITY_MODE'
   },
   plugins: {
     SplashScreen: {

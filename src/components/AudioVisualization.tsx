@@ -33,11 +33,15 @@ export default function AudioVisualization({
 
   // Initialize audio context and microphone access
   useEffect(() => {
+    console.log('🎵 [AudioVisualization] isListening changed to:', isListening)
+    
     if (!isListening) {
+      console.log('🎵 [AudioVisualization] Cleaning up audio...')
       cleanupAudio()
       return
     }
 
+    console.log('🎵 [AudioVisualization] Initializing audio...')
     const initializeAudio = async () => {
       try {
         // Request microphone access
@@ -48,24 +52,29 @@ export default function AudioVisualization({
             autoGainControl: true
           } 
         })
+        console.log('🎵 [AudioVisualization] Microphone stream obtained')
         streamRef.current = stream
 
         // Create audio context
-        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+        console.log('🎵 [AudioVisualization] Audio context created')
         
         // Create analyser node
         analyserRef.current = audioContextRef.current.createAnalyser()
         analyserRef.current.fftSize = 256
         analyserRef.current.smoothingTimeConstant = 0.8
+        console.log('🎵 [AudioVisualization] Analyser node created')
 
         // Connect microphone to analyser
         microphoneRef.current = audioContextRef.current.createMediaStreamSource(stream)
         microphoneRef.current.connect(analyserRef.current)
+        console.log('🎵 [AudioVisualization] Microphone connected to analyser')
 
         // Start visualization
+        console.log('🎵 [AudioVisualization] Starting visualization...')
         startVisualization()
       } catch (error) {
-        console.error('Error accessing microphone for visualization:', error)
+        console.error('🎵 [AudioVisualization] Error accessing microphone for visualization:', error)
       }
     }
 
@@ -77,28 +86,35 @@ export default function AudioVisualization({
   }, [isListening])
 
   const cleanupAudio = () => {
+    console.log('🎵 [AudioVisualization] Cleaning up audio resources...')
+    
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current)
+      console.log('🎵 [AudioVisualization] Animation frame cancelled')
     }
     
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop())
       streamRef.current = null
+      console.log('🎵 [AudioVisualization] Stream tracks stopped')
     }
     
     if (microphoneRef.current) {
       microphoneRef.current.disconnect()
       microphoneRef.current = null
+      console.log('🎵 [AudioVisualization] Microphone disconnected')
     }
     
     if (audioContextRef.current) {
       audioContextRef.current.close()
       audioContextRef.current = null
+      console.log('🎵 [AudioVisualization] Audio context closed')
     }
     
     analyserRef.current = null
     setAudioData(new Uint8Array(128))
     setVolumeLevel(0)
+    console.log('🎵 [AudioVisualization] Cleanup completed')
   }
 
   const startVisualization = () => {

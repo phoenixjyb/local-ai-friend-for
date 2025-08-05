@@ -144,30 +144,54 @@ export class VoiceChatService {
     } catch (e) { /* Haptics not available */ }
     
     try {
-      // Samsung S24 Ultra has excellent noise cancellation - optimize for it
+      // Samsung S24 Ultra has excellent noise cancellation and processing power
       const isSamsung = this.deviceInfo?.manufacturer?.toLowerCase().includes('samsung');
+      const isSamsungS24Ultra = this.voiceOptimizations?.isSamsungS24Ultra || false;
       
+      console.log('🎤 Starting ASR with Samsung S24 Ultra optimizations:', {
+        isSamsung,
+        isSamsungS24Ultra,
+        hasAdvancedHaptics: this.voiceOptimizations?.hasAdvancedHaptics,
+        supportsBixbyASR: this.voiceOptimizations?.supportsBixbyASR
+      });
+
       const result = await SpeechRecognition.start({
         language: 'en-GB',
-        maxResults: isSamsung ? 3 : 1, // More results on Samsung for better accuracy
-        prompt: 'Say something to your AI friend!',
-        partialResults: isSamsung, // Enable partial results on Samsung for responsiveness
-        popup: false
+        maxResults: isSamsungS24Ultra ? 5 : (isSamsung ? 3 : 1), // More results on S24 Ultra
+        prompt: 'Tell your AI friend something!',
+        partialResults: isSamsungS24Ultra, // Enable streaming on S24 Ultra
+        popup: false,
+        // Samsung-specific optimizations
+        ...(isSamsungS24Ultra && {
+          showProgressDialog: false, // S24 Ultra can handle without UI
+          androidSpeechExtras: {
+            'EXTRA_CONFIDENCE_THRESHOLD': 0.7, // Lower threshold for better responsiveness
+            'EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS': 1500, // Faster timeout
+            'EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS': 1500,
+            'EXTRA_PREFER_OFFLINE': true // Use offline ASR when possible
+          }
+        })
       });
 
       this.isListening = false;
       
       if (result.matches && result.matches.length > 0) {
-        console.log('Speech recognized:', result.matches[0]);
-        // Success haptic feedback
+        const bestMatch = this.selectBestTranscript(result.matches, isSamsungS24Ultra);
+        console.log('🎯 Speech recognized (best match):', bestMatch);
+        console.log('📝 All matches for comparison:', result.matches);
+        
+        // Success haptic feedback with S24 Ultra enhancement
         try {
-          await Haptics.impact({ style: ImpactStyle.Medium });
+          await Haptics.impact({ 
+            style: isSamsungS24Ultra ? ImpactStyle.Medium : ImpactStyle.Light 
+          });
         } catch (e) { /* Haptics not available */ }
-        return result.matches[0];
+        
+        return bestMatch;
       }
     } catch (error) {
       this.isListening = false;
-      console.error('Speech recognition error:', error);
+      console.error('❌ Speech recognition error:', error);
       // Error haptic feedback
       try {
         await Haptics.impact({ style: ImpactStyle.Heavy });
@@ -175,6 +199,32 @@ export class VoiceChatService {
     }
     
     return '';
+  }
+
+  // Enhanced transcript selection for Samsung S24 Ultra's multi-result ASR
+  private selectBestTranscript(matches: string[], isSamsungS24Ultra: boolean): string {
+    if (!matches || matches.length === 0) return '';
+    
+    // On S24 Ultra, we can use more sophisticated selection
+    if (isSamsungS24Ultra && matches.length > 1) {
+      // Prefer longer, more complete sentences
+      const sortedByLength = matches.sort((a, b) => b.length - a.length);
+      
+      // Filter out very short responses that might be partial
+      const substantialMatches = sortedByLength.filter(match => 
+        match.trim().length >= 3 && 
+        !match.toLowerCase().includes('hmm') &&
+        !match.toLowerCase().includes('uh')
+      );
+      
+      if (substantialMatches.length > 0) {
+        console.log('🧠 S24 Ultra: Selected substantial match:', substantialMatches[0]);
+        return substantialMatches[0];
+      }
+    }
+    
+    // Default: return first match
+    return matches[0];
   }
 
   async speak(text: string, personality: string = 'friendly'): Promise<void> {

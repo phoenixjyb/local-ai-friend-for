@@ -379,15 +379,57 @@ export class OllamaService {
   }
 
   async generatePersonalizedResponse(prompt: string, personalityStyle: string): Promise<string> {
-    // Enhance the prompt based on personality for better local model responses
-    const personalityEnhancement = this.getPersonalityEnhancement(personalityStyle)
-    const enhancedPrompt = `${personalityEnhancement}\n\nChild says: "${prompt}"\n\nYour response:`
+    loggingService.logLLM('🎤 Processing ASR input for Ollama', { 
+      prompt: prompt.substring(0, 100), 
+      personalityStyle,
+      model: this.availableModel 
+    });
+
+    // Pre-process ASR input for better Ollama results
+    const cleanedPrompt = this.cleanASRInput(prompt);
     
-    return await this.generate(enhancedPrompt, {
+    // Enhance the prompt based on personality for better local model responses
+    const personalityEnhancement = this.getPersonalityEnhancement(personalityStyle);
+    const enhancedPrompt = `${personalityEnhancement}\n\nChild says: "${cleanedPrompt}"\n\nYour response (keep it short and age-appropriate):`;
+    
+    loggingService.logLLM('📝 Enhanced prompt for Ollama', { 
+      originalLength: prompt.length,
+      cleanedLength: cleanedPrompt.length,
+      enhancedLength: enhancedPrompt.length 
+    });
+
+    const response = await this.generate(enhancedPrompt, {
       temperature: 0.8,
-      max_tokens: 100,
+      max_tokens: 80, // Shorter responses for voice conversations
       top_p: 0.95
-    })
+    });
+
+    loggingService.logLLM('✅ Ollama response generated', { 
+      responseLength: response.length,
+      wordsCount: response.split(' ').length 
+    });
+
+    return response;
+  }
+
+  // Clean ASR input for better Ollama processing
+  private cleanASRInput(asrText: string): string {
+    let cleaned = asrText.trim();
+    
+    // Remove common ASR artifacts
+    cleaned = cleaned.replace(/\b(um|uh|hmm|er)\b/gi, '');
+    cleaned = cleaned.replace(/\s+/g, ' '); // Multiple spaces to single
+    cleaned = cleaned.replace(/[.]{2,}/g, '.'); // Multiple dots to single
+    
+    // Fix common ASR capitalization issues
+    cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+    
+    // Ensure proper ending punctuation for Ollama context
+    if (!/[.!?]$/.test(cleaned)) {
+      cleaned += '.';
+    }
+    
+    return cleaned;
   }
 
   private getPersonalityEnhancement(style: string): string {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -9,8 +9,12 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
 import { ollamaService } from '@/services/OllamaService'
 import { loggingService } from '@/services/LoggingService'
-import { Bug, Wifi, RefreshCw, Download, Copy, Share, FileText } from 'lucide-react'
+import { VoiceChatService } from '@/services/VoiceChatService'
+import { Bug, Wifi, RefreshCw, Download, Copy, Share, FileText, Mic, Volume2, Zap, Activity, Eye, EyeOff } from 'lucide-react'
 import { Capacitor } from '@capacitor/core'
+import { SpeechRecognition } from '@capacitor-community/speech-recognition'
+import { TextToSpeech } from '@capacitor-community/text-to-speech'
+import AudioVisualization from './AudioVisualization'
 
 interface DebugPanelProps {
   isOpen?: boolean
@@ -21,12 +25,54 @@ function DebugPanel({ isOpen = false, onOpenChange }: DebugPanelProps) {
   const [localConnectivity, setLocalConnectivity] = useState<any>(null)
   const [isChecking, setIsChecking] = useState(false)
   const [logs, setLogs] = useState<string[]>([])
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
+  
+  // ASR Testing States
+  const [asrDebugInfo, setAsrDebugInfo] = useState<any>(null)
+  const [isTestingASR, setIsTestingASR] = useState(false)
+  const [isListeningASR, setIsListeningASR] = useState(false)
+  const [lastASRResults, setLastASRResults] = useState<any[]>([])
+  const [isVisualizationVisible, setIsVisualizationVisible] = useState(true)
+  const [currentTranscription, setCurrentTranscription] = useState('')
+  const [partialTranscription, setPartialTranscription] = useState('')
+  const [transcriptionHistory, setTranscriptionHistory] = useState<Array<{
+    timestamp: string
+    text: string
+    confidence?: number
+    type: 'final' | 'partial'
+  }>>([])
+  const [asrVolume, setAsrVolume] = useState(0)
+  const [voiceService] = useState(new VoiceChatService())
+  const recognitionRef = useRef<any>(null)
 
   // Get current logs
   useEffect(() => {
     const currentLogs = loggingService.getLogs()
     setLogs(currentLogs.map(log => `[${log.timestamp}] ${log.level}: ${log.message} ${log.details ? JSON.stringify(log.details) : ''}`))
   }, [isOpen])
+
+  // Auto-scroll to bottom when logs update
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight
+      }
+    }
+  }, [logs])
+
+  // Function to scroll to bottom manually
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
+      if (scrollContainer) {
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }
 
   const checkOllamaConnectivity = async () => {
     setIsChecking(true)
@@ -76,10 +122,247 @@ function DebugPanel({ isOpen = false, onOpenChange }: DebugPanelProps) {
     }
   }
 
+  // Samsung Galaxy ASR Test with comprehensive debugging
+  const testSamsungASR = async () => {
+    console.log('🎤 [Samsung ASR Test] Starting comprehensive Samsung Galaxy ASR test...')
+    setIsTestingASR(true)
+    setIsListeningASR(true)
+    
+    const startTime = Date.now()
+    const minVisualizationTime = 5000 // 5 seconds minimum for debugging
+    
+    try {
+      // Step 1: Check permissions first
+      console.log('🎤 [Samsung ASR Test] Step 1: Checking microphone permissions...')
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        console.log('🎤 [Samsung ASR Test] ✅ Microphone permission granted')
+        stream.getTracks().forEach(track => track.stop())
+      } catch (permError) {
+        console.error('🎤 [Samsung ASR Test] ❌ Microphone permission denied:', permError)
+        toast.error('❌ Microphone permission denied. Please allow microphone access.')
+        return
+      }
+
+      // Step 2: Check for speech recognition availability
+      console.log('🎤 [Samsung ASR Test] Step 2: Checking speech recognition availability...')
+      const hasCapacitorASR = Capacitor.isNativePlatform()
+      const hasWebASR = typeof window !== 'undefined' && 'webkitSpeechRecognition' in window
+      
+      console.log('🎤 [Samsung ASR Test] Platform info:', {
+        isNative: hasCapacitorASR,
+        hasWebASR,
+        platform: Capacitor.getPlatform(),
+        userAgent: navigator.userAgent
+      })
+
+      let result: any = null
+
+      // Step 3: Try Capacitor ASR first (native Android)
+      if (hasCapacitorASR) {
+        console.log('🎤 [Samsung ASR Test] Step 3: Trying Capacitor ASR (native)...')
+        try {
+          // Check permissions first
+          const permission = await SpeechRecognition.requestPermissions()
+          console.log('🎤 [Samsung ASR Test] Capacitor permissions:', permission)
+          
+          if (permission.speechRecognition === 'granted') {
+            result = await SpeechRecognition.start({
+              language: navigator.language || 'en-US',
+              maxResults: 5,
+              prompt: 'Samsung Galaxy ASR Test - Say something...',
+              partialResults: true,
+              popup: false
+            })
+            console.log('🎤 [Samsung ASR Test] ✅ Capacitor ASR success:', result)
+          } else {
+            throw new Error('Capacitor ASR permission denied')
+          }
+        } catch (capacitorError) {
+          console.error('🎤 [Samsung ASR Test] ❌ Capacitor ASR failed:', capacitorError)
+          loggingService.log('warn', 'ASR', 'Capacitor ASR failed', { error: capacitorError })
+        }
+      }
+
+      // Step 4: Fallback to Web ASR if Capacitor failed
+      if (!result && hasWebASR) {
+        console.log('🎤 [Samsung ASR Test] Step 4: Trying Web Speech ASR...')
+        
+        result = await new Promise((resolve, reject) => {
+          const recognition = new (window as any).webkitSpeechRecognition()
+          
+          // Samsung Galaxy optimized configuration
+          recognition.continuous = false  // Single utterance for stability
+          recognition.interimResults = true
+          recognition.maxAlternatives = 3
+          recognition.lang = navigator.language || 'en-US'
+          
+          console.log('🎤 [Samsung ASR Test] Web ASR config:', {
+            language: recognition.lang,
+            continuous: recognition.continuous,
+            interimResults: recognition.interimResults
+          })
+
+          let hasStarted = false
+          let hasResults = false
+          let finalResults: string[] = []
+          
+          const timeout = setTimeout(() => {
+            console.log('🎤 [Samsung ASR Test] ⏰ Timeout reached, stopping...')
+            if (!hasResults) {
+              recognition.stop()
+              reject(new Error('ASR timeout after 10 seconds'))
+            }
+          }, 10000)
+
+          recognition.onstart = () => {
+            hasStarted = true
+            console.log('🎤 [Samsung ASR Test] ✅ Web ASR started - speak now!')
+            toast.info('🎤 Samsung Galaxy ASR listening - speak clearly!')
+          }
+
+          recognition.onresult = (event: any) => {
+            console.log('🎤 [Samsung ASR Test] 📝 Got results:', event.results.length)
+            hasResults = true
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              const transcript = event.results[i][0].transcript.trim()
+              const confidence = event.results[i][0].confidence || 0
+              const isFinal = event.results[i].isFinal
+              
+              console.log(`🎤 [Samsung ASR Test] Result ${i}:`, {
+                transcript,
+                confidence,
+                isFinal
+              })
+
+              if (isFinal) {
+                finalResults.push(transcript)
+                setCurrentTranscription(transcript)
+                toast.success(`✅ Samsung ASR: "${transcript}"`)
+              } else {
+                setPartialTranscription(transcript)
+              }
+            }
+            
+            if (finalResults.length > 0) {
+              clearTimeout(timeout)
+              resolve({ matches: finalResults })
+            }
+          }
+
+          recognition.onerror = (event: any) => {
+            console.error('🎤 [Samsung ASR Test] ❌ Web ASR error:', event.error)
+            clearTimeout(timeout)
+            
+            // Detailed error logging for Samsung Galaxy debugging
+            const errorInfo = {
+              error: event.error,
+              hasStarted,
+              hasResults,
+              finalResults: finalResults.length,
+              timestamp: new Date().toISOString()
+            }
+            
+            loggingService.log('error', 'ASR', `Samsung Galaxy ASR error: ${event.error}`, errorInfo)
+            
+            if (event.error === 'not-allowed') {
+              reject(new Error('🎤 Microphone access denied'))
+            } else if (event.error === 'service-not-allowed') {
+              reject(new Error('🔧 Speech service disabled - check Samsung settings'))
+            } else if (event.error === 'language-not-supported') {
+              reject(new Error(`🌍 Language ${recognition.lang} not supported`))
+            } else {
+              reject(new Error(`Samsung ASR error: ${event.error}`))
+            }
+          }
+
+          recognition.onend = () => {
+            console.log('🎤 [Samsung ASR Test] 🏁 Web ASR ended')
+            clearTimeout(timeout)
+            
+            if (hasResults && finalResults.length > 0) {
+              resolve({ matches: finalResults })
+            } else if (hasStarted) {
+              reject(new Error('Samsung ASR ended without capturing speech'))
+            }
+          }
+
+          try {
+            console.log('🎤 [Samsung ASR Test] 🚀 Starting Web ASR...')
+            recognition.start()
+          } catch (startError) {
+            clearTimeout(timeout)
+            console.error('🎤 [Samsung ASR Test] ❌ Failed to start Web ASR:', startError)
+            reject(startError)
+          }
+        })
+      }
+
+      // Step 5: Process results
+      if (result && result.matches && result.matches.length > 0) {
+        console.log('🎤 [Samsung ASR Test] ✅ Final success:', result)
+        
+        const debugResult = {
+          timestamp: new Date().toISOString(),
+          success: true,
+          results: result.matches,
+          platform: Capacitor.getPlatform(),
+          method: hasCapacitorASR ? 'Capacitor' : 'Web',
+          duration: Date.now() - startTime
+        }
+        
+        setLastASRResults(prev => [debugResult, ...prev.slice(0, 4)])
+        setAsrDebugInfo(debugResult)
+        
+        toast.success(`✅ Samsung Galaxy ASR Success! Got ${result.matches.length} results`)
+        loggingService.log('info', 'ASR', 'Samsung Galaxy ASR test completed successfully', debugResult)
+      } else {
+        throw new Error('No speech recognition methods available or all failed')
+      }
+
+    } catch (error) {
+      console.error('🎤 [Samsung ASR Test] ❌ Test failed:', error)
+      
+      const errorResult = {
+        timestamp: new Date().toISOString(),
+        success: false,
+        error: error.message,
+        platform: Capacitor.getPlatform(),
+        duration: Date.now() - startTime
+      }
+      
+      setLastASRResults(prev => [errorResult, ...prev.slice(0, 4)])
+      setAsrDebugInfo(errorResult)
+      
+      toast.error(`❌ Samsung ASR failed: ${error.message}`)
+      loggingService.log('error', 'ASR', 'Samsung Galaxy ASR test failed', errorResult)
+    } finally {
+      // Ensure minimum visualization time for proper debugging
+      const elapsed = Date.now() - startTime
+      const remainingTime = Math.max(0, minVisualizationTime - elapsed)
+      
+      console.log(`🎤 [Samsung ASR Test] Elapsed: ${elapsed}ms, Remaining: ${remainingTime}ms`)
+      
+      if (remainingTime > 0) {
+        console.log(`🎤 [Samsung ASR Test] Keeping visualization for ${remainingTime}ms more...`)
+        setTimeout(() => {
+          setIsListeningASR(false)
+          setIsTestingASR(false)
+        }, remainingTime)
+      } else {
+        setIsListeningASR(false)
+        setIsTestingASR(false)
+      }
+    }
+  }
+
   const refreshLogs = () => {
     const currentLogs = loggingService.getLogs()
     setLogs(currentLogs.map(log => `[${log.timestamp}] ${log.level}: ${log.message} ${log.details ? JSON.stringify(log.details) : ''}`))
     toast.success('Logs refreshed')
+    // Auto-scroll to bottom after refresh
+    setTimeout(scrollToBottom, 100)
   }
 
   const clearLogs = () => {
@@ -205,8 +488,9 @@ Report generated: ${timestamp}
         </DialogHeader>
 
         <Tabs defaultValue="connectivity" className="w-full h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 h-8">
+          <TabsList className="grid w-full grid-cols-4 h-8">
             <TabsTrigger value="connectivity" className="text-xs">Connect</TabsTrigger>
+            <TabsTrigger value="asr" className="text-xs">ASR Test</TabsTrigger>
             <TabsTrigger value="logs" className="text-xs">Logs</TabsTrigger>
             <TabsTrigger value="system" className="text-xs">System</TabsTrigger>
           </TabsList>
@@ -365,16 +649,179 @@ Report generated: ${timestamp}
             </Card>
             </TabsContent>
 
-            <TabsContent value="logs" className="space-y-2 h-full overflow-y-auto p-1">
-            <Card>
-              <CardHeader>
+            <TabsContent value="asr" className="space-y-2 h-full overflow-y-auto p-1">
+              <Card className="border-orange-200 bg-orange-50/50">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-sm">
+                      <Mic className="h-4 w-4" />
+                      Samsung Galaxy ASR Test
+                    </CardTitle>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setIsVisualizationVisible(!isVisualizationVisible)}
+                      className="gap-1"
+                    >
+                      {isVisualizationVisible ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {isVisualizationVisible && (
+                    <div className="flex flex-col items-center space-y-2">
+                      <AudioVisualization 
+                        isListening={isListeningASR}
+                        color="#10b981"
+                        size="medium"
+                        type="wave"
+                      />
+                      <div className="text-xs text-green-700 text-center">
+                        {asrVolume > 0 ? `🎤 Voice Level: ${Math.round(asrVolume)}%` : '🎤 Speak clearly into microphone'}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* ASR Control Panel */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm">ASR Testing Controls</CardTitle>
+                  <CardDescription className="text-xs">
+                    Comprehensive Samsung Galaxy speech recognition testing
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={testSamsungASR}
+                      disabled={isTestingASR}
+                      className="gap-2 flex-1"
+                      variant="default"
+                    >
+                      <Mic className={`h-4 w-4 ${isListeningASR ? 'animate-pulse' : ''}`} />
+                      {isTestingASR ? 'Testing...' : 'Test Samsung ASR'}
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        setCurrentTranscription('')
+                        setPartialTranscription('')
+                        setTranscriptionHistory([])
+                        setLastASRResults([])
+                        setAsrDebugInfo(null)
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="gap-1"
+                    >
+                      <RefreshCw className="h-3 w-3" />
+                      Clear
+                    </Button>
+                  </div>
+
+                  {/* Current Status */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-medium">Status:</div>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant={isTestingASR ? "default" : "secondary"}>
+                        {isTestingASR ? '🔄 Testing' : '⏸️ Idle'}
+                      </Badge>
+                      <Badge variant={isListeningASR ? "default" : "secondary"}>
+                        {isListeningASR ? '👂 Listening' : '🔇 Silent'}
+                      </Badge>
+                      <Badge variant={Capacitor.isNativePlatform() ? "default" : "outline"}>
+                        {Capacitor.isNativePlatform() ? '📱 Native' : '🌐 Web'}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {/* Real-time Transcription */}
+                  {(currentTranscription || partialTranscription) && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium">Live Transcription:</div>
+                      <div className="p-2 bg-muted rounded text-sm min-h-[60px] break-words overflow-wrap-anywhere">
+                        {currentTranscription && (
+                          <div className="font-medium text-green-700 break-words whitespace-pre-wrap">
+                            Final: "{currentTranscription}"
+                          </div>
+                        )}
+                        {partialTranscription && (
+                          <div className="text-orange-600 italic break-words whitespace-pre-wrap">
+                            Partial: "{partialTranscription}"
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ASR Debug Info */}
+                  {asrDebugInfo && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium">Last Test Result:</div>
+                      <div className="p-2 bg-muted rounded text-xs">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>Success: {asrDebugInfo.success ? '✅' : '❌'}</div>
+                          <div>Platform: {asrDebugInfo.platform}</div>
+                          <div>Method: {asrDebugInfo.method || 'N/A'}</div>
+                          <div>Duration: {asrDebugInfo.duration}ms</div>
+                        </div>
+                        {asrDebugInfo.results && (
+                          <div className="mt-2 break-words whitespace-pre-wrap">
+                            Results: {asrDebugInfo.results.join(', ')}
+                          </div>
+                        )}
+                        {asrDebugInfo.error && (
+                          <div className="mt-2 text-red-600 break-words whitespace-pre-wrap">
+                            Error: {asrDebugInfo.error}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Test History */}
+                  {lastASRResults.length > 0 && (
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium">Recent Tests:</div>
+                      <ScrollArea className="h-32 w-full border rounded p-2">
+                        <div className="space-y-1">
+                          {lastASRResults.map((result, index) => (
+                            <div key={index} className="text-xs p-1 bg-muted rounded">
+                              <div className="flex justify-between">
+                                <span>{result.success ? '✅' : '❌'}</span>
+                                <span>{new Date(result.timestamp).toLocaleTimeString()}</span>
+                              </div>
+                              {result.results && (
+                                <div className="text-green-600 break-words whitespace-pre-wrap text-xs">
+                                  "{result.results[0]}"
+                                </div>
+                              )}
+                              {result.error && (
+                                <div className="text-red-600 break-words whitespace-pre-wrap text-xs">
+                                  {result.error}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="logs" className="h-full flex flex-col p-1">
+            <Card className="flex-1 flex flex-col">
+              <CardHeader className="flex-shrink-0">
                 <CardTitle>Application Logs</CardTitle>
                 <CardDescription>
                   View detailed logs for debugging connectivity and performance issues
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2 mb-4">
+              <CardContent className="flex-1 flex flex-col space-y-4">
+                <div className="flex flex-wrap gap-2 flex-shrink-0">
                   <Button onClick={refreshLogs} variant="outline" size="sm">
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh
@@ -382,49 +829,77 @@ Report generated: ${timestamp}
                   <Button onClick={clearLogs} variant="outline" size="sm">
                     Clear Logs
                   </Button>
+                  <Button onClick={scrollToBottom} variant="outline" size="sm" className="gap-2">
+                    <Activity className="h-4 w-4" />
+                    Scroll to Bottom
+                  </Button>
                   <Separator orientation="vertical" className="h-6" />
                   <Button onClick={downloadLogReport} variant="outline" size="sm" className="gap-2">
                     <Download className="h-4 w-4" />
-                    Download Report
+                    Save
                   </Button>
                   <Button onClick={copyLogsToClipboard} variant="outline" size="sm" className="gap-2">
                     <Copy className="h-4 w-4" />
-                    Copy to Clipboard
+                    Copy
                   </Button>
                   {Capacitor.isNativePlatform() && (
                     <Button onClick={shareLogReport} variant="outline" size="sm" className="gap-2">
                       <Share className="h-4 w-4" />
-                      Share Report
+                      Share
                     </Button>
                   )}
                 </div>
                 
-                <div className="mb-4 p-3 bg-muted rounded-lg">
-                  <div className="text-sm font-medium mb-2 flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Export Options for Mac Sync:
+                <ScrollArea ref={scrollAreaRef} className="flex-1 w-full border rounded min-h-0" style={{ height: 'calc(100vh - 400px)', maxHeight: '600px' }}>
+                  <div className="p-4">
+                    {logs.length === 0 ? (
+                      <div className="text-muted-foreground text-center py-8">
+                        No logs available. Start using the app to generate logs.
+                      </div>
+                    ) : (
+                      <div className="space-y-1 pb-4">
+                        {logs.map((log, index) => {
+                          // Determine log level for color coding
+                          const isError = log.includes('error:') || log.includes('ERROR:')
+                          const isWarning = log.includes('warn:') || log.includes('WARNING:')
+                          const isInfo = log.includes('info:') || log.includes('INFO:')
+                          const isSuccess = log.includes('success') || log.includes('✅')
+                          
+                          let borderColor = 'border-muted'
+                          let bgColor = 'hover:bg-muted/50'
+                          
+                          if (isError) {
+                            borderColor = 'border-red-300'
+                            bgColor = 'hover:bg-red-50/50'
+                          } else if (isWarning) {
+                            borderColor = 'border-orange-300'
+                            bgColor = 'hover:bg-orange-50/50'
+                          } else if (isSuccess) {
+                            borderColor = 'border-green-300'
+                            bgColor = 'hover:bg-green-50/50'
+                          } else if (isInfo) {
+                            borderColor = 'border-blue-300'
+                            bgColor = 'hover:bg-blue-50/50'
+                          }
+                          
+                          return (
+                            <div 
+                              key={index} 
+                              className={`text-xs font-mono leading-relaxed break-all overflow-wrap-anywhere hyphens-auto p-2 rounded ${bgColor} border-l-3 ${borderColor} transition-colors`}
+                              style={{ 
+                                wordBreak: 'break-word',
+                                overflowWrap: 'anywhere',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word'
+                              }}
+                            >
+                              {log}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
-                  <div className="text-xs text-muted-foreground space-y-1">
-                    <div>• <strong>Download:</strong> Saves file to Downloads folder - transfer via USB/cloud</div>
-                    <div>• <strong>Copy:</strong> Copy text to paste in messaging apps or email to Mac</div>
-                    <div>• <strong>Share:</strong> Send via Android share menu (email, messaging, cloud storage)</div>
-                  </div>
-                </div>
-                
-                <ScrollArea className="h-[400px] w-full border rounded p-4">
-                  {logs.length === 0 ? (
-                    <div className="text-muted-foreground text-center py-8">
-                      No logs available. Start using the app to generate logs.
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      {logs.map((log, index) => (
-                        <div key={index} className="text-xs font-mono whitespace-pre-wrap">
-                          {log}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </ScrollArea>
               </CardContent>
             </Card>
